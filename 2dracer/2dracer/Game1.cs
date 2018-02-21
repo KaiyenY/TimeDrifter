@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 namespace _2dracer
 {
     /// <summary>
-    /// This is the main type for your game.
+    //ruben was here
     /// </summary>
     public class Game1 : Game
     {
