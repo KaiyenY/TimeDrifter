@@ -13,6 +13,9 @@ namespace _2dracer
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        //spritefont
+        SpriteFont comicSans;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -40,7 +43,7 @@ namespace _2dracer
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            comicSans = Content.Load<SpriteFont>("comic");
             // TODO: use this.Content to load your game content here
         }
 
@@ -77,6 +80,9 @@ namespace _2dracer
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            spriteBatch.DrawString(comicSans, "Hello World", new Vector2(GraphicsDevice.Viewport.Width/2, GraphicsDevice.Viewport.Height/2), Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
