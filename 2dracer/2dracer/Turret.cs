@@ -19,12 +19,12 @@ namespace _2dracer
         private MouseState curr;
         private MouseState prev;
 
-        private double posX;
-        private double posY;
+        private float posX;
+        private float posY;
 
-        private double dirX = 0;
-        private double dirY = 0;
-        private double angle = 0;
+        private float dirX = 0;
+        private float dirY = 0;
+        private float angle = 0;
 
         // which index of array will be the "new" bullet
         private int bulletIndex = 0;
@@ -55,7 +55,7 @@ namespace _2dracer
             dirY = curr.Position.Y - posY;
 
             // use trig to make turret point towards mouse
-            angle = Math.Atan(dirY / dirX) * 180 / 3.14159;
+            angle = (float)(Math.Atan(dirY / dirX) * 180 / 3.14159);
 
 
             // this is just to keep numbers consistant, 0-360
@@ -67,11 +67,11 @@ namespace _2dracer
                 angle += 360;
         }
 
-        double timer = 0;
-        public void Update(GameTime gameTime, double x, double y)
+        float timer = 0;
+        public void Update(GameTime gameTime, float x, float y)
         {
             // update timer
-            timer += gameTime.ElapsedGameTime.TotalMilliseconds;
+            timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             curr = Mouse.GetState();
 
