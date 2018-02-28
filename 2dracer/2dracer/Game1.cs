@@ -4,18 +4,17 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _2dracer
 {
-    /// <summary>
-    //ruben was here
-    /// Matthew is the best architect.
-    /// </summary>
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        public static SpriteBatch spriteBatch;
 
-        //spritefont
-        SpriteFont comicSans;
+        // SpriteFonts
+        public static SpriteFont comicSans;
 
+        // Texture2Ds
+        public static Texture2D square;
+        
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -43,8 +42,14 @@ namespace _2dracer
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            // SpriteFonts
             comicSans = Content.Load<SpriteFont>("comic");
-            // TODO: use this.Content to load your game content here
+
+            // Texture2Ds
+            square = Content.Load<Texture2D>("square");
+
+            // Other Content
         }
 
         /// <summary>
@@ -65,8 +70,8 @@ namespace _2dracer
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            
 
-            // TODO: Add your update logic here
 
             base.Update(gameTime);
         }
@@ -78,8 +83,7 @@ namespace _2dracer
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
+            
             spriteBatch.Begin();
             spriteBatch.DrawString(comicSans, "Hello World\nAnd Goodbye!", new Vector2(GraphicsDevice.Viewport.Width/2, GraphicsDevice.Viewport.Height/2), Color.White);
             spriteBatch.End();
