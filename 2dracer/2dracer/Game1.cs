@@ -5,6 +5,13 @@ using System;
 
 namespace _2dracer
 {
+    public enum GameState //FSM that switches between menu and game
+    {
+        Menu,
+        Game
+    }
+
+
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -13,9 +20,12 @@ namespace _2dracer
         // SpriteFonts
         public static SpriteFont comicSans;
         Turret turret1;
-
+        MenuElement button;
         // Texture2Ds
         public static Texture2D square;
+
+        //GameState Enum
+        public static GameState GameState;
 
         Mover test;
 
@@ -44,49 +54,72 @@ namespace _2dracer
             square = Content.Load<Texture2D>("square");
             Texture2D arrow = Content.Load<Texture2D>("turret");
             Texture2D bullet = Content.Load<Texture2D>("bullet");
-
+            Texture2D buttonTexture = Content.Load<Texture2D>("ButtonRectangleTemp");
             // Other Content
             test = new Mover();
 
             turret1 = new Turret(arrow, bullet);
+            button = new MenuElement(new Rectangle(new Point(20, 200), new Point(400,100)), buttonTexture);
         }
         
         protected override void UnloadContent()
         {
         }
-        
+
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            switch (GameState) //Check for gamestate
             {
-                test.AddForceAtPos(new Vector2(5, 5), new Vector2(50,0));
+                case GameState.Menu:
+                    {
+                        break;
+                    }
+                 
+                case GameState.Game:
+                    {
+                        if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                        {
+                            test.AddForceAtPos(new Vector2(5, 5), new Vector2(50, 0));
+                        }
+                        // update turret position to car position
+                        // or in this case, the center of the screen
+                        turret1.Update(gameTime, GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+                        test.Update(gameTime);
+                        if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                        {
+                            GameState = GameState.Menu;
+                        }
+                        break;
+                    } 
             }
-
-            test.Update(gameTime);
-
-            // update turret position to car position
-            // or in this case, the center of the screen
-            turret1.Update(gameTime, GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            string text = turret1.Debug();
-
             spriteBatch.Begin();
-            spriteBatch.DrawString(comicSans, "Hello World\nAnd Goodbye!", new Vector2(GraphicsDevice.Viewport.Width/2, GraphicsDevice.Viewport.Height/2), Color.White);
-            spriteBatch.DrawString(comicSans, Vector2.Divide(test.Velocity, Vector2.Normalize(test.Velocity)).ToString(), new Vector2(300, 300), Color.Black);
-            test.Draw();
-            turret1.Draw(spriteBatch);
-
-            spriteBatch.DrawString(comicSans, text, new Vector2(20, 20), Color.White);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+            switch (GameState)
+            {
+                case GameState.Menu:
+                    {
+                        button.DrawWithText("Game");
+                        break;
+                    }
+                case GameState.Game:
+                    {
+                        string text = turret1.Debug();
+                        spriteBatch.DrawString(comicSans, "Hello World\nAnd Goodbye!", new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), Color.White);
+                        spriteBatch.DrawString(comicSans, Vector2.Divide(test.Velocity, Vector2.Normalize(test.Velocity)).ToString(), new Vector2(300, 300), Color.Black);
+                        test.Draw();
+                        turret1.Draw(spriteBatch);
+                        spriteBatch.DrawString(comicSans, text, new Vector2(20, 20), Color.White);
+                        break;
+                    }
+                
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);

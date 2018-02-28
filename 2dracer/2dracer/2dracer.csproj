@@ -44,6 +44,7 @@
     <Compile Include="Bullet.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameObject.cs" />
+    <Compile Include="MenuElement.cs" />
     <Compile Include="Mover.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
