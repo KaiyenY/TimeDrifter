@@ -20,6 +20,18 @@
 /processorParam:TextureFormat=Compressed
 /build:comic.spritefont
 
+#begin bullet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:bullet.png
+
 #begin turret.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -32,7 +44,7 @@
 /processorParam:TextureFormat=Color
 /build:turret.PNG
 
-#begin bullet.jpg
+#begin Level_2D_and_3D/level.bmp
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -42,5 +54,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:bullet.jpg
+/build:Level_2D_and_3D/level.bmp
 
