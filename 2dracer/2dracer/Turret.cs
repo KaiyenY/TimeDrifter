@@ -14,7 +14,7 @@ namespace _2dracer
     {
         Texture2D t;
         Texture2D b;
-        Bullet b1;
+        List<Bullet> bullets;
 
         MouseState curr;
         MouseState prev;
@@ -27,7 +27,7 @@ namespace _2dracer
             t = tex;
             b = bullet;
 
-            b1 = new Bullet(-99, -99, 0);
+            bullets = new List<Bullet>();
         }
 
         public void setPosition(double x, double y)
@@ -43,18 +43,6 @@ namespace _2dracer
 
         public void calcAngle()
         {
-            if (curr.LeftButton == ButtonState.Pressed &&
-               prev.LeftButton == ButtonState.Released)
-            {
-                b1 = new Bullet(posX, posY, angle);
-
-                // make bullet start at tip of gun
-                // rather than center of gun
-
-                b1.x += Math.Cos(b1.angle * (3.14159 / 180)) * 50;
-                b1.y += Math.Sin(b1.angle * (3.14159 / 180)) * 50;
-            }
-
             shooting = (curr.LeftButton == ButtonState.Pressed);
 
             dirX = curr.Position.X - posX;
@@ -68,40 +56,65 @@ namespace _2dracer
                 angle += 360;
         }
 
-        public void Update(double x, double y)
+        double timer = 0;
+        public void Update(GameTime gameTime, double x, double y)
         {
+            timer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             curr = Mouse.GetState();
+
+            if (curr.LeftButton == ButtonState.Pressed &&
+                timer >= 150)
+            {
+                timer = 0;
+                Bullet b1;
+                b1 = new Bullet(posX, posY, angle);
+
+                // make bullet start at tip of gun
+                // rather than center of gun
+
+                b1.x += Math.Cos(b1.angle * (3.14159 / 180)) * 70;
+                b1.y += Math.Sin(b1.angle * (3.14159 / 180)) * 70;
+
+                bullets.Add(b1);
+            }
 
             setPosition(x, y);
             calcAngle();
 
-            if (curr.LeftButton == ButtonState.Pressed)
+            for (int i = 0; i < bullets.Count; i++)
             {
-                b1.x += Math.Cos(b1.angle * (3.14159 / 180)) * 10;
-                b1.y += Math.Sin(b1.angle * (3.14159 / 180)) * 10;
-            }
+                bullets[i].x += Math.Cos(bullets[i].angle * (3.14159 / 180)) * 10;
+                bullets[i].y += Math.Sin(bullets[i].angle * (3.14159 / 180)) * 10;
 
+                if (Math.Abs(bullets[i].x) > 1000 ||
+                    Math.Abs(bullets[i].y) > 1000)
+                    bullets.RemoveAt(i);
+
+            }
             prev = curr;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(t,
-                new Rectangle((int)posX, (int)posY, t.Width/4, t.Height/4), 
-                null, 
-                Color.White, 
-                (float)((angle + 90) * 3.14159 / 180), 
-                new Vector2(t.Width / 2, t.Height / 2), 
-                SpriteEffects.None, 0f);
-
-            spriteBatch.Draw(b,
-                new Rectangle((int)b1.x, (int)b1.y, b.Width / 20, b.Height / 20),
+                new Rectangle((int)posX, (int)posY, t.Width / 4, t.Height / 4),
                 null,
                 Color.White,
-                (float)((b1.angle + 90) * 3.14159 / 180),
-                new Vector2(b.Width / 2, b.Height / 2),
+                (float)((angle + 90) * 3.14159 / 180),
+                new Vector2(t.Width / 2, t.Height / 2),
                 SpriteEffects.None, 0f);
+
+            for (int i = 0; i < bullets.Count; i++)
+            {
+                spriteBatch.Draw(b,
+                    new Rectangle((int)bullets[i].x, (int)bullets[i].y, b.Width / 20, b.Height / 20),
+                    null,
+                    Color.White,
+                    (float)((bullets[i].angle + 90) * 3.14159 / 180),
+                    new Vector2(b.Width / 2, b.Height / 2),
+                    SpriteEffects.None, 0f);
+            }
         }
 
         public String Debug()

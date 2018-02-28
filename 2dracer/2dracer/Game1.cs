@@ -69,7 +69,7 @@ namespace _2dracer
 
             // update turret position to car position
             // or in this case, the center of the screen
-            turret1.Update(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            turret1.Update(gameTime, GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
 
             base.Update(gameTime);
         }
