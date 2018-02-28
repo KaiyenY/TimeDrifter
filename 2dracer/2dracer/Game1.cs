@@ -33,8 +33,9 @@ namespace _2dracer
             spriteBatch = new SpriteBatch(GraphicsDevice);
             comicSans = Content.Load<SpriteFont>("comic");
 
-            Texture2D arrow = Content.Load<Texture2D>("arrow");
-            turret1 = new Turret(arrow);
+            Texture2D arrow = Content.Load<Texture2D>("turret");
+            Texture2D bullet = Content.Load<Texture2D>("bullet");
+            turret1 = new Turret(arrow, bullet);
         }
         
         protected override void UnloadContent()
@@ -48,10 +49,7 @@ namespace _2dracer
 
             // update turret position to car position
             // or in this case, the center of the screen
-            turret1.setPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-
-            // get angle
-            turret1.calcAngle();
+            turret1.Update(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
 
             base.Update(gameTime);
         }
@@ -65,7 +63,7 @@ namespace _2dracer
             spriteBatch.Begin();
             turret1.Draw(spriteBatch);
 
-            spriteBatch.DrawString(comicSans, text, new Vector2(GraphicsDevice.Viewport.Width/2, GraphicsDevice.Viewport.Height/2), Color.White);
+            spriteBatch.DrawString(comicSans, text, new Vector2(20, 20), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
