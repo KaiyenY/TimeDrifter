@@ -17,6 +17,9 @@ namespace _2dracer
         //spritefont
         SpriteFont comicSans;
 
+        //arrow
+        Texture2D arrow;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -35,6 +38,7 @@ namespace _2dracer
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             comicSans = Content.Load<SpriteFont>("comic");
+            arrow = Content.Load<Texture2D>("arrow");
         }
         
         protected override void UnloadContent()
@@ -86,7 +90,19 @@ namespace _2dracer
             string text = "Checking distance between mouse\nand center of screen\nfor gun on roof: \nX: " + x + "\nY: " + y + "\nangle: " + angle;
 
             spriteBatch.Begin();
+
+
+
+
+            spriteBatch.Draw(arrow, 
+                new Rectangle(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2, arrow.Width, arrow.Height), null, Color.White, (float)((angle+90) * 3.14159 / 180), new Vector2(arrow.Width / 2, arrow.Height / 2), SpriteEffects.None, 0f);//draw it :D
+
+
+
+
             spriteBatch.DrawString(comicSans, text, new Vector2(GraphicsDevice.Viewport.Width/2, GraphicsDevice.Viewport.Height/2), Color.White);
+
+
             spriteBatch.End();
 
             base.Draw(gameTime);
