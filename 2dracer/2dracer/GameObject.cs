@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _2dracer
 {
-    abstract class GameObject
+    class GameObject
     {
         // fields
         protected Vector2 position;     // position of center in world space
@@ -26,11 +26,16 @@ namespace _2dracer
         // properties
         public Vector2 Position { get { return position; } }
         public float Rotation { get { return rotation; } }
+        public Texture2D Sprite { get { return sprite; } }
+        public Color Color { get { return color; } }
         public Vector2 Size { get { return size; } }
         public Vector2 Scale { get { return scale; } }
         public bool IsEnabled { get { return isEnabled; } }
 
         // constructors
+        public GameObject(GameObject g)
+                   : this(g.Position, g.Rotation, g.Sprite, g.Color, g.Scale, g.IsEnabled) { }
+        
         public GameObject(Vector2 position, float rotation, Texture2D sprite, Color color, Vector2 scale, bool startEnabled)
         {
             this.position = position;
@@ -51,19 +56,19 @@ namespace _2dracer
                    : this(position, rotation, sprite, Color.White, scale) { }
 
         public GameObject(Vector2 position, float rotation, Texture2D sprite)
-                   : this(position, rotation, sprite, new Vector2(1,1)) { }
+                   : this(position, rotation, sprite, Vector2.One) { }
 
         public GameObject(Vector2 position, float rotation)
                    : this(position, rotation, Game1.square) { }
 
         public GameObject()
-                   : this(new Vector2(0,0), 0f) { }
+                   : this(Vector2.Zero, 0f) { }
 
         // methods
         /// <summary>
         /// Updates logic for this game object every frame
         /// </summary>
-        public abstract void Update();
+        public virtual void Update(GameTime gameTime) { }
 
         /// <summary>
         /// Draws this object's texture to the screen

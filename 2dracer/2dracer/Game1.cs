@@ -14,7 +14,9 @@ namespace _2dracer
 
         // Texture2Ds
         public static Texture2D square;
-        
+
+        Mover test;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -50,6 +52,7 @@ namespace _2dracer
             square = Content.Load<Texture2D>("square");
 
             // Other Content
+            test = new Mover();
         }
 
         /// <summary>
@@ -70,8 +73,13 @@ namespace _2dracer
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            
 
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                test.AddForceAtPos(new Vector2(5, 5), new Vector2(50,0));
+            }
+
+            test.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -86,6 +94,8 @@ namespace _2dracer
             
             spriteBatch.Begin();
             spriteBatch.DrawString(comicSans, "Hello World\nAnd Goodbye!", new Vector2(GraphicsDevice.Viewport.Width/2, GraphicsDevice.Viewport.Height/2), Color.White);
+            spriteBatch.DrawString(comicSans, Vector2.Divide(test.Velocity, Vector2.Normalize(test.Velocity)).ToString(), new Vector2(300, 300), Color.Black);
+            test.Draw();
             spriteBatch.End();
 
             base.Draw(gameTime);
