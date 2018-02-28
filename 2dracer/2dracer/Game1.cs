@@ -41,6 +41,7 @@ namespace _2dracer
         {
             // show the mouse
             this.IsMouseVisible = true;
+            GameState = GameState.Game;
             base.Initialize();
         }
         
@@ -120,6 +121,7 @@ namespace _2dracer
                         string text = turret1.Debug();
                         spriteBatch.DrawString(comicSans, "Hello World\nAnd Goodbye!", new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), Color.White);
                         spriteBatch.DrawString(comicSans, Vector2.Divide(test.Velocity, Vector2.Normalize(test.Velocity)).ToString(), new Vector2(300, 300), Color.Black);
+                        car1.Draw();
                         test.Draw();
                         turret1.Draw();
                         spriteBatch.DrawString(comicSans, text, new Vector2(20, 20), Color.White);
