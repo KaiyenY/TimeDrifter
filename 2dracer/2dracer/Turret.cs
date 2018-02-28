@@ -47,12 +47,6 @@ namespace _2dracer
                 bullets[i] = new Bullet(-999, -999, 0);
             }
         }
-
-        public void SetPosition(double x, double y)
-        {
-            posX = x;
-            posY = y;
-        }
        
         public void CalcAngle()
         {
@@ -82,7 +76,8 @@ namespace _2dracer
             curr = Mouse.GetState();
 
             // change position of turret, depending on where car is
-            SetPosition(x, y);
+            posX = x;
+            posY = y;
 
             // get angle that the turret should be facing
             CalcAngle();
