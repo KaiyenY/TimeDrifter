@@ -27,7 +27,10 @@ namespace _2dracer
         public static Texture2D square;
 
         //GameState Enum
-        public static GameState GameState;
+        private static GameState GameState;
+
+        // two states for single hit
+        private KeyboardState curr, prev;
 
         private Mover test;
         private MenuElement button;
@@ -74,33 +77,49 @@ namespace _2dracer
         {
         }
 
+        private bool hold(Keys key)
+        {
+            return curr.IsKeyDown(key);
+        }
+
+        private bool tap(Keys key)
+        {
+            return hold(key) && prev.IsKeyUp(key);
+        }
+
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || tap(Keys.Escape))
                 Exit();
+
+            prev = curr;
+            curr = Keyboard.GetState();
+
             switch (GameState) //Check for gamestate
             {
                 case GameState.Menu:
+                    if (tap(Keys.P))
                     {
-                        break;
+                        GameState = GameState.Game;
                     }
+                    break;
+
                  
                 case GameState.Game:
+                    if (tap(Keys.P))
                     {
-                        if (Keyboard.GetState().IsKeyDown(Keys.Space))
-                        {
-                            test.AddForceAtPos(new Vector2(5, 5), new Vector2(50, 0));
-                        }
-                        // update turret position to car position
-                        // or in this case, the center of the screen
-                        turret1.Update(gameTime, GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-                        test.Update(gameTime);
-                        if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-                        {
-                            GameState = GameState.Menu;
-                        }
-                        break;
-                    } 
+                        GameState = GameState.Menu;
+                    }
+                    if (tap(Keys.Space))
+                    {
+                        test.AddForceAtPos(new Vector2(5, 5), new Vector2(50, 0));
+                    }
+                    // update turret position to car position
+                    // or in this case, the center of the screen
+                    car1.Update();
+                    turret1.Update(gameTime, car1.posX, car1.posY);
+                    test.Update(gameTime);
+                    break;
             }
             base.Update(gameTime);
         }
@@ -118,13 +137,11 @@ namespace _2dracer
                     }
                 case GameState.Game:
                     {
-                        string text = turret1.Debug();
-                        spriteBatch.DrawString(comicSans, "Hello World\nAnd Goodbye!", new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), Color.White);
-                        spriteBatch.DrawString(comicSans, Vector2.Divide(test.Velocity, Vector2.Normalize(test.Velocity)).ToString(), new Vector2(300, 300), Color.Black);
                         car1.Draw();
                         test.Draw();
                         turret1.Draw();
-                        spriteBatch.DrawString(comicSans, text, new Vector2(20, 20), Color.White);
+                        
+                        spriteBatch.DrawString(comicSans, Vector2.Divide(test.Velocity, Vector2.Normalize(test.Velocity)).ToString(), new Vector2(300, 300), Color.Black);
                         break;
                     }
                 

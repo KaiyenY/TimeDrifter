@@ -120,13 +120,5 @@ namespace _2dracer
             foreach(Bullet x in bullets)
                 x.Draw(b);
         }
-
-        public String Debug()
-        {
-            String text = "Turret Debug:" +
-                "\nangle: " + angle;
-
-            return text;
-        }
     }
 }
