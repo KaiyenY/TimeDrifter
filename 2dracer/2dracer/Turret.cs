@@ -12,43 +12,60 @@ namespace _2dracer
 {
     class Turret
     {
-        Texture2D t;
-        Texture2D b;
-        List<Bullet> bullets;
+        private Texture2D t;
+        private Texture2D b;
+        private Bullet[] bullets;
 
-        MouseState curr;
-        MouseState prev;
+        private MouseState curr;
+        private MouseState prev;
 
-        double posX;
-        double posY;
+        private double posX;
+        private double posY;
+
+        private double dirX = 0;
+        private double dirY = 0;
+        private double angle = 0;
+
+        // which index of array will be the "new" bullet
+        private int bulletIndex = 0;
 
         public Turret(Texture2D tex, Texture2D bullet)
         {
             t = tex;
             b = bullet;
 
-            bullets = new List<Bullet>();
+            // using array so we dont need to
+            // reallocate arrays (how List works)
+            // saves processing
+            bullets = new Bullet[100];
+
+            for(int i = 0; i < 100; i++)
+            {
+                // throw bullets into the void
+                // out of sight, out of mind
+
+                bullets[i] = new Bullet(-999, -999, 0);
+            }
         }
 
-        public void setPosition(double x, double y)
+        public void SetPosition(double x, double y)
         {
             posX = x;
             posY = y;
         }
-        
-        double dirX = 0;
-        double dirY = 0;
-        double angle = 0;
-        bool shooting;
-
-        public void calcAngle()
+       
+        public void CalcAngle()
         {
-            shooting = (curr.LeftButton == ButtonState.Pressed);
-
+            // difference of position between turret and mouse pointer
             dirX = curr.Position.X - posX;
             dirY = curr.Position.Y - posY;
+
+            // use trig to make turret point towards mouse
             angle = Math.Atan(dirY / dirX) * 180 / 3.14159;
 
+
+            // this is just to keep numbers consistant, 0-360
+            // rather than -90 - 270
             if (dirX < 0)
                 angle += 180;
 
@@ -59,45 +76,44 @@ namespace _2dracer
         double timer = 0;
         public void Update(GameTime gameTime, double x, double y)
         {
+            // update timer
             timer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             curr = Mouse.GetState();
 
-            if (curr.LeftButton == ButtonState.Pressed &&
-                timer >= 150)
+            // change position of turret, depending on where car is
+            SetPosition(x, y);
+
+            // get angle that the turret should be facing
+            CalcAngle();
+
+            // a bullet fires every 0.15 seconds
+            if (curr.LeftButton == ButtonState.Pressed && timer >= 150)
             {
+                // reset timer
                 timer = 0;
-                Bullet b1;
-                b1 = new Bullet(posX, posY, angle);
 
-                // make bullet start at tip of gun
-                // rather than center of gun
+                // set bullet position
+                bullets[bulletIndex] = new Bullet(posX, posY, angle);
 
-                b1.x += Math.Cos(b1.angle * (3.14159 / 180)) * 70;
-                b1.y += Math.Sin(b1.angle * (3.14159 / 180)) * 70;
+                // get index of next bullet to fire, 1-100
+                bulletIndex++;
 
-                bullets.Add(b1);
+                if (bulletIndex == 100)
+                    bulletIndex = 0;
             }
 
-            setPosition(x, y);
-            calcAngle();
+            // make all bullets move
+            foreach (Bullet bullet in bullets)
+                bullet.Update();
 
-            for (int i = 0; i < bullets.Count; i++)
-            {
-                bullets[i].x += Math.Cos(bullets[i].angle * (3.14159 / 180)) * 10;
-                bullets[i].y += Math.Sin(bullets[i].angle * (3.14159 / 180)) * 10;
-
-                if (Math.Abs(bullets[i].x) > 1000 ||
-                    Math.Abs(bullets[i].y) > 1000)
-                    bullets.RemoveAt(i);
-
-            }
             prev = curr;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
         {
-            spriteBatch.Draw(t,
+            // draw the turret
+            Game1.spriteBatch.Draw(t,
                 new Rectangle((int)posX, (int)posY, t.Width / 4, t.Height / 4),
                 null,
                 Color.White,
@@ -105,27 +121,15 @@ namespace _2dracer
                 new Vector2(t.Width / 2, t.Height / 2),
                 SpriteEffects.None, 0f);
 
-            for (int i = 0; i < bullets.Count; i++)
-            {
-                spriteBatch.Draw(b,
-                    new Rectangle((int)bullets[i].x, (int)bullets[i].y, b.Width / 20, b.Height / 20),
-                    null,
-                    Color.White,
-                    (float)((bullets[i].angle + 90) * 3.14159 / 180),
-                    new Vector2(b.Width / 2, b.Height / 2),
-                    SpriteEffects.None, 0f);
-            }
+            // draw all the bullets
+            foreach(Bullet x in bullets)
+                x.Draw(b);
         }
 
         public String Debug()
         {
             String text = "Turret Debug:" +
-                "\nangle: " + angle + "\nShooting (left click): ";
-            
-            if (shooting)
-                text += "Yes";
-            else
-                text += "No";
+                "\nangle: " + angle;
 
             return text;
         }
