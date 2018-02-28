@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace _2dracer
 {
@@ -11,6 +12,7 @@ namespace _2dracer
 
         // SpriteFonts
         public static SpriteFont comicSans;
+        Turret turret1;
 
         // Texture2Ds
         public static Texture2D square;
@@ -23,23 +25,13 @@ namespace _2dracer
             Content.RootDirectory = "Content";
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
+            // show the mouse
+            this.IsMouseVisible = true;
             base.Initialize();
         }
-
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
+        
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -50,25 +42,19 @@ namespace _2dracer
 
             // Texture2Ds
             square = Content.Load<Texture2D>("square");
+            Texture2D arrow = Content.Load<Texture2D>("turret");
+            Texture2D bullet = Content.Load<Texture2D>("bullet");
 
             // Other Content
             test = new Mover();
-        }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
-        /// </summary>
+            turret1 = new Turret(arrow, bullet);
+        }
+        
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
-
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -81,21 +67,26 @@ namespace _2dracer
 
             test.Update(gameTime);
 
+            // update turret position to car position
+            // or in this case, the center of the screen
+            turret1.Update(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+
             base.Update(gameTime);
         }
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            
+
+            string text = turret1.Debug();
+
             spriteBatch.Begin();
             spriteBatch.DrawString(comicSans, "Hello World\nAnd Goodbye!", new Vector2(GraphicsDevice.Viewport.Width/2, GraphicsDevice.Viewport.Height/2), Color.White);
             spriteBatch.DrawString(comicSans, Vector2.Divide(test.Velocity, Vector2.Normalize(test.Velocity)).ToString(), new Vector2(300, 300), Color.Black);
             test.Draw();
+            turret1.Draw(spriteBatch);
+
+            spriteBatch.DrawString(comicSans, text, new Vector2(20, 20), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
