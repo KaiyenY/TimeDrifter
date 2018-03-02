@@ -10,9 +10,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _2dracer
 {
-    class Mover : GameObject
+    public class Mover : GameObject
     {
-        // fields
+        // Fields
         protected Vector2 velocity;
         protected Vector2 accel;
 
@@ -24,7 +24,7 @@ namespace _2dracer
 
         //protected Collider col;
 
-        // properties
+        // Properties
         public Vector2 Velocity { get { return velocity; } }
         public Vector2 Accel { get { return accel; } }
         public float AngularVelocity { get { return angularVelocity; } }
@@ -32,7 +32,7 @@ namespace _2dracer
         public float Mass { get { return mass; } }
         public float DragFactor { get { return dragFactor; } }
 
-        // constructors
+        // Constructors
         public Mover(GameObject g, Vector2 velocity, Vector2 accel, float angularVelocity, float angularAccel, float mass, float dragFactor)
               : base(g)
         {
@@ -63,7 +63,7 @@ namespace _2dracer
         public Mover()
               : this(new GameObject()) { }
 
-        // methods
+        // Methods
         public override void Update(GameTime gameTime)
         {
             UpdatePhysics(gameTime);

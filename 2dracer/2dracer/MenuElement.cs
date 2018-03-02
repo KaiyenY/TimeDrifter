@@ -8,13 +8,11 @@ using System.Threading.Tasks;
 
 namespace _2dracer
 {
-    class MenuElement
+    /// <summary>
+    /// Class for Buttons and things for the Menu
+    /// </summary>
+    public class MenuElement
     {
-        /// <summary>
-        /// Class for Buttons and things for the Menu
-        /// </summary>
-        
-
         //Fields
         public Rectangle position;
         public Texture2D texture;

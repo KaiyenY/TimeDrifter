@@ -16,6 +16,7 @@ namespace _2dracer
         private static MouseState currMS, prevMS;
 
         // Constructor
+        public Input() { }
 
         // Methods
         /// <summary>
@@ -64,15 +65,15 @@ namespace _2dracer
             if (currKS.IsKeyDown(Keys.W) || 
                 currGS.ThumbSticks.Left.Y == 1.0f)
             {
-                player.posX += (float)Math.Cos(MathHelper.ToRadians(angle)) * moveSpeed;
-                player.posY += (float)Math.Sin(MathHelper.ToRadians(angle)) * moveSpeed;
+                player.PosX += (float)Math.Cos(MathHelper.ToRadians(angle)) * moveSpeed;
+                player.PosY += (float)Math.Sin(MathHelper.ToRadians(angle)) * moveSpeed;
             }
 
             // Move player backwards
             if (currKS.IsKeyDown(Keys.S))
             {
-                player.posX -= (float)Math.Cos(MathHelper.ToRadians(angle)) * moveSpeed;
-                player.posY -= (float)Math.Sin(MathHelper.ToRadians(angle)) * moveSpeed;
+                player.PosX -= (float)Math.Cos(MathHelper.ToRadians(angle)) * moveSpeed;
+                player.PosY -= (float)Math.Sin(MathHelper.ToRadians(angle)) * moveSpeed;
             }
 
             // Rotate player left
@@ -89,3 +90,5 @@ namespace _2dracer
         }
     }
 }
+
+// - Genoah Martinelli

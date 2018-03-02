@@ -18,38 +18,44 @@ namespace _2dracer
 
     public class Game1 : Game
     {
+        // Fields
         GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
+        
+        // Input Manager
+        private Input input;
+
+        // GameObjects
+        private Mover test;
+        private Player player;
+
+        // UI
+        private MenuElement button;
 
         // SpriteFonts
         public static SpriteFont comicSans;
 
-        private Turret turret1;
-        private Player player;
-
         // Texture2Ds
         public static Texture2D square;
 
-        //GameState Enum
+        // GameState Enum
         private static GameState GameState;
 
-        private Mover test;
-        private MenuElement button;
-
-        private Input input;
+        // Constructor
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
+        // Methods
         protected override void Initialize()
         {
-            // show the mouse
-            this.IsMouseVisible = true;
-            GameState = GameState.Game;
+            this.IsMouseVisible = true;     // Show the mouse
 
-            input = new Input();
+            GameState = GameState.Game;     // Default GameState
+            
+            input = new Input();            // Input Manager
 
             base.Initialize();
         }
@@ -66,11 +72,10 @@ namespace _2dracer
             square = Content.Load<Texture2D>("square");
             Texture2D gun = Content.Load<Texture2D>("turret");
             Texture2D bullet = Content.Load<Texture2D>("bullet");
-            turret1 = new Turret(gun, bullet);
 
             Texture2D buttonTexture = Content.Load<Texture2D>("ButtonRectangleTemp");
             Texture2D car = Content.Load<Texture2D>("RedCar");
-            player = new Player(car, GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            player = new Player(car, gun, bullet, GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
 
             // Other Content
             test = new Mover();
@@ -87,8 +92,6 @@ namespace _2dracer
         {
             input.Update();     // Should be the FIRST thing that updates
 
-            player.Update(input);
-
             if (Input.TapKey(Keys.Escape))
                 Exit();
 
@@ -103,18 +106,25 @@ namespace _2dracer
 
                  
                 case GameState.Game:
+                    // For changing GameState
                     if (Input.TapKey(Keys.P))
                     {
                         GameState = GameState.Menu;
                     }
+                    
                     if (Input.TapKey(Keys.Space))
                     {
                         test.AddForceAtPos(new Vector2(5, 5), new Vector2(50, 0));
                     }
-                    // update turret position to player car position
-                    // or in this case, the center of the screen
-                    turret1.Update(gameTime, player.posX, player.posY);
+
+                    // Update GameObjects here ----
+
+                    // Make update manager?
+
+                    player.Update(gameTime, input);
                     test.Update(gameTime);
+
+                    // ----------------------------
                     break;
             }
 
@@ -134,9 +144,10 @@ namespace _2dracer
                     }
                 case GameState.Game:
                     {
+                        // Make draw manager?
+
                         player.Draw();
                         test.Draw();
-                        turret1.Draw();
                         
                         spriteBatch.DrawString(comicSans, Vector2.Divide(test.Velocity, Vector2.Normalize(test.Velocity)).ToString(), new Vector2(300, 300), Color.Black);
                         break;
