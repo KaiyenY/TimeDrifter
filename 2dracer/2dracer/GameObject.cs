@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _2dracer
 {
-    class GameObject
+    public class GameObject
     {
         // fields
         protected Vector2 position;     // position of center in world space

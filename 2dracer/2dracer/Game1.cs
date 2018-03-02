@@ -5,10 +5,14 @@ using System;
 
 namespace _2dracer
 {
-    public enum GameState //FSM that switches between menu and game
+    /// <summary>
+    /// FSM that switches between GameStates
+    /// </summary>
+    public enum GameState
     {
-        Menu,
-        Game
+        Game,
+        LevelEditor,
+        Menu
     }
 
 
@@ -21,7 +25,7 @@ namespace _2dracer
         public static SpriteFont comicSans;
 
         private Turret turret1;
-        private Car car1;
+        private Player player;
 
         // Texture2Ds
         public static Texture2D square;
@@ -29,11 +33,10 @@ namespace _2dracer
         //GameState Enum
         private static GameState GameState;
 
-        // two states for single hit
-        private KeyboardState curr, prev;
-
         private Mover test;
         private MenuElement button;
+
+        private Input input;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -45,6 +48,9 @@ namespace _2dracer
             // show the mouse
             this.IsMouseVisible = true;
             GameState = GameState.Game;
+
+            input = new Input();
+
             base.Initialize();
         }
         
@@ -64,7 +70,7 @@ namespace _2dracer
 
             Texture2D buttonTexture = Content.Load<Texture2D>("ButtonRectangleTemp");
             Texture2D car = Content.Load<Texture2D>("RedCar");
-            car1 = new Car(car, GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            player = new Player(car, GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
 
             // Other Content
             test = new Mover();
@@ -77,28 +83,19 @@ namespace _2dracer
         {
         }
 
-        private bool hold(Keys key)
-        {
-            return curr.IsKeyDown(key);
-        }
-
-        private bool tap(Keys key)
-        {
-            return hold(key) && prev.IsKeyUp(key);
-        }
-
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || tap(Keys.Escape))
-                Exit();
+            input.Update();     // Should be the FIRST thing that updates
 
-            prev = curr;
-            curr = Keyboard.GetState();
+            player.Update(input);
+
+            if (Input.TapKey(Keys.Escape))
+                Exit();
 
             switch (GameState) //Check for gamestate
             {
                 case GameState.Menu:
-                    if (tap(Keys.P))
+                    if (Input.TapKey(Keys.P))
                     {
                         GameState = GameState.Game;
                     }
@@ -106,21 +103,21 @@ namespace _2dracer
 
                  
                 case GameState.Game:
-                    if (tap(Keys.P))
+                    if (Input.TapKey(Keys.P))
                     {
                         GameState = GameState.Menu;
                     }
-                    if (tap(Keys.Space))
+                    if (Input.TapKey(Keys.Space))
                     {
                         test.AddForceAtPos(new Vector2(5, 5), new Vector2(50, 0));
                     }
-                    // update turret position to car position
+                    // update turret position to player car position
                     // or in this case, the center of the screen
-                    car1.Update();
-                    turret1.Update(gameTime, car1.posX, car1.posY);
+                    turret1.Update(gameTime, player.posX, player.posY);
                     test.Update(gameTime);
                     break;
             }
+
             base.Update(gameTime);
         }
 
@@ -137,7 +134,7 @@ namespace _2dracer
                     }
                 case GameState.Game:
                     {
-                        car1.Draw();
+                        player.Draw();
                         test.Draw();
                         turret1.Draw();
                         

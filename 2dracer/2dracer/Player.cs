@@ -10,8 +10,15 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _2dracer
 {
-    class Car
+    /// <summary>
+    /// Creates the player object *FIX INHERITANCE*
+    /// </summary>
+    public class Player
     {
+        // Fields
+        private float moveSpeed;
+        private float rotSpeed;
+
         private Texture2D c;
         public float posX;
         public float posY;
@@ -20,38 +27,28 @@ namespace _2dracer
         private float dirY = 0;
         private float angle = 0;
 
-        public Car(Texture2D tex, float x, float y)
+        // Properties
+        public float Angle
         {
+            get { return angle; }
+            set { angle = value; }
+        }
+
+        // Constructor
+        public Player(Texture2D tex, float x, float y)
+        {
+            moveSpeed = 3f;
+            rotSpeed = 2f;
+
             posX = x;
             posY = y;
             c = tex;
         }
 
-        public void Update()
+        public void Update(Input input)
         {
-            KeyboardState s = Keyboard.GetState();
-
-            // move car forward
-            if (s.IsKeyDown(Keys.W))
-            {
-                posX += (float)Math.Cos(angle * (3.14159 / 180)) * 3;
-                posY += (float)Math.Sin(angle * (3.14159 / 180)) * 3;
-            }
-
-            // move car backward
-            if (s.IsKeyDown(Keys.S))
-            {
-                posX -= (float)Math.Cos(angle * (3.14159 / 180)) * 3;
-                posY -= (float)Math.Sin(angle * (3.14159 / 180)) * 3;
-            }
-
-            // turn left
-            if (s.IsKeyDown(Keys.A))
-                angle -= 2;
-
-            // turn right
-            if (s.IsKeyDown(Keys.D))
-                angle += 2;
+            // Move the player
+            input.MovePlayer(this, moveSpeed, rotSpeed);
         }
 
         public void Draw()
