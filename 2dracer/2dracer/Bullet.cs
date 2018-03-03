@@ -15,10 +15,13 @@ namespace _2dracer
         public Bullet(Texture2D tex, Vector2 pos, float angle) :
             base (pos, angle, tex, new Vector2(0.5f, 0.5f))
         {
-            //start bullet at tip of gun
-            //rather than center of gun
-            position.X += (float)Math.Cos(angle * (3.14159 / 180)) * 70;
-            position.Y += (float)Math.Sin(angle * (3.14159 / 180)) * 70;
+            //bullet position = gun position
+            //we want bullet to start at tip of gun
+            //move bullet to tip of gun
+
+            //advance bullet by 7 frames
+            for (int i = 0; i < 7; i++)
+                Update();
         }
 
         public void Update()
@@ -26,16 +29,20 @@ namespace _2dracer
             // only move bullet if it is close enough to matter
             if (Math.Abs(position.X) < 1000 || Math.Abs(position.Y) < 1000)
             {
-                position.X += (float)Math.Cos(rotation * (3.14159 / 180)) * 10;
-                position.Y += (float)Math.Sin(rotation * (3.14159 / 180)) * 10;
+                float speed = 10;
+
+                position.X += (float)Math.Cos(rotation) * speed;
+                position.Y += (float)Math.Sin(rotation) * speed;
             }
         }
 
         public void Draw()
         {
-            rotation += 90;
+            rotation += (float)Math.PI / 2;
             base.DrawRect(20);
-            rotation -= 90;
+            rotation -= (float)Math.PI / 2;
         }
     }
 }
+
+// Niko Procopi

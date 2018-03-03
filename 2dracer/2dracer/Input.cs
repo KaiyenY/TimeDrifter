@@ -142,7 +142,7 @@ namespace _2dracer
             float xDis = currMS.Position.X - obj.Position.X;
             float yDis = currMS.Position.Y - obj.Position.Y;
 
-            return MathHelper.ToDegrees((float)Math.Atan2(yDis, xDis));
+            return (float)Math.Atan2(yDis, xDis);
         }
 
 

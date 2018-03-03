@@ -17,23 +17,22 @@ namespace _2dracer
 
         public void Update()
         {
-            float radians = (float)(rotation * (3.14159 / 180));
+            // turn car
+            rotation += Input.GetAxisRaw(Axis.X) * 0.04f;
 
             // move car
-            Axis axis = Axis.Y;
-            position.X += Input.GetAxisRaw(axis) * (float)Math.Cos(radians) * 3;
-            position.Y += Input.GetAxisRaw(axis) * (float)Math.Sin(radians) * 3;
-            
-            // turn car
-            axis = Axis.X;
-            rotation += Input.GetAxisRaw(axis) * 2;
+            float speed = Input.GetAxisRaw(Axis.Y) * 3;
+            position.X += (float)Math.Cos(rotation) * speed;
+            position.Y += (float)Math.Sin(rotation) * speed;
         }
 
         public void Draw()
         {
-            rotation += 90;
+            rotation += (float)Math.PI/2;
             base.DrawRect(8);
-            rotation -= 90;
+            rotation -= (float)Math.PI / 2;
         }
     }
 }
+
+// Niko Procopi

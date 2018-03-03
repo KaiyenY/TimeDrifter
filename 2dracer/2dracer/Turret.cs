@@ -83,9 +83,9 @@ namespace _2dracer
 
         public void Draw()
         {
-            rotation += 90;
+            rotation += (float)Math.PI / 2;
             base.DrawRect(4);
-            rotation -= 90;
+            rotation -= (float)Math.PI / 2;
 
             // draw all the bullets
             foreach (Bullet x in bullets)
@@ -93,3 +93,5 @@ namespace _2dracer
         }
     }
 }
+
+// Niko Procopi
