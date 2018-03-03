@@ -10,73 +10,60 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _2dracer
 {
-    /// <summary>
-    /// Creates the player object
-    /// </summary>
-    public class Player : Mover
+    class Player
     {
-        // Fields
-        private Turret turret;
+        private Texture2D c;
+        public float posX;
+        public float posY;
 
-        private float angle;
-        private float moveSpeed;
-        private float rotSpeed;
-        private float posX;
-        private float posY;
+        private float dirX = 0;
+        private float dirY = 0;
+        private float angle = 0;
 
-        // Properties
-        public float Angle
+        public Player(Texture2D tex, float x, float y)
         {
-            get { return angle; }
-            set { angle = value; }
-        }
-        public float PosX
-        {
-            get { return posX; }
-            set { posX = value; }
-        }
-        public float PosY
-        {
-            get { return posY; }
-            set { posY = value; }
-        }
-
-        // Constructor
-        public Player(Texture2D sprite, Texture2D gun, Texture2D bullet, float x, float y)
-        {
-            angle = 0;
-            moveSpeed = 3f;
-            rotSpeed = 2f;
             posX = x;
             posY = y;
-            this.sprite = sprite;
-
-            turret = new Turret(gun, bullet);
+            c = tex;
         }
 
-        // Methods
-        public void Update(GameTime gameTime, Input input)
+        public void Update()
         {
-            // Move the player
-            input.MovePlayer(this, moveSpeed, rotSpeed);
+            KeyboardState s = Keyboard.GetState();
 
-            // Update turret ( maybe put in update manager )
-            turret.Update(gameTime, posX, posY);
+            // move car forward
+            if (s.IsKeyDown(Keys.W))
+            {
+                posX += (float)Math.Cos(angle * (3.14159 / 180)) * 3;
+                posY += (float)Math.Sin(angle * (3.14159 / 180)) * 3;
+            }
+
+            // move car backward
+            if (s.IsKeyDown(Keys.S))
+            {
+                posX -= (float)Math.Cos(angle * (3.14159 / 180)) * 3;
+                posY -= (float)Math.Sin(angle * (3.14159 / 180)) * 3;
+            }
+
+            // turn left
+            if (s.IsKeyDown(Keys.A))
+                angle -= 2;
+
+            // turn right
+            if (s.IsKeyDown(Keys.D))
+                angle += 2;
         }
 
-        public override void Draw()
+        public void Draw()
         {
-            Game1.spriteBatch.Draw(sprite,
-                new Rectangle((int)posX, (int)posY, sprite.Width / 8, sprite.Height / 8),
+            // Draw car
+            Game1.spriteBatch.Draw(c,
+                new Rectangle((int)posX, (int)posY, c.Width / 8, c.Height / 8),
                 null,
                 Color.White,
-                MathHelper.ToRadians(angle + 90),
-                new Vector2(sprite.Width / 2, sprite.Height / 2),
+                (float)((angle + 90) * 3.14159 / 180),
+                new Vector2(c.Width / 2, c.Height / 2),
                 SpriteEffects.None, 0f);
-
-
-            turret.Draw();
-            base.Draw();
         }
     }
 }

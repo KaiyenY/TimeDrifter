@@ -39,7 +39,7 @@ namespace _2dracer
             // saves processing
             bullets = new Bullet[100];
 
-            for(int i = 0; i < 100; i++)
+            for (int i = 0; i < 100; i++)
             {
                 // throw bullets into the void
                 // out of sight, out of mind
@@ -47,7 +47,7 @@ namespace _2dracer
                 bullets[i] = new Bullet(-999, -999, 0);
             }
         }
-       
+
         public void CalcAngle()
         {
             // difference of position between turret and mouse pointer
@@ -117,7 +117,7 @@ namespace _2dracer
                 SpriteEffects.None, 0f);
 
             // draw all the bullets
-            foreach(Bullet x in bullets)
+            foreach (Bullet x in bullets)
                 x.Draw(b);
         }
     }
