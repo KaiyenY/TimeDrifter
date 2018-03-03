@@ -10,21 +10,17 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _2dracer
 {
-    class Turret
+    class Turret : GameObject
     {
         private Texture2D t;
         private Texture2D b;
         private Bullet[] bullets;
-        
-        private float posX;
-        private float posY;
-
-        private float angle = 0;
 
         // which index of array will be the "new" bullet
         private int bulletIndex = 0;
 
-        public Turret(Texture2D tex, Texture2D bullet)
+        public Turret(Texture2D tex, Texture2D bullet) : 
+            base(new Vector2(0,0), 0, tex, new Vector2(1, 2))
         {
             t = tex;
             b = bullet;
@@ -39,32 +35,21 @@ namespace _2dracer
                 // throw bullets into the void
                 // out of sight, out of mind
 
-                bullets[i] = new Bullet(-999, -999, 0);
+                bullets[i] = new Bullet(b, new Vector2(-999, -999), 0);
             }
         }
 
-        public void CalcAngle()
-        {
-            Point mPos = Input.MousePos();
-
-            GameObject go1;
-            Vector2 v = new Vector2(posX, posY);
-            go1 = new GameObject(v, 0.0f, t, v);
-            angle = Input.MouseAngle(go1);
-        }
-
         float timer = 0;
-        public void Update(GameTime gameTime, float x, float y)
+        public void Update(GameTime gameTime, Vector2 pos)
         {
             // update timer
             timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             // change position of turret, depending on where car is
-            posX = x;
-            posY = y;
+            position = pos;
 
             // get angle that the turret should be facing
-            CalcAngle();
+            rotation = Input.MouseAngle(this);
 
             // a bullet fires every 0.15 seconds
             if (Input.MouseHold(MouseButton.Left) && timer >= 150)
@@ -73,7 +58,7 @@ namespace _2dracer
                 timer = 0;
 
                 // set bullet position
-                bullets[bulletIndex] = new Bullet(posX, posY, angle);
+                bullets[bulletIndex] = new Bullet(b, position, rotation);
 
                 // get index of next bullet to fire, 1-100
                 bulletIndex++;
@@ -89,18 +74,13 @@ namespace _2dracer
 
         public void Draw()
         {
-            // draw the turret
-            Game1.spriteBatch.Draw(t,
-                new Rectangle((int)posX, (int)posY, t.Width / 4, t.Height / 4),
-                null,
-                Color.White,
-                (float)((angle + 90) * 3.14159 / 180),
-                new Vector2(t.Width / 2, t.Height / 2),
-                SpriteEffects.None, 0f);
+            rotation += 90;
+            base.DrawRect(4);
+            rotation -= 90;
 
             // draw all the bullets
             foreach (Bullet x in bullets)
-                x.Draw(b);
+                x.Draw();
         }
     }
 }

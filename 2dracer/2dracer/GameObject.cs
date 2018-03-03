@@ -81,6 +81,19 @@ namespace _2dracer
             Vector2 origin = new Vector2((sprite.Width) / 2, (sprite.Height) / 2);
             Game1.spriteBatch.Draw(sprite, position, null, color, radianRot, origin, appliedScale, SpriteEffects.None, 0f);
         }
+
+        // player, turret, and bullet depend on this
+        public virtual void DrawRect(int scale1)
+        {
+            float radianRot = (float)((rotation * Math.PI) / 180);
+            Vector2 origin = new Vector2((sprite.Width) / 2, (sprite.Height) / 2);
+            
+            // Rectangle is used instead of vector and origin
+            Rectangle rect = new Rectangle((int)position.X, (int)position.Y,
+            sprite.Width / scale1, sprite.Height / scale1);
+
+            Game1.spriteBatch.Draw(sprite, rect, null, color, radianRot, origin, SpriteEffects.None, 0f);
+        }
     }
 }
 

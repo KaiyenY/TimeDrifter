@@ -109,7 +109,8 @@ namespace _2dracer
                     // update turret position to player car position
                     // or in this case, the center of the screen
                     player.Update();
-                    turret1.Update(gameTime, player.posX, player.posY);
+                    //turret1.Update(gameTime, player.posX, player.posY);
+                    turret1.Update(gameTime, player.Position);
                     test.Update(gameTime);
                     break;
             }
