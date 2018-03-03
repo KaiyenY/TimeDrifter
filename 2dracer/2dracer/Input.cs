@@ -126,6 +126,42 @@ namespace _2dracer
             return false;
         }
         /// <summary>
+        /// Detects if mouse was just released
+        /// </summary>
+        /// <param name="button">Button to check</param>
+        public static bool MouseReleased(MouseButton button)
+        {
+            if (button == MouseButton.Left)
+            {
+                return currMS.LeftButton == ButtonState.Released && prevMS.LeftButton == ButtonState.Pressed;
+            }
+            else if (button == MouseButton.Right)
+            {
+                return currMS.RightButton == ButtonState.Released && prevMS.RightButton == ButtonState.Pressed;
+            }
+            else
+            {
+                return currMS.MiddleButton == ButtonState.Released && prevMS.MiddleButton == ButtonState.Pressed;
+            }
+        }
+        /// <summary>
+        /// Detects if mouse was just released within an area
+        /// </summary>
+        /// <param name="button">Button to check</param>
+        /// <param name="area">Area to check</param>
+        public static bool MouseReleased(MouseButton button, Rectangle area)
+        {
+            if (area.Contains(currMS.Position)) //Check if within area
+            {
+                return MouseReleased(button);
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        /// <summary>
         /// Gets the current mouse position
         /// </summary>
         public static Point MousePos()
@@ -145,45 +181,7 @@ namespace _2dracer
             return (float)Math.Atan2(yDis, xDis);
         }
 
-        /// <summary>
-        /// Detects if mouse was just released
-        /// </summary>
-        /// <param name="button">Button to check</param>
-        public static bool MouseReleased(MouseButton button)
-        {
-            if (button == MouseButton.Left)
-            {
-                return currMS.LeftButton == ButtonState.Released && prevMS.LeftButton == ButtonState.Pressed;
-            }
-            else if (button == MouseButton.Right)
-            {
-                return currMS.RightButton == ButtonState.Released && prevMS.RightButton == ButtonState.Pressed;
-            }
-            else
-            {
-                return currMS.MiddleButton == ButtonState.Released && prevMS.MiddleButton == ButtonState.Pressed;
-            }
-        }
-
-        /// <summary>
-        /// Detects if mouse was just released within an area
-        /// </summary>
-        /// <param name="button">Button to check</param>
-        /// <param name="area">Area to check</param>
-        public static bool MouseReleased(MouseButton button, Rectangle area)
-        {
-            if (area.Contains(currMS.Position)) //Check if within area
-            {
-                return MouseReleased(button);
-            }
-            else
-            {
-                return false;
-            }
-            
-        }
-
-        // GamePad Input - WIP
+        // GamePad Input
         /// <summary>
         /// Detects if a button on a controller is held down
         /// </summary>
@@ -199,6 +197,14 @@ namespace _2dracer
         public static bool ControlPress(Buttons button)
         {
             return ControlHold(button) && prevGS.IsButtonUp(button);
+        }
+        /// <summary>
+        /// Detects if a button was released after being pressed
+        /// </summary>
+        /// <param name="button">Button to check</param>
+        public static bool ControlRelease(Buttons button)
+        {
+            return currGS.IsButtonUp(button) && prevGS.IsButtonDown(button);
         }
         /// <summary>
         /// Returns analog value of trigger press
@@ -300,7 +306,7 @@ namespace _2dracer
         }
 
 
-        // Movement Helpers -- Will implement GamePad to GetAxisRaw and a GetAxis method
+        // Movement Helpers
         /// <summary>
         /// Returns value of axis with no smoothing
         /// </summary>
@@ -341,12 +347,12 @@ namespace _2dracer
             }
         }
         /// <summary>
-        /// Not implemented - Do not use!
+        /// Returns analog value of an axis input
         /// </summary>
         /// <param name="axis">The axis movement is aligned on</param>
         public static float GetAxis(Axis axis)
         {
-            return 0;
+            return ControlSticks(axis, Control.Left);
         }
     }
 }

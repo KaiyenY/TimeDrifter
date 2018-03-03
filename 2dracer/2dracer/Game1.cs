@@ -21,6 +21,11 @@ namespace _2dracer
         GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
 
+        // Options (Maybe implement?)
+        private bool fullscreen = false;
+        private int screenHeight = 720;
+        private int screenWidth = 1280;
+
         // SpriteFonts
         public static SpriteFont comicSans;
 
@@ -44,6 +49,11 @@ namespace _2dracer
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            // Window properties
+            graphics.IsFullScreen = fullscreen;                     // Fullscreen or not
+            graphics.PreferredBackBufferHeight = screenHeight;      // Window height
+            graphics.PreferredBackBufferWidth = screenWidth;        // Window width
         }
 
         protected override void Initialize()
