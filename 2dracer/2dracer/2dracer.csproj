@@ -41,7 +41,9 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AI.cs" />
     <Compile Include="Bullet.cs" />
+    <Compile Include="Enemy.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Game1.cs" />

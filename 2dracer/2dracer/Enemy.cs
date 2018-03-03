@@ -10,29 +10,27 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _2dracer
 {
-    class Player : GameObject
+    class Enemy : GameObject
     {
-        public Player(Texture2D tex, Vector2 v) :
+        public Enemy(Texture2D tex, Vector2 v) :
             base(v, 0, tex) { }
 
         public void Update()
         {
             // turn car
-            rotation += Input.GetAxisRaw(Axis.X) * 0.04f;
+            rotation += 0.04f;
 
             // move car
-            float speed = Input.GetAxisRaw(Axis.Y) * 3;
+            float speed = 3;
             position.X += (float)Math.Cos(rotation) * speed;
             position.Y += (float)Math.Sin(rotation) * speed;
         }
 
         public void Draw()
         {
-            rotation += (float)Math.PI/2;
+            rotation += (float)Math.PI / 2;
             base.DrawRect(8);
             rotation -= (float)Math.PI / 2;
         }
     }
 }
-
-// Niko Procopi

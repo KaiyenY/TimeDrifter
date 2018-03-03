@@ -36,6 +36,9 @@ namespace _2dracer
         private Mover test;
         private MenuElement button;
 
+        // all cops and tanks
+        private AI ai;
+
         // Constructor
         public Game1()
         {
@@ -68,7 +71,10 @@ namespace _2dracer
 
             Texture2D buttonTexture = Content.Load<Texture2D>("ButtonRectangleTemp");
             Texture2D car = Content.Load<Texture2D>("RedCar");
-            player = new Player(car, GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            player = new Player(car, new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2));
+
+            Texture2D cop = Content.Load<Texture2D>("cop");
+            ai = new AI(cop);
 
             // Other Content
             test = new Mover();
@@ -111,6 +117,7 @@ namespace _2dracer
                     player.Update();
                     turret1.Update(gameTime, player.Position);
                     test.Update(gameTime);
+                    ai.Update();
                     break;
             }
 
@@ -130,6 +137,8 @@ namespace _2dracer
                     }
                 case GameState.Game:
                     {
+                        ai.Draw();
+
                         player.Draw();
                         test.Draw();
                         turret1.Draw();
