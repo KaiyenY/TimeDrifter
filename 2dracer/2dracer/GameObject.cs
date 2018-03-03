@@ -68,7 +68,8 @@ namespace _2dracer
         /// <summary>
         /// Updates logic for this game object every frame
         /// </summary>
-        public virtual void Update(GameTime gameTime) { }
+        public virtual void Update(GameTime gameTime)
+        { }
 
         /// <summary>
         /// Draws this object's texture to the screen
@@ -77,22 +78,20 @@ namespace _2dracer
         public virtual void Draw()
         {
             Vector2 appliedScale = new Vector2((size.X * scale.X) / sprite.Width, (size.Y * scale.Y) / sprite.Height);
-            float radianRot = (float)((rotation * Math.PI) / 180);
             Vector2 origin = new Vector2((sprite.Width) / 2, (sprite.Height) / 2);
-            Game1.spriteBatch.Draw(sprite, position, null, color, radianRot, origin, appliedScale, SpriteEffects.None, 0f);
+            Game1.spriteBatch.Draw(sprite, position, null, color, rotation, origin, appliedScale, SpriteEffects.None, 0f);
         }
 
         // player, turret, and bullet depend on this
         public virtual void DrawRect(int scale1)
         {
-            float radianRot = (float)((rotation * Math.PI) / 180);
             Vector2 origin = new Vector2((sprite.Width) / 2, (sprite.Height) / 2);
             
             // Rectangle is used instead of vector and origin
             Rectangle rect = new Rectangle((int)position.X, (int)position.Y,
             sprite.Width / scale1, sprite.Height / scale1);
 
-            Game1.spriteBatch.Draw(sprite, rect, null, color, radianRot, origin, SpriteEffects.None, 0f);
+            Game1.spriteBatch.Draw(sprite, rect, null, color, rotation, origin, SpriteEffects.None, 0f);
         }
     }
 }
