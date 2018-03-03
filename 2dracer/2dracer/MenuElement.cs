@@ -14,29 +14,39 @@ namespace _2dracer
     /// </summary>
     public class MenuElement
     {
+        //Properties
+        public Rectangle Position { get; set; }
+        public Texture2D ActiveTexture { get; set; }
+
         //Fields
-        public Rectangle position;
-        public Texture2D texture;
+        private Texture2D idleTexture;
+        private Texture2D pressedTexture;
         public float rotation; //Probably for the lever
 
+
+
         //Constructors
-        public MenuElement(Rectangle position, Texture2D texture, float rotation)
+        public MenuElement(Rectangle position, Texture2D idleTexture, Texture2D pressedTexture, float rotation)
         {
-            this.position = position;
-            this.texture = texture;
+            this.Position = position;
+            this.idleTexture = idleTexture;
+            this.pressedTexture = pressedTexture;
+            this.ActiveTexture = this.idleTexture;
             this.rotation = rotation; 
         }
 
-        public MenuElement(Rectangle position, Texture2D texture)
+        public MenuElement(Rectangle position, Texture2D idleTexture, Texture2D pressedTexture)
         {
-            this.position = position;
-            this.texture = texture;
+            this.Position = position;
+            this.idleTexture = idleTexture;
+            this.pressedTexture = pressedTexture;
+            this.ActiveTexture = this.idleTexture;
             this.rotation = 0.0f;
         }
 
         public void Draw()//Draws to the screen
         {
-            Game1.spriteBatch.Draw(texture, position, Color.White);
+            Game1.spriteBatch.Draw(ActiveTexture, Position, Color.White);
         }
 
         /// <summary>
@@ -47,8 +57,8 @@ namespace _2dracer
         {
             //TODO: Find out why not drawing to the exact centre of the object
             Draw();
-            int middleXCoord = position.Center.X - (int)font.MeasureString(text).X;
-            int middleYCoord = position.Center.Y - (int)font.MeasureString(text).Y;
+            int middleXCoord = this.Position.Center.X - (int)font.MeasureString(text).X;
+            int middleYCoord = this.Position.Center.Y - (int)font.MeasureString(text).Y;
             Game1.spriteBatch.DrawString(font, text, new Vector2(middleXCoord, middleYCoord), color);
         }
 
@@ -57,14 +67,19 @@ namespace _2dracer
         /// </summary>
         public bool IsClicked()
         {
-            if(Input.MouseReleased(MouseButton.Left)) 
+            if(Input.MouseHold(MouseButton.Left, this.Position))
             {
-                return Input.MouseReleased(MouseButton.Left, position);
-            }
-            else
-            {
+                ActiveTexture = pressedTexture; //Change the texture to the pressed version
+                
                 return false;
             }
+            if(Input.MouseReleased(MouseButton.Left, this.Position))
+            {
+                ActiveTexture = idleTexture; //Change it back
+                return true;
+            }
+
+            return false;
         }
         
     }

@@ -34,7 +34,8 @@ namespace _2dracer
         private static GameState GameState;
 
         private Mover test;
-        private MenuElement button;
+        private MenuElement startButton;
+        private MenuElement exitButton;
 
         // all cops and tanks
         private AI ai;
@@ -68,8 +69,6 @@ namespace _2dracer
             Texture2D gun = Content.Load<Texture2D>("turret");
             Texture2D bullet = Content.Load<Texture2D>("bullet");
             turret1 = new Turret(gun, bullet);
-
-            Texture2D buttonTexture = Content.Load<Texture2D>("ButtonRectangleTemp");
             Texture2D car = Content.Load<Texture2D>("RedCar");
             player = new Player(car, new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2));
 
@@ -79,7 +78,11 @@ namespace _2dracer
             // Other Content
             test = new Mover();
 
-            button = new MenuElement(new Rectangle(new Point(20, 50), new Point(200, 50)), buttonTexture);
+            //MenuButtons
+            Texture2D idle = Content.Load<Texture2D>("ButtonRectangleTemp");
+            Texture2D pressed = Content.Load<Texture2D>("buttonPressed");
+            startButton = new MenuElement(new Rectangle(new Point(20, 50), new Point(200, 50)), idle, pressed);
+            exitButton = new MenuElement(new Rectangle(new Point(20, 120), new Point(200, 50)), idle, pressed);
         }
 
         protected override void UnloadContent()
@@ -99,6 +102,16 @@ namespace _2dracer
                     if (Input.KeyTap(Keys.P))
                     {
                         GameState = GameState.Game;
+                    }
+
+                    if(startButton.IsClicked())
+                    {
+                        GameState = GameState.Game;
+                    }
+
+                    if(exitButton.IsClicked())
+                    {
+                        Exit();
                     }
                     break;
 
@@ -132,11 +145,9 @@ namespace _2dracer
             {
                 case GameState.Menu:
                     {
-                        button.DrawWithText(comicSans, "Game", Color.White);
-                        if(button.IsClicked())
-                        {
-                            GameState = GameState.Game;
-                        }
+                        spriteBatch.DrawString(comicSans, "Welcome to Project Apathy", new Vector2(GraphicsDevice.Viewport.Width / 2, 20), Color.White);
+                        startButton.DrawWithText(comicSans, "Start", Color.White);
+                        exitButton.DrawWithText(comicSans, "Exit", Color.White);
                         break;
                     }
                 case GameState.Game:
@@ -148,6 +159,7 @@ namespace _2dracer
                         turret1.Draw();
 
                         spriteBatch.DrawString(comicSans, Vector2.Divide(test.Velocity, Vector2.Normalize(test.Velocity)).ToString(), new Vector2(300, 300), Color.Black);
+                        spriteBatch.DrawString(comicSans, "Press P to go to the menu", new Vector2(0, 420), Color.White);
                         break;
                     }
 
