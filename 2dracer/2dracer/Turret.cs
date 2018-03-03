@@ -49,10 +49,19 @@ namespace _2dracer
             position = pos;
 
             // get angle that the turret should be facing
-            rotation = Input.MouseAngle(this);
+            if (Input.ControlConnected())
+            {
+                // Use controller input (should add setting for this later)
+                rotation = Input.ControlAngle();
+            }
+            else
+            {
+                // Use mouse input
+                rotation = Input.MouseAngle(this);
+            }
 
             // a bullet fires every 0.15 seconds
-            if (Input.MouseHold(MouseButton.Left) && timer >= 150)
+            if ((Input.MouseHold(MouseButton.Left) || Input.ControlHold(Buttons.LeftShoulder)) && timer >= 150)
             {
                 // reset timer
                 timer = 0;

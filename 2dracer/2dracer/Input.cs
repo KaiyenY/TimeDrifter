@@ -5,8 +5,9 @@ using System;
 namespace _2dracer
 {
     public enum Axis { X, Y }
+    public enum Control { Left, Right }
+    public enum DPad { Up, Down, Left, Right }
     public enum MouseButton { Left, Right, Middle }
-    public enum Triggers { Left, Right }
 
     /// <summary>
     /// Handles input from the player
@@ -37,6 +38,7 @@ namespace _2dracer
             currMS = Mouse.GetState();
         }
         
+
         // Keyboard Input
         /// <summary>
         /// Detects if a key is held
@@ -54,6 +56,7 @@ namespace _2dracer
         {
             return KeyHold(key) && prevKS.IsKeyUp(key);
         }
+
 
         // Mouse Input
         /// <summary>
@@ -142,7 +145,123 @@ namespace _2dracer
             return MathHelper.ToDegrees((float)Math.Atan2(yDis, xDis));
         }
 
+
         // GamePad Input - WIP
+        /// <summary>
+        /// Detects if a button on a controller is held down
+        /// </summary>
+        /// <param name="button">Button to check</param>
+        public static bool ControlHold(Buttons button)
+        {
+            return currGS.IsButtonDown(button);
+        }
+        /// <summary>
+        /// Detects if a button on a controller is pressed
+        /// </summary>
+        /// <param name="button">Button to check</param>
+        public static bool ControlPress(Buttons button)
+        {
+            return ControlHold(button) && prevGS.IsButtonUp(button);
+        }
+        /// <summary>
+        /// Returns analog value of trigger press
+        /// </summary>
+        /// <param name="trigger">Trigger to check</param>
+        public static float ControlTrigger(Control trigger)
+        {
+            if (trigger == Control.Left)
+            {
+                return currGS.Triggers.Left;
+            }
+            else
+            {
+                return currGS.Triggers.Right;
+            }
+        }
+        /// <summary>
+        /// Grabs axis values from controller thumbsticks
+        /// </summary>
+        /// <param name="axis">Axis movement is aligned on</param>
+        /// <param name="stick">Which thumbstick to check</param>
+        public static float ControlSticks(Axis axis, Control stick)
+        {
+            if (stick == Control.Left && axis == Axis.X)
+            {
+                return currGS.ThumbSticks.Left.X;       // Left X axis
+            }
+            else if (stick == Control.Left && axis == Axis.Y)
+            {
+                return currGS.ThumbSticks.Left.Y;       // Left Y axis
+            }
+            else if (stick == Control.Right && axis == Axis.X)
+            {
+                return currGS.ThumbSticks.Right.X;      // Right X axis
+            }
+            else
+            {
+                return currGS.ThumbSticks.Right.Y;      // Right Y Axis
+            }
+        }
+        /// <summary>
+        /// Detects if a DPad button is held down
+        /// </summary>
+        /// <param name="direction">Direction on DPad to check</param>
+        public static bool ControlDPadHold(DPad direction)
+        {
+            switch (direction)
+            {
+                case DPad.Up:
+                    return currGS.DPad.Up == ButtonState.Pressed;
+
+                case DPad.Down:
+                    return currGS.DPad.Down == ButtonState.Pressed;
+
+                case DPad.Left:
+                    return currGS.DPad.Left == ButtonState.Pressed;
+
+                default:
+                    return currGS.DPad.Right == ButtonState.Pressed;
+            }
+        }
+        /// <summary>
+        /// Detects if a DPad button is pressed
+        /// </summary>
+        /// <param name="direction">Direction on DPad to check</param>
+        public static bool ControlDPadPress(DPad direction)
+        {
+            switch (direction)
+            {
+                case DPad.Up:
+                    return ControlDPadHold(direction) && prevGS.DPad.Up == ButtonState.Released;
+
+                case DPad.Down:
+                    return ControlDPadHold(direction) && prevGS.DPad.Down == ButtonState.Released;
+
+                case DPad.Left:
+                    return ControlDPadHold(direction) && prevGS.DPad.Left == ButtonState.Released;
+
+                default:
+                    return ControlDPadHold(direction) && prevGS.DPad.Right == ButtonState.Released;
+            }
+        }
+        /// <summary>
+        /// Returns whether a controller is connected or not
+        /// </summary>
+        public static bool ControlConnected()
+        {
+            return currGS.IsConnected;
+        }
+        /// <summary>
+        /// Determines the angle given by the Right Thumbstick for shooting
+        /// </summary>
+        public static float ControlAngle()
+        {
+            float x = ControlSticks(Axis.X, Control.Right);
+            float y = ControlSticks(Axis.Y, Control.Right);
+            
+            return MathHelper.ToDegrees((float)Math.Atan2(-y, x));
+        }
+
 
         // Movement Helpers -- Will implement GamePad to GetAxisRaw and a GetAxis method
         /// <summary>
@@ -154,11 +273,11 @@ namespace _2dracer
             if (axis == Axis.Y)
             {
                 // Return Y Axis value
-                if (KeyHold(Keys.W))
+                if (KeyHold(Keys.W) || ControlTrigger(Control.Right) >= 0.25f)
                 {
                     return 1f;
                 }
-                else if (KeyHold(Keys.S))
+                else if (KeyHold(Keys.S) || ControlTrigger(Control.Left) >= 0.25f)
                 {
                     return -1f;
                 }
@@ -170,11 +289,11 @@ namespace _2dracer
             else
             {
                 // Return X Axis value
-                if (KeyHold(Keys.D))
+                if (KeyHold(Keys.D) || ControlSticks(Axis.X, Control.Left) >= 0.25f)
                 {
                     return 1f;
                 }
-                else if (KeyHold(Keys.A))
+                else if (KeyHold(Keys.A) || ControlSticks(Axis.X, Control.Left) <= -0.25f)
                 {
                     return -1f;
                 }
