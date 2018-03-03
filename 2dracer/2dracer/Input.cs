@@ -145,6 +145,43 @@ namespace _2dracer
             return (float)Math.Atan2(yDis, xDis);
         }
 
+        /// <summary>
+        /// Detects if mouse was just released
+        /// </summary>
+        /// <param name="button">Button to check</param>
+        public static bool MouseReleased(MouseButton button)
+        {
+            if (button == MouseButton.Left)
+            {
+                return currMS.LeftButton == ButtonState.Released && prevMS.LeftButton == ButtonState.Pressed;
+            }
+            else if (button == MouseButton.Right)
+            {
+                return currMS.RightButton == ButtonState.Released && prevMS.RightButton == ButtonState.Pressed;
+            }
+            else
+            {
+                return currMS.MiddleButton == ButtonState.Released && prevMS.MiddleButton == ButtonState.Pressed;
+            }
+        }
+
+        /// <summary>
+        /// Detects if mouse was just released within an area
+        /// </summary>
+        /// <param name="button">Button to check</param>
+        /// <param name="area">Area to check</param>
+        public static bool MouseReleased(MouseButton button, Rectangle area)
+        {
+            if (area.Contains(currMS.Position)) //Check if within area
+            {
+                return MouseReleased(button);
+            }
+            else
+            {
+                return false;
+            }
+            
+        }
 
         // GamePad Input - WIP
         /// <summary>

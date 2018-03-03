@@ -79,7 +79,7 @@ namespace _2dracer
             // Other Content
             test = new Mover();
 
-            button = new MenuElement(new Rectangle(new Point(20, 200), new Point(400, 100)), buttonTexture);
+            button = new MenuElement(new Rectangle(new Point(20, 50), new Point(200, 50)), buttonTexture);
         }
 
         protected override void UnloadContent()
@@ -132,7 +132,11 @@ namespace _2dracer
             {
                 case GameState.Menu:
                     {
-                        button.DrawWithText("Game");
+                        button.DrawWithText(comicSans, "Game", Color.White);
+                        if(button.IsClicked())
+                        {
+                            GameState = GameState.Game;
+                        }
                         break;
                     }
                 case GameState.Game:
