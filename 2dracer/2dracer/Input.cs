@@ -259,7 +259,7 @@ namespace _2dracer
             float x = ControlSticks(Axis.X, Control.Right);
             float y = ControlSticks(Axis.Y, Control.Right);
             
-            return MathHelper.ToDegrees((float)Math.Atan2(-y, x));
+            return (float)Math.Atan2(-y, x);
         }
 
 
