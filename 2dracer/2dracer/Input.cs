@@ -136,8 +136,8 @@ namespace _2dracer
         public static float MouseAngle(GameObject obj)
         {
             // Get component displacement between cursor and object
-            float xDis = obj.Position.X - currMS.Position.X;
-            float yDis = obj.Position.Y - currMS.Position.Y;
+            float xDis = currMS.Position.X - obj.Position.X;
+            float yDis = currMS.Position.Y - obj.Position.Y;
 
             return MathHelper.ToDegrees((float)Math.Atan2(yDis, xDis));
         }

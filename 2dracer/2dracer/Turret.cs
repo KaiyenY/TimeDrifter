@@ -15,15 +15,10 @@ namespace _2dracer
         private Texture2D t;
         private Texture2D b;
         private Bullet[] bullets;
-
-        private MouseState curr;
-        private MouseState prev;
-
+        
         private float posX;
         private float posY;
 
-        private float dirX = 0;
-        private float dirY = 0;
         private float angle = 0;
 
         // which index of array will be the "new" bullet
@@ -50,21 +45,12 @@ namespace _2dracer
 
         public void CalcAngle()
         {
-            // difference of position between turret and mouse pointer
-            dirX = curr.Position.X - posX;
-            dirY = curr.Position.Y - posY;
+            Point mPos = Input.MousePos();
 
-            // use trig to make turret point towards mouse
-            angle = (float)(Math.Atan(dirY / dirX) * 180 / 3.14159);
-
-
-            // this is just to keep numbers consistant, 0-360
-            // rather than -90 - 270
-            if (dirX < 0)
-                angle += 180;
-
-            if (angle < 0)
-                angle += 360;
+            GameObject go1;
+            Vector2 v = new Vector2(posX, posY);
+            go1 = new GameObject(v, 0.0f, t, v);
+            angle = Input.MouseAngle(go1);
         }
 
         float timer = 0;
@@ -72,8 +58,6 @@ namespace _2dracer
         {
             // update timer
             timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-
-            curr = Mouse.GetState();
 
             // change position of turret, depending on where car is
             posX = x;
@@ -83,7 +67,7 @@ namespace _2dracer
             CalcAngle();
 
             // a bullet fires every 0.15 seconds
-            if (curr.LeftButton == ButtonState.Pressed && timer >= 150)
+            if (Input.MouseHold(MouseButton.Left) && timer >= 150)
             {
                 // reset timer
                 timer = 0;
@@ -101,8 +85,6 @@ namespace _2dracer
             // make all bullets move
             foreach (Bullet bullet in bullets)
                 bullet.Update();
-
-            prev = curr;
         }
 
         public void Draw()

@@ -29,29 +29,16 @@ namespace _2dracer
 
         public void Update()
         {
-            KeyboardState s = Keyboard.GetState();
+            float radians = (float)(angle * (3.14159 / 180));
 
-            // move car forward
-            if (s.IsKeyDown(Keys.W))
-            {
-                posX += (float)Math.Cos(angle * (3.14159 / 180)) * 3;
-                posY += (float)Math.Sin(angle * (3.14159 / 180)) * 3;
-            }
-
-            // move car backward
-            if (s.IsKeyDown(Keys.S))
-            {
-                posX -= (float)Math.Cos(angle * (3.14159 / 180)) * 3;
-                posY -= (float)Math.Sin(angle * (3.14159 / 180)) * 3;
-            }
-
-            // turn left
-            if (s.IsKeyDown(Keys.A))
-                angle -= 2;
-
-            // turn right
-            if (s.IsKeyDown(Keys.D))
-                angle += 2;
+            // move car
+            Axis axis = Axis.Y;
+            posX += Input.GetAxisRaw(axis) * (float)Math.Cos(radians) * 3;
+            posY += Input.GetAxisRaw(axis) * (float)Math.Sin(radians) * 3;
+            
+            // turn car
+            axis = Axis.X;
+            angle += 2 * Input.GetAxisRaw(axis);
         }
 
         public void Draw()
