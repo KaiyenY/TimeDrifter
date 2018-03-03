@@ -25,7 +25,7 @@ namespace _2dracer
             position.X += (float)Math.Cos(rotation) * speed;
             position.Y += (float)Math.Sin(rotation) * speed;
         }
-
+        
         public void Draw()
         {
             rotation += (float)Math.PI / 2;
