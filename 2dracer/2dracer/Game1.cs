@@ -93,18 +93,13 @@ namespace _2dracer
         {
             Input.Update();     // Should be the FIRST thing that updates
             
-            if (Input.KeyTap(Keys.Escape))
-                Exit();
-
             switch (GameState) //Check for gamestate
             {
                 case GameState.Menu:
-                    if (Input.KeyTap(Keys.P))
-                    {
-                        GameState = GameState.Game;
-                    }
+                    if (Input.KeyTap(Keys.Escape))
+                        Exit();
 
-                    if(startButton.IsClicked())
+                    if (startButton.IsClicked())
                     {
                         GameState = GameState.Game;
                     }
@@ -117,7 +112,7 @@ namespace _2dracer
 
 
                 case GameState.Game:
-                    if (Input.KeyTap(Keys.P))
+                    if (Input.KeyTap(Keys.Escape))
                     {
                         GameState = GameState.Menu;
                     }
@@ -148,6 +143,8 @@ namespace _2dracer
                         spriteBatch.DrawString(comicSans, "Welcome to Project Apathy", new Vector2(GraphicsDevice.Viewport.Width / 2, 20), Color.White);
                         startButton.DrawWithText(comicSans, "Start", Color.White);
                         exitButton.DrawWithText(comicSans, "Exit", Color.White);
+
+                        spriteBatch.DrawString(comicSans, "Press Esc to Quit", new Vector2(0, 420), Color.White);
                         break;
                     }
                 case GameState.Game:
@@ -159,7 +156,7 @@ namespace _2dracer
                         turret1.Draw();
 
                         spriteBatch.DrawString(comicSans, Vector2.Divide(test.Velocity, Vector2.Normalize(test.Velocity)).ToString(), new Vector2(300, 300), Color.Black);
-                        spriteBatch.DrawString(comicSans, "Press P to go to the menu", new Vector2(0, 420), Color.White);
+                        spriteBatch.DrawString(comicSans, "Press Esc to go to the Menu", new Vector2(0, 420), Color.White);
                         break;
                     }
 
