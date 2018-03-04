@@ -38,17 +38,7 @@ namespace _2dracer
             return PlayerPos;
         }
 
-        float Speed()
-        {
-            // use all physics here
-
-            // use acceleration
-            // friction
-            // collision detection
-
-            // to return the velocity at any given time
-            return 2;
-        }
+       
 
         void driveToPoint(Vector2 destination)
         {
