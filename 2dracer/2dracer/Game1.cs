@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 namespace _2dracer
 {
@@ -45,6 +46,9 @@ namespace _2dracer
         // all cops and tanks
         private AI ai;
 
+        
+
+
         // Constructor
         public Game1()
         {
@@ -61,7 +65,9 @@ namespace _2dracer
         {
             // show the mouse
             this.IsMouseVisible = true;
+
             GameState = GameState.Game;
+
 
             base.Initialize();
         }
@@ -164,6 +170,9 @@ namespace _2dracer
                         player.Draw();
                         test.Draw();
                         turret1.Draw();
+
+                        
+
 
                         spriteBatch.DrawString(comicSans, Vector2.Divide(test.Velocity, Vector2.Normalize(test.Velocity)).ToString(), new Vector2(300, 300), Color.Black);
                         spriteBatch.DrawString(comicSans, "Press Esc to go to the Menu", new Vector2(0, 420), Color.White);
