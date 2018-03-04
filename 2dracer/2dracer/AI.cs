@@ -18,6 +18,8 @@ namespace _2dracer
 
         Queue<Node> testQueue = new Queue<Node>(); //TEMPORARY queue to test giving instructions to enemies
 
+        List<Node> unsortedTestList = new List<Node>();
+
         public AI(Texture2D tex)
         {
             enemies = new Enemy[1];
@@ -78,6 +80,10 @@ namespace _2dracer
             testQueue.Enqueue(node8);
             testQueue.Enqueue(node9);
             testQueue.Enqueue(node10);
+
+            unsortedTestList = new List<Node>(node1.Neighbors); //create an unchanging copy of node1's neighbors list
+            nodes[1].AssignHeuristics(nodes[10]);
+            nodes[1].Neighbors.Sort(CompareNodesBasedOnHeuristic); //sort node1's neighborList
             #endregion
         }
 
@@ -99,6 +105,13 @@ namespace _2dracer
             {
                 Game1.spriteBatch.Draw(Game1.square, new Rectangle(n.Location, new Point(10, 10)), Color.Purple);
             }
+
+            
+            for (int i = 0; i < unsortedTestList.Count; i++) //Draw out the contents of the testSort lists
+            {
+                Game1.spriteBatch.DrawString(Game1.comicSans, unsortedTestList[i].ToString(), new Vector2(200, i * 50 + 100), Color.White);
+                Game1.spriteBatch.DrawString(Game1.comicSans, nodes[1].Neighbors[i].ToString(), new Vector2(100, i * 50 + 100), Color.Azure);
+            }
         }
 
         public void Pathfind(Node target) //Implementation of A* fingers crossed
@@ -119,7 +132,7 @@ namespace _2dracer
                     foreach (Node neighbor in n.Neighbors)
                     {
                         neighbor.Parent = n; //Set the node's parent 
-                        neighbor.AssignHeuristic(target); //Set the node's weight
+                        neighbor.AssignHeuristics(target); //Set the node's weight
 
                         //Sort Neighbors list
                         n.Neighbors.Sort(CompareNodesBasedOnHeuristic);

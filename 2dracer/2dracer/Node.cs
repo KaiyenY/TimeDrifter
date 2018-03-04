@@ -44,9 +44,12 @@ namespace _2dracer
             }
         }
 
-        public void AssignHeuristic(Node target) //Attaches a value for the heuristic for the A* algorithm to use
+        public void AssignHeuristics(Node target) //Gives all of this node's neighbors a heuristic for A* to use
         {
-            Heuristic = DistanceFrom(Parent) + DistanceToTarget;
+            foreach(Node n in Neighbors)
+            {
+                n.Heuristic = n.DistanceFrom(this) + target.DistanceFrom(n);
+            }
         }
 
         public void CalcDistanceToTarget(Node target)//might be redundant with DistanceFrom() method will check later.
@@ -60,6 +63,11 @@ namespace _2dracer
         public int DistanceFrom(Node otherNode) //utility method to return the distance from one point to another
         {
             return (int)(otherNode.Location - this.Location).ToVector2().Length();
+        }
+
+        public override string ToString() //to make things easier
+        {
+            return string.Format("({0}, {1})", this.Location.X, this.Location.Y);
         }
     }
 }
