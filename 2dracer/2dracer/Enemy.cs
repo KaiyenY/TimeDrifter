@@ -21,6 +21,11 @@ namespace _2dracer
             // if the cop is not close enough to touch the player
             // return a point that will bring cop closer to player
 
+                // if point is within a certain distance of the cop
+                // if point brings cop closer to the player
+                // return that point
+
+            // These points can be generated automatically by the level editor
            
             // if cop is very close to the player
             // return player and crash into them
