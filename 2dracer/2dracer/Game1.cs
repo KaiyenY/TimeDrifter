@@ -135,7 +135,7 @@ namespace _2dracer
                     player.Update();
                     turret1.Update(gameTime, player.Position);
                     test.Update(gameTime);
-                    ai.Update();
+                    ai.Update(player.Position);
                     break;
             }
 

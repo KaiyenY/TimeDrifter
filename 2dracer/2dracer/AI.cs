@@ -24,10 +24,10 @@ namespace _2dracer
             }
         }
 
-        public void Update()
+        public void Update(Vector2 PlayerPos)
         {
             foreach (Enemy i in enemies)
-                i.Update();
+                i.Update(PlayerPos);
         }
 
         public void Draw()
