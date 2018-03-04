@@ -155,30 +155,22 @@ namespace _2dracer
             switch (GameState)
             {
                 case GameState.Menu:
-                    {
-                        spriteBatch.DrawString(comicSans, "Welcome to Project Apathy", new Vector2(GraphicsDevice.Viewport.Width / 2, 20), Color.White);
-                        startButton.DrawWithText(comicSans, "Start", Color.White);
-                        exitButton.DrawWithText(comicSans, "Exit", Color.White);
 
-                        spriteBatch.DrawString(comicSans, "Press Esc to Quit", new Vector2(0, 420), Color.White);
-                        break;
-                    }
+                    spriteBatch.DrawString(comicSans, "Welcome to Project Apathy", new Vector2(GraphicsDevice.Viewport.Width / 2, 20), Color.White);
+                    startButton.DrawWithText(comicSans, "Start", Color.White);
+                    exitButton.DrawWithText(comicSans, "Exit", Color.White);
+                    spriteBatch.DrawString(comicSans, "Press Esc to Quit", new Vector2(0, 420), Color.White);
+                    break;
+
                 case GameState.Game:
-                    {
-                        ai.Draw();
+                    ai.Draw();
+                    player.Draw();
+                    test.Draw();
+                    turret1.Draw();
 
-                        player.Draw();
-                        test.Draw();
-                        turret1.Draw();
-
-                        
-
-
-                        spriteBatch.DrawString(comicSans, Vector2.Divide(test.Velocity, Vector2.Normalize(test.Velocity)).ToString(), new Vector2(300, 300), Color.Black);
-                        spriteBatch.DrawString(comicSans, "Press Esc to go to the Menu", new Vector2(0, 420), Color.White);
-                        break;
-                    }
-
+                    spriteBatch.DrawString(comicSans, Vector2.Divide(test.Velocity, Vector2.Normalize(test.Velocity)).ToString(), new Vector2(300, 300), Color.Black);
+                    spriteBatch.DrawString(comicSans, "Press Esc to go to the Menu", new Vector2(0, 420), Color.White);
+                    break;
             }
             spriteBatch.End();
 
