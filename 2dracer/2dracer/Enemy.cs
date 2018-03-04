@@ -15,20 +15,56 @@ namespace _2dracer
         public Enemy(Texture2D tex, Vector2 v) :
             base(v, 0, tex) { }
 
-        public void Update(Vector2 PlayerPos)
+                                // This can be a list
+        Vector2 getDestination(Vector2 PlayerPos)
+        {
+            // if the cop is not close enough to touch the player
+            // return a point that will bring cop closer to player
+
+           
+            // if cop is very close to the player
+            // return player and crash into them
+            return PlayerPos;
+        }
+
+        float Speed()
+        {
+            // use all physics here
+
+            // use acceleration
+            // friction
+            // collision detection
+
+            // to return the velocity at any given time
+            return 2;
+        }
+
+        void driveToPoint(Vector2 destination)
         {
             // turn car
-            //rotation += 0.04f;
-            Vector2 toPlayer = PlayerPos - Position; //Get Vector to the player
+            Vector2 toPlayer = destination - Position; //Get Vector to the player
             toPlayer.Normalize(); //Turn to unit Vector
 
             //Update Position
-            position.X += toPlayer.X;
-            position.Y += toPlayer.Y;
-            // move car
-            //float speed = 3;
-            //position.X += (float)Math.Cos(rotation) * speed;
-            //position.Y += (float)Math.Sin(rotation) * speed;
+            position.X += toPlayer.X * Speed();
+            position.Y += toPlayer.Y * Speed();
+
+            rotation = (float)Math.Atan2(toPlayer.Y, toPlayer.X);
+        }
+        //---------------------------------------------------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------------------------------------
+
+        // in the future, we can pass
+        // a list of Vector2 points that cops can
+        // drive to, such as intersections or curbs
+        public void Update(Vector2 PlayerPos)
+        {
+                                                // pass List of desstinations
+            Vector2 destination = getDestination(PlayerPos);
+
+            driveToPoint(destination);
         }
         
         public void Draw()
