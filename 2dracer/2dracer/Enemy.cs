@@ -83,7 +83,7 @@ namespace _2dracer
         public void Draw()
         {
             rotation += (float)Math.PI / 2;
-            base.DrawRect(8);
+            base.DrawRect(4);
             Game1.spriteBatch.DrawString(Game1.comicSans, "GOING TO " + currentDestination.Location, new Vector2(this.Position.X + 10, this.Position.Y - 10), Color.Red);
             rotation -= (float)Math.PI / 2;
         }
