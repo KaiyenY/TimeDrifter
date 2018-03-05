@@ -45,7 +45,7 @@ namespace _2dracer
 
         // all cops and tanks
         private AI ai;
-
+        private float timeSinceLastReRoute = 0.0f;
         
 
 
@@ -141,7 +141,12 @@ namespace _2dracer
                     player.Update();
                     turret1.Update(gameTime, player.Position);
                     test.Update(gameTime);
+                    if(timeSinceLastReRoute > 2)
+                    {
+                        ai.Pathfind(ai.nodes[10]);
+                    }
                     ai.Update(player.Position);
+                    timeSinceLastReRoute += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     break;
             }
 

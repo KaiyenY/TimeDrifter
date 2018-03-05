@@ -14,11 +14,10 @@ namespace _2dracer
     {
         private Enemy[] enemies;
 
-        private List<Node> nodes = new List<Node>(); //List of nodes to test A* algorithm
+        public List<Node> nodes = new List<Node>(); //List of nodes to test A* algorithm
 
         private Queue<Node> testQueue = new Queue<Node>(); //TEMPORARY queue to test giving instructions to enemies
 
-        private List<Node> unsortedTestList = new List<Node>();
 
         public AI(Texture2D tex)
         {
@@ -50,9 +49,9 @@ namespace _2dracer
             node5.PopulateNeighborsList(node2, node8, node10);
             node6.PopulateNeighborsList(node2, node3, node7, node8);
             node7.PopulateNeighborsList(node4, node6, node9);
-            node8.PopulateNeighborsList(node6, node5, node9, node10);
+            node8.PopulateNeighborsList(node6, node5, node9);
             node9.PopulateNeighborsList(node7, node8);
-            node10.PopulateNeighborsList(node5, node8);
+            node10.PopulateNeighborsList(node5);
 
             //Populate AI class' list of nodes
             nodes.Add(nodeStart);
@@ -80,16 +79,11 @@ namespace _2dracer
             testQueue.Enqueue(node8);
             testQueue.Enqueue(node9);
             testQueue.Enqueue(node10);
-
-            unsortedTestList = new List<Node>(node1.Neighbors); //create an unchanging copy of node1's neighbors list
-            nodes[1].AssignHeuristics(nodes[10]);
-            nodes[1].Neighbors.Sort(CompareNodesBasedOnHeuristic); //sort node1's neighborList
             #endregion
         }
 
         public void Update(Vector2 PlayerPos)
         {
-            
             foreach (Enemy i in enemies)
             {
                 i.UpdatePositionTowardsNextNode();
@@ -98,56 +92,55 @@ namespace _2dracer
 
         public void Draw()
         {
-            foreach (Enemy i in enemies)
-                i.Draw();
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                enemies[i].Draw();
+            }
+               
 
             foreach (Node n in nodes) //Draw all the test nodes
             {
                 Game1.spriteBatch.Draw(Game1.square, new Rectangle(n.Location, new Point(10, 10)), Color.Purple);
             }
 
-            
-            for (int i = 0; i < unsortedTestList.Count; i++) //Draw out the contents of the testSort lists
-            {
-                Game1.spriteBatch.DrawString(Game1.comicSans, unsortedTestList[i].ToString(), new Vector2(200, i * 50 + 100), Color.White);
-                Game1.spriteBatch.DrawString(Game1.comicSans, nodes[1].Neighbors[i].ToString(), new Vector2(100, i * 50 + 100), Color.Azure);
-            }
         }
 
         public void Pathfind(Node target) //Implementation of A* fingers crossed
         {
-            //foreach (Node n in nodes) //Gives all the nodes the distance to the target || MIGHT NOT BE NECESSARY ANYMORE
-            //{
-            //    n.CalcDistanceToTarget(target);
-            //}
-
+           
             //TODO: Finish AI's Main Pathfind function
             foreach (Enemy e in enemies) //Do this for every cop that exists
             {
                 Queue<Node> ShortestPath = new Queue<Node>();
 
+                Node closest = new Node(new Point(0,0));//Temp variable to hold which of the neighbors is closest to the target
+                closest.Heuristic = 100000000;
                 foreach (Node n in nodes) //Worst Case Scenario
                 {
-
                     n.AssignHeuristics(target); //Give all the neighbors a heuristic
                     n.Neighbors.Sort(CompareNodesBasedOnHeuristic);
-                    Node closest = new Node(n); //Temp variable to hold which of the neighbors is closest to the target
-
-                    foreach (Node neighbor in n.Neighbors) //Check all the neighbors for which is the closest
-                    {
-                        if(neighbor.Heuristic < closest.Heuristic)
-                        {
-                            closest = new Node(neighbor);
-                        }
-                    }
-                    ShortestPath.Enqueue(new Node(closest));
-                    if(closest == target)
-                    {
-                        
-                        e.Route = new Queue<Node>(ShortestPath);
-                        return;
-                    }
                     
+                    for (int i = 0; i < n.Neighbors.Count; i++)
+                    {
+                     //Check all the neighbors for which is the closest
+                        //System.Diagnostics.Debug.WriteLine(n.Location + "'s neighbor's position is: " + n.Neighbors[i].Location + "heuristic is: " + n.Neighbors[i].Heuristic);
+                        if (n.Neighbors[i].Heuristic < closest.Heuristic)
+                        {
+                            closest = new Node(n.Neighbors[i], n.Neighbors[i].Heuristic);
+                            //System.Diagnostics.Debug.WriteLine("closest is now" + closest.ToString());
+                        }
+                        n.Neighbors.Remove(n.Neighbors[i]);
+                    }
+                    //System.Diagnostics.Debug.WriteLine("n's position is: " + n.Location + "||| closest is: " + closest.ToString() + "|||| closest has Heuristic of " + closest.Heuristic);
+
+                    ShortestPath.Enqueue(new Node(closest));
+                    if (closest.Equals(target))
+                    {
+                        //System.Diagnostics.Debug.WriteLine("closest is equal to target, setting route");
+                        e.Route = ShortestPath;
+                        
+                        return; //End the loop early
+                    }
                 }
             } 
         }

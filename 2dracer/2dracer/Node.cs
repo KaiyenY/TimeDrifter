@@ -13,13 +13,11 @@ namespace _2dracer
 
         public List<Node> Neighbors = new List<Node>(); //Nodes that can be travelled to from this node
 
-        private int DistanceToTarget { get; set; } //holds the distance to the target
-
         public int Heuristic { get; set; } //Holds the heuristic that the A* algorithm will use
 
         public Node Parent { get; set; } //The node from which the heuristic value is coming from
 
-        //Constructors
+        #region Constructors
         public Node(Point location, List<Node> neighbors)
         {
             Location = location;
@@ -31,10 +29,17 @@ namespace _2dracer
             Location = location; 
         }
 
+        public Node(Node n, int Heuristic)
+        {
+            this.Location = n.Location;
+            this.Heuristic = n.Heuristic;
+        }
+
         public Node(Node n)
         {
             this.Location = n.Location;
         }
+        #endregion
 
         public void PopulateNeighborsList(params Node[] neighbors) //Fills the list of neighbors
         {
@@ -52,14 +57,6 @@ namespace _2dracer
             }
         }
 
-        public void CalcDistanceToTarget(Node target)//might be redundant with DistanceFrom() method will check later.
-        {
-            int xDiff = target.Location.X - Location.X;
-            int yDiff = target.Location.Y - Location.Y;
-            Vector2 vectorToTarget = new Vector2(xDiff, yDiff);
-            DistanceToTarget = (int)vectorToTarget.Length();
-        }
-
         public int DistanceFrom(Node otherNode) //utility method to return the distance from one point to another
         {
             return (int)(otherNode.Location - this.Location).ToVector2().Length();
@@ -68,6 +65,18 @@ namespace _2dracer
         public override string ToString() //to make things easier
         {
             return string.Format("({0}, {1})", this.Location.X, this.Location.Y);
+        }
+
+        public bool Equals(Node n) //Helper method to see whether a node equals another
+        {
+            if((n.Location.X == this.Location.X) && (n.Location.Y == this.Location.Y))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

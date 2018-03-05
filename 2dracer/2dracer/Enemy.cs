@@ -77,13 +77,14 @@ namespace _2dracer
             // collision detection
 
             // to return the velocity at any given time
-            return 5;
+            return 3;
         }
 
         public void Draw()
         {
             rotation += (float)Math.PI / 2;
             base.DrawRect(8);
+            Game1.spriteBatch.DrawString(Game1.comicSans, "GOING TO " + currentDestination.Location, new Vector2(this.Position.X + 10, this.Position.Y - 10), Color.Red);
             rotation -= (float)Math.PI / 2;
         }
 
@@ -92,7 +93,7 @@ namespace _2dracer
         {
             if(Route != null) //Don't do anything if there's no Route assigned
             {
-                if (withinRange(20, currentDestination) && Route.Count != 0)
+                if (withinRange(5, currentDestination) && Route.Count != 0)
                 {
                     Node nextPlace = new Node(this.Route.Dequeue());
                     currentDestination = nextPlace; //If reached current target node, fetch next one from the Queue
