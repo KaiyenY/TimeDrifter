@@ -14,11 +14,11 @@ namespace _2dracer
     {
         private Enemy[] enemies;
 
-        List<Node> nodes = new List<Node>(); //List of nodes to test A* algorithm
+        private List<Node> nodes = new List<Node>(); //List of nodes to test A* algorithm
 
-        Queue<Node> testQueue = new Queue<Node>(); //TEMPORARY queue to test giving instructions to enemies
+        private Queue<Node> testQueue = new Queue<Node>(); //TEMPORARY queue to test giving instructions to enemies
 
-        List<Node> unsortedTestList = new List<Node>();
+        private List<Node> unsortedTestList = new List<Node>();
 
         public AI(Texture2D tex)
         {
@@ -89,9 +89,9 @@ namespace _2dracer
 
         public void Update(Vector2 PlayerPos)
         {
+            
             foreach (Enemy i in enemies)
             {
-                i.Route = testQueue;
                 i.UpdatePositionTowardsNextNode();
             }
         }
@@ -116,10 +116,10 @@ namespace _2dracer
 
         public void Pathfind(Node target) //Implementation of A* fingers crossed
         {
-            foreach (Node n in nodes) //Gives all the nodes the distance to the target;
-            {
-                n.CalcDistanceToTarget(target);
-            }
+            //foreach (Node n in nodes) //Gives all the nodes the distance to the target || MIGHT NOT BE NECESSARY ANYMORE
+            //{
+            //    n.CalcDistanceToTarget(target);
+            //}
 
             //TODO: Finish AI's Main Pathfind function
             foreach (Enemy e in enemies) //Do this for every cop that exists
@@ -128,15 +128,26 @@ namespace _2dracer
 
                 foreach (Node n in nodes) //Worst Case Scenario
                 {
-                    List<Node> toCompare = new List<Node>();
-                    foreach (Node neighbor in n.Neighbors)
-                    {
-                        neighbor.Parent = n; //Set the node's parent 
-                        neighbor.AssignHeuristics(target); //Set the node's weight
 
-                        //Sort Neighbors list
-                        n.Neighbors.Sort(CompareNodesBasedOnHeuristic);
+                    n.AssignHeuristics(target); //Give all the neighbors a heuristic
+                    n.Neighbors.Sort(CompareNodesBasedOnHeuristic);
+                    Node closest = new Node(n); //Temp variable to hold which of the neighbors is closest to the target
+
+                    foreach (Node neighbor in n.Neighbors) //Check all the neighbors for which is the closest
+                    {
+                        if(neighbor.Heuristic < closest.Heuristic)
+                        {
+                            closest = new Node(neighbor);
+                        }
                     }
+                    ShortestPath.Enqueue(new Node(closest));
+                    if(closest == target)
+                    {
+                        
+                        e.Route = new Queue<Node>(ShortestPath);
+                        return;
+                    }
+                    
                 }
             } 
         }
