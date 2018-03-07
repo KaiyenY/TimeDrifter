@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace _2dracer
 {
-    class Node
+    public class Node
     {
         public Point Location { get; set; } //Location in space
 

@@ -29,7 +29,7 @@ namespace _2dracer
         public void Draw()
         {
             rotation += (float)Math.PI/2;
-            base.DrawRect(8);
+            base.DrawRect(1);
             rotation -= (float)Math.PI / 2;
         }
     }

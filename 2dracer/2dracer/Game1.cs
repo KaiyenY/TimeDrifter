@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using _2dracer.MapElements;
 
 namespace _2dracer
 {
@@ -23,9 +24,9 @@ namespace _2dracer
         public static SpriteBatch spriteBatch;
 
         // Options (Maybe implement?)
-        private bool fullscreen = false;
-        private int screenHeight = 720;
-        private int screenWidth = 1280;
+        public static bool fullscreen = false;
+        public static int screenHeight = 720;
+        public static int screenWidth = 1280;
 
         // SpriteFonts
         public static SpriteFont comicSans;
@@ -35,6 +36,7 @@ namespace _2dracer
 
         // Texture2Ds
         public static Texture2D square;
+        public static Texture2D tilespritesheet;
 
         //GameState Enum
         private static GameState GameState;
@@ -46,8 +48,8 @@ namespace _2dracer
         // all cops and tanks
         private AI ai;
         private float timeSinceLastReRoute = 0.0f;
-        
 
+        public static Map map;
 
         // Constructor
         public Game1()
@@ -66,7 +68,7 @@ namespace _2dracer
             // show the mouse
             this.IsMouseVisible = true;
 
-            GameState = GameState.Game;
+            GameState = GameState.Menu;
 
 
             base.Initialize();
@@ -82,14 +84,16 @@ namespace _2dracer
 
             // Texture2Ds
             square = Content.Load<Texture2D>("square");
-            Texture2D gun = Content.Load<Texture2D>("turret");
+            Texture2D gun = Content.Load<Texture2D>("Textures/Turret");
             Texture2D bullet = Content.Load<Texture2D>("bullet");
             turret1 = new Turret(gun, bullet);
-            Texture2D car = Content.Load<Texture2D>("car");
+            Texture2D car = Content.Load<Texture2D>("Textures/RedCar");
             player = new Player(car, new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2));
 
             Texture2D cop = Content.Load<Texture2D>("cop");
             ai = new AI(cop);
+
+            tilespritesheet = Content.Load<Texture2D>("Textures/Spritesheet");
 
             // Other Content
             test = new Mover();
@@ -117,6 +121,8 @@ namespace _2dracer
 
                     if (startButton.IsClicked())
                     {
+                        map = new Map();
+
                         GameState = GameState.Game;
                     }
 
@@ -131,6 +137,8 @@ namespace _2dracer
                     if (Input.KeyTap(Keys.Escape))
                     {
                         GameState = GameState.Menu;
+
+                        map = null;
                     }
                     if (Input.KeyTap(Keys.Space))
                     {
@@ -147,6 +155,7 @@ namespace _2dracer
                     }
                     ai.Update(player.Position);
                     timeSinceLastReRoute += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    map.Update();
                     break;
             }
 
@@ -155,7 +164,7 @@ namespace _2dracer
 
         protected override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
             GraphicsDevice.Clear(Color.CornflowerBlue);
             switch (GameState)
             {
@@ -168,6 +177,8 @@ namespace _2dracer
                     break;
 
                 case GameState.Game:
+                    map.Draw();
+
                     ai.Draw();
                     player.Draw();
                     test.Draw();

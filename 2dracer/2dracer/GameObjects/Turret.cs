@@ -84,7 +84,7 @@ namespace _2dracer
         public void Draw()
         {
             rotation += (float)Math.PI / 2;
-            base.DrawRect(4);
+            base.DrawRect(0.75f);
             rotation -= (float)Math.PI / 2;
 
             // draw all the bullets
