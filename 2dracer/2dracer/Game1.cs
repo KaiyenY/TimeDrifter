@@ -96,7 +96,7 @@ namespace _2dracer
             tilespritesheet = Content.Load<Texture2D>("Textures/Spritesheet");
 
             // Other Content
-            test = new Mover();
+            test = new Mover(new GameObject(new Vector2(50, 50)));
 
             //MenuButtons
             Texture2D idle = Content.Load<Texture2D>("ButtonRectangleTemp");

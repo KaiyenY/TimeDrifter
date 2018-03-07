@@ -13,14 +13,17 @@ namespace _2dracer
     public class Mover : GameObject
     {
         // Fields
-        protected Vector2 velocity;
-        protected Vector2 accel;
+        protected Vector2 velocity;         // linear rate of change vector
+        protected Vector2 accel;            // linear acceleration vector
 
-        protected float angularVelocity;
-        protected float angularAccel;
+        protected float angularVelocity;    // angular rate of change
+        protected float angularAccel;       // angulaer acceleration
 
-        protected float mass;
-        protected float dragFactor;
+        protected float mass;               // mass of the mover
+        protected float moment;             // moment of inertia calculated using the mass and collider
+
+        protected float dragFactor;         // the scalar factor of how aerodynamic this mover is
+        protected float restitution;        // how bouncy this mover's collisions are (should be between 0 and 1)
 
         //protected Collider col;
 
@@ -30,14 +33,14 @@ namespace _2dracer
         public float AngularVelocity { get { return angularVelocity; } }
         public float AngularAccel { get { return angularAccel; } }
         public float Mass { get { return mass; } }
+        public float Moment { get { return moment; } }
         public float DragFactor { get { return dragFactor; } }
+        public float Restitution { get { return restitution; } }
 
         // Constructors
-        public Mover(GameObject g, Vector2 velocity, Vector2 accel, float angularVelocity, float angularAccel, float mass, float dragFactor)
+        public Mover(GameObject g, Vector2 velocity, Vector2 accel, float angularVelocity, float angularAccel, float mass, float dragFactor, float restitution)
               : base(g)
         {
-            size = new Vector2(100, 100);
-
             this.velocity = velocity;
             this.accel = accel;
 
@@ -45,11 +48,14 @@ namespace _2dracer
             this.angularAccel = angularAccel;
 
             this.mass = mass;
+            moment = mass;          // CHANGE THIS TO COLLIDER.CALCULATEMOMENT ONCE IT IS COMPLETED
+
             this.dragFactor = dragFactor;
+            this.restitution = restitution;
         }
 
         public Mover(GameObject g, Vector2 velocity, Vector2 accel, float angularVelocity, float angularAccel, float mass)
-              : this(g, velocity, accel, angularVelocity, angularAccel, mass, 1) { }
+              : this(g, velocity, accel, angularVelocity, angularAccel, mass, 1, 1) { }
 
         public Mover(GameObject g, Vector2 velocity, Vector2 accel, float angularVelocity, float angularAccel)
               : this(g, velocity, accel, angularVelocity, angularAccel, 1) { }
@@ -59,9 +65,6 @@ namespace _2dracer
 
         public Mover(GameObject g)
               : this(g, Vector2.Zero, 0f) { }
-        
-        public Mover()
-              : this(new GameObject()) { }
 
         // Methods
         public override void Update(GameTime gameTime)
@@ -69,6 +72,7 @@ namespace _2dracer
             UpdatePhysics(gameTime);
         }
 
+        // integrates this movers physics (position, velocity, acceleration)
         public void UpdatePhysics(GameTime gameTime)
         {
             velocity += accel * (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -80,27 +84,47 @@ namespace _2dracer
             angularAccel *= 0;
         }
 
+        // adds force to the center of the mover
         public void AddForce(Vector2 force)
         {
             accel += force / mass;
         }
 
+        // adds torque to the mover's angular acceleration
         public void AddTorque(float torque)
         {
-            angularAccel += torque / mass;    // REPLACE MASS WITH MOMENT
-        }                                     // moment not implemented until Collider class is
+            angularAccel += torque / moment;
+        }
 
+        // computes the torque induced and applies the linear force and torque
         public void AddForceAtPos(Vector2 force, Vector2 posOffset)
         {
-            // NOT FULLY IMPLEMENTED
-            // THIS NEEDS TO BE FIXED
-            // orthogonal projection onto the lever arm
-            Vector2 linearForce = (Vector2.Dot(force, posOffset) / Vector2.Dot(posOffset, posOffset)) * posOffset;
             // area of the parrallelogram formed by the force and lever arm
             float torque = posOffset.X * force.Y - posOffset.Y * force.X;
 
-            AddForce(linearForce);
+            AddForce(force);
             AddTorque(torque);
+        }
+
+        // impulses are used in collision response
+        // these work just like forces accept applying an instantaneous change to the velocity
+        public void AddImpulse(Vector2 impulse)
+        {
+            velocity += impulse / mass;
+        }
+
+        public void AddRotationalImpulse(float impulse)
+        {
+            angularVelocity += impulse / moment;
+        }
+
+        public void AddImpulseAtPos(Vector2 force, Vector2 posOffset)
+        {
+            // area of the parrallelogram formed by the impulse and lever arm
+            float rotationalImpulse = posOffset.X * force.Y - posOffset.Y * force.X;
+
+            AddImpulse(force);
+            AddRotationalImpulse(rotationalImpulse);
         }
     }
 }
