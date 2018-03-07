@@ -56,18 +56,6 @@
 /processorParam:TextureFormat=Color
 /build:square.png
 
-#begin RedCar.jpg
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:RedCar.jpg
-
 #begin ButtonRectangleTemp.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1304,18 +1292,6 @@
 /processorParam:TextureFormat=Color
 /build:Buildings/Side/199_2.jpg
 
-#begin cop.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:cop.png
-
 #begin buttonPressed.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1327,4 +1303,28 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:buttonPressed.png
+
+#begin car.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:car.png
+
+#begin cop.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:cop.png
 

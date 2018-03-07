@@ -85,7 +85,7 @@ namespace _2dracer
             Texture2D gun = Content.Load<Texture2D>("turret");
             Texture2D bullet = Content.Load<Texture2D>("bullet");
             turret1 = new Turret(gun, bullet);
-            Texture2D car = Content.Load<Texture2D>("RedCar");
+            Texture2D car = Content.Load<Texture2D>("car");
             player = new Player(car, new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2));
 
             Texture2D cop = Content.Load<Texture2D>("cop");
