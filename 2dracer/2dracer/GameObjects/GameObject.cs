@@ -34,42 +34,41 @@ namespace _2dracer
 
         // constructors
         public GameObject(GameObject g)
-                   : this(g.Position, g.Rotation, g.Sprite, g.Color, g.Scale, g.IsEnabled) { }
+                   : this(g.Position, g.Rotation, g.Sprite, g.Color, g.Size, g.Scale, g.IsEnabled) { }
         
-        public GameObject(Vector2 position, float rotation, Texture2D sprite, Color color, Vector2 scale, bool startEnabled)
+        public GameObject(Vector2 position, float rotation, Texture2D sprite, Color color, Vector2 size, Vector2 scale, bool startEnabled)
         {
             this.position = position;
             this.rotation = rotation;
 
             this.sprite = sprite;
             this.color = color;
-            size = new Vector2(50, 50);
+            this.size = size;
             this.scale = scale;
 
             isEnabled = startEnabled;
         }
 
-        public GameObject(Vector2 position, float rotation, Texture2D sprite, Color color, Vector2 scale)
-                   : this(position, rotation, sprite, color, scale, true) { }
+        public GameObject(Vector2 position, float rotation, Texture2D sprite, Color color, Vector2 size, Vector2 scale)
+                   : this(position, rotation, sprite, color, size, scale, true) { }
 
-        public GameObject(Vector2 position, float rotation, Texture2D sprite, Vector2 scale)
-                   : this(position, rotation, sprite, Color.White, scale) { }
+        public GameObject(Vector2 position, float rotation, Texture2D sprite, Vector2 size, Vector2 scale)
+                   : this(position, rotation, sprite, Color.White, size, scale) { }
 
-        public GameObject(Vector2 position, float rotation, Texture2D sprite)
-                   : this(position, rotation, sprite, Vector2.One) { }
+        public GameObject(Vector2 position, float rotation, Texture2D sprite, Vector2 size)
+                   : this(position, rotation, sprite, size, Vector2.One) { }
 
-        public GameObject(Vector2 position, float rotation)
-                   : this(position, rotation, Game1.square) { }
+        public GameObject(Vector2 position, float rotation, Vector2 size)
+                   : this(position, rotation, Game1.square, size) { }
 
-        public GameObject()
-                   : this(Vector2.Zero, 0f) { }
+        public GameObject(Vector2 size)
+                   : this(Vector2.Zero, 0f, size) { }
 
         // methods
         /// <summary>
         /// Updates logic for this game object every frame
         /// </summary>
-        public virtual void Update(GameTime gameTime)
-        { }
+        public virtual void Update(GameTime gameTime) { }
 
         /// <summary>
         /// Draws this object's texture to the screen

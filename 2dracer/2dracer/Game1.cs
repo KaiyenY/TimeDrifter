@@ -92,7 +92,7 @@ namespace _2dracer
             ai = new AI(cop);
 
             // Other Content
-            test = new Mover();
+            test = new Mover(new GameObject(new Vector2(50, 50)));
 
             //MenuButtons
             Texture2D idle = Content.Load<Texture2D>("ButtonRectangleTemp");

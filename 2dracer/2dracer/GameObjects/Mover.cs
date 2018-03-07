@@ -20,6 +20,7 @@ namespace _2dracer
         protected float angularAccel;
 
         protected float mass;
+        protected float moment;
         protected float dragFactor;
 
         //protected Collider col;
@@ -30,14 +31,13 @@ namespace _2dracer
         public float AngularVelocity { get { return angularVelocity; } }
         public float AngularAccel { get { return angularAccel; } }
         public float Mass { get { return mass; } }
+        public float Moment { get { return moment; } }
         public float DragFactor { get { return dragFactor; } }
 
         // Constructors
         public Mover(GameObject g, Vector2 velocity, Vector2 accel, float angularVelocity, float angularAccel, float mass, float dragFactor)
               : base(g)
         {
-            size = new Vector2(100, 100);
-
             this.velocity = velocity;
             this.accel = accel;
 
@@ -45,6 +45,7 @@ namespace _2dracer
             this.angularAccel = angularAccel;
 
             this.mass = mass;
+            moment = mass;          // CHANGE THIS TO COLLIDER.CALCULATEMOMENT ONCE IT IS COMPLETED
             this.dragFactor = dragFactor;
         }
 
@@ -59,9 +60,6 @@ namespace _2dracer
 
         public Mover(GameObject g)
               : this(g, Vector2.Zero, 0f) { }
-        
-        public Mover()
-              : this(new GameObject()) { }
 
         // Methods
         public override void Update(GameTime gameTime)

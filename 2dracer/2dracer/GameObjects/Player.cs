@@ -13,7 +13,7 @@ namespace _2dracer
     class Player : GameObject
     {
         public Player(Texture2D tex, Vector2 v) :
-            base(v, 0, tex) { }
+            base(v, 0, tex, new Vector2(50, 50)) { }
 
         public void Update()
         {
