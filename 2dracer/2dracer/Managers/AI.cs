@@ -21,9 +21,12 @@ namespace _2dracer
 
         public AI(Texture2D tex)
         {
-            enemies = new Enemy[1];
+            enemies = new Enemy[3];
 
-            enemies[0] = new Enemy(tex, new Vector2(200, 200));
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                enemies[i] = new Enemy(tex, new Vector2(200, 200*i));
+            }
             
 
             #region node populating
@@ -84,9 +87,9 @@ namespace _2dracer
 
         public void Update(Vector2 PlayerPos)
         {
-            foreach (Enemy i in enemies)
+            for (int i = 0; i < enemies.Length; i++)
             {
-                i.UpdatePositionTowardsNextNode();
+                enemies[i].UpdatePositionTowardsNextNode();
             }
         }
 
@@ -113,8 +116,10 @@ namespace _2dracer
             {
                 Queue<Node> ShortestPath = new Queue<Node>();
 
-                Node closest = new Node(new Point(0,0));//Temp variable to hold which of the neighbors is closest to the target
-                closest.Heuristic = 100000000;
+                Node closest = new Node(new Point(0, 0)) //Temp variable to compare which is the closest
+                {
+                    Heuristic = 100000000
+                };
                 foreach (Node n in nodes) //Worst Case Scenario
                 {
                     n.AssignHeuristics(target); //Give all the neighbors a heuristic
