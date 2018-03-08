@@ -21,53 +21,6 @@ namespace _2dracer
             currentDestination = new Node(v.ToPoint()); //initialize current destination to where it begins
         }
 
-                                // This can be a list
-        Vector2 getDestination(Vector2 PlayerPos)
-        {
-            // if the cop is not close enough to touch the player
-            // return a point that will bring cop closer to player
-
-                // if point is within a certain distance of the cop
-                // if point brings cop closer to the player
-                // return that point
-
-            // These points can be generated automatically by the level editor
-           
-            // if cop is very close to the player
-            // return player and crash into them
-            return PlayerPos;
-        }
-
-       
-
-        void driveToPoint(Vector2 destination)
-        {
-            // turn car
-            Vector2 toPlayer = destination - Position; //Get Vector to the player
-            toPlayer.Normalize(); //Turn to unit Vector
-            
-            //Update Position
-            position.X += toPlayer.X * Speed();
-            position.Y += toPlayer.Y * Speed();
-
-            rotation = (float)Math.Atan2(toPlayer.Y, toPlayer.X);
-        }
-        //---------------------------------------------------------------------------------------------------------------------------
-        //---------------------------------------------------------------------------------------------------------------------------
-        //---------------------------------------------------------------------------------------------------------------------------
-        //---------------------------------------------------------------------------------------------------------------------------
-
-        // in the future, we can pass
-        // a list of Vector2 points that cops can
-        // drive to, such as intersections or curbs
-        public void Update(Vector2 PlayerPos)
-        {
-                                                // pass List of desstinations
-            Vector2 destination = getDestination(PlayerPos);
-
-            driveToPoint(destination);
-        }
-
         private float Speed()
         {
             //use all physics here
@@ -93,7 +46,9 @@ namespace _2dracer
         {
             if(Route != null) //Don't do anything if there's no Route assigned
             {
-                if (withinRange(5, currentDestination) && Route.Count != 0)
+                // set range to 100
+                // cop should not touch the point before going to the next
+                if (withinRange(100, currentDestination) && Route.Count != 0)
                 {
                     Node nextPlace = new Node(this.Route.Dequeue());
                     currentDestination = nextPlace; //If reached current target node, fetch next one from the Queue
@@ -102,11 +57,21 @@ namespace _2dracer
                 Vector2 toNode = new Vector2(currentDestination.Location.X - this.Position.X, currentDestination.Location.Y - this.Position.Y); //Vector to the target 
                 toNode.Normalize(); //turn to unit vector
 
-                //Apply movement
-                position.X += toNode.X * Speed();
-                position.Y += toNode.Y * Speed();
+                // rot is the rotation that the player SHOULD be moving in
+                // it is not the rotation that the player IS moving in
+                float rot = (float)Math.Atan2(toNode.Y, toNode.X);
 
-                rotation = (float)Math.Atan2(toNode.Y, toNode.X);
+                // if player's rotation is not the correct rotation
+                // then slowly turn the player
+                if (rot > rotation)
+                    rotation += 0.02f;
+
+                if (rot < rotation)
+                    rotation -= 0.02f;
+
+                //Apply movement with the current rotation of the car
+                position.X += (float)Math.Cos(rotation) * Speed();
+                position.Y += (float)Math.Sin(rotation) * Speed();
             }
         }
 
