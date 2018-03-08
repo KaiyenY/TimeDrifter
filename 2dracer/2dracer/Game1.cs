@@ -105,6 +105,7 @@ namespace _2dracer
 
         protected override void UnloadContent()
         {
+            map = null;
         }
 
         protected override void Update(GameTime gameTime)
@@ -135,8 +136,6 @@ namespace _2dracer
                     if (Input.KeyTap(Keys.Escape))
                     {
                         GameState = GameState.Menu;
-
-                        map = null;
                     }
 
                     Managers.GameMaster.Update(gameTime);
