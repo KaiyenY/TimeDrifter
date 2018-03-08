@@ -61,6 +61,14 @@ namespace _2dracer
                 // it is not the rotation that the player IS moving in
                 float rot = (float)Math.Atan2(toNode.Y, toNode.X);
 
+                // if this is not here, then current rotation may be 359 degrees
+                // and the required rotation may be 2 degrees, and then
+                // car will turn in the wrong directoin
+                // this if-statement fixes it, trust me
+                // comment it out and see what happens
+                if (Math.Abs(rot - rotation) > 3.14159)
+                    rot += 2 * 3.14159f;
+
                 // if player's rotation is not the correct rotation
                 // then slowly turn the player
                 if (rot > rotation)
