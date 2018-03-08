@@ -44,6 +44,7 @@
     <Compile Include="Managers\AI.cs" />
     <Compile Include="GameObjects\Bullet.cs" />
     <Compile Include="GameObjects\Enemy.cs" />
+    <Compile Include="Managers\GameMaster.cs" />
     <Compile Include="Managers\Input.cs" />
     <Compile Include="MapElements\Map.cs" />
     <Compile Include="MapElements\Node.cs" />

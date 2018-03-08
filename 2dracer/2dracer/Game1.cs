@@ -41,7 +41,6 @@ namespace _2dracer
         //GameState Enum
         private static GameState GameState;
 
-        private Mover test;
         private MenuElement startButton;
         private MenuElement exitButton;
 
@@ -96,7 +95,6 @@ namespace _2dracer
             tilespritesheet = Content.Load<Texture2D>("Textures/Spritesheet");
 
             // Other Content
-            test = new Mover(new GameObject(new Vector2(50, 50)));
 
             //MenuButtons
             Texture2D idle = Content.Load<Texture2D>("ButtonRectangleTemp");
@@ -140,15 +138,13 @@ namespace _2dracer
 
                         map = null;
                     }
-                    if (Input.KeyTap(Keys.Space))
-                    {
-                        test.AddForceAtPos(new Vector2(5, 5), new Vector2(50, 0));
-                    }
+
+                    Managers.GameMaster.Update(gameTime);
+
                     // update turret position to player car position
                     // or in this case, the center of the screen
                     player.Update();
                     turret1.Update(gameTime, player.Position);
-                    test.Update(gameTime);
                     if(timeSinceLastReRoute > 2)
                     {
                         ai.Pathfind(ai.nodes[10]);
@@ -179,12 +175,12 @@ namespace _2dracer
                 case GameState.Game:
                     map.Draw();
 
+                    Managers.GameMaster.Draw();
+
                     ai.Draw();
                     player.Draw();
-                    test.Draw();
                     turret1.Draw();
-
-                    spriteBatch.DrawString(comicSans, Vector2.Divide(test.Velocity, Vector2.Normalize(test.Velocity)).ToString(), new Vector2(300, 300), Color.Black);
+                    
                     spriteBatch.DrawString(comicSans, "Press Esc to go to the Menu", new Vector2(0, 420), Color.White);
                     break;
             }
