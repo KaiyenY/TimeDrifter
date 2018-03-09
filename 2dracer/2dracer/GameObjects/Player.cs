@@ -10,10 +10,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _2dracer
 {
-    class Player : GameObject
+    class Player : Mover
     {
         public Player(Texture2D tex, Vector2 v) :
-            base(v, 0, tex, new Vector2(50, 50)) { }
+            base(
+                new GameObject(v, 0, tex, new Vector2(50, 50))
+                )
+        { }
 
         public void Update()
         {

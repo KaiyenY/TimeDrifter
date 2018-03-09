@@ -77,28 +77,26 @@ namespace _2dracer
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            
+
+            // Texture2Ds
+            Texture2D gun = Content.Load<Texture2D>("Textures/Turret");
+            Texture2D bullet = Content.Load<Texture2D>("bullet");
+            Texture2D car = Content.Load<Texture2D>("Textures/RedCar");
+            Texture2D cop = Content.Load<Texture2D>("cop");
+            square = Content.Load<Texture2D>("square");
+            tilespritesheet = Content.Load<Texture2D>("Textures/Spritesheet");
+            Texture2D idle = Content.Load<Texture2D>("ButtonRectangleTemp");
+            Texture2D pressed = Content.Load<Texture2D>("buttonPressed");
+
             // SpriteFonts
             comicSans = Content.Load<SpriteFont>("comic");
 
-            // Texture2Ds
-            square = Content.Load<Texture2D>("square");
-            Texture2D gun = Content.Load<Texture2D>("Textures/Turret");
-            Texture2D bullet = Content.Load<Texture2D>("bullet");
+            // objects
             turret1 = new Turret(gun, bullet);
-            Texture2D car = Content.Load<Texture2D>("Textures/RedCar");
             player = new Player(car, new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2));
-
-            Texture2D cop = Content.Load<Texture2D>("cop");
             ai = new AI(cop);
 
-            tilespritesheet = Content.Load<Texture2D>("Textures/Spritesheet");
-
-            // Other Content
-
             //MenuButtons
-            Texture2D idle = Content.Load<Texture2D>("ButtonRectangleTemp");
-            Texture2D pressed = Content.Load<Texture2D>("buttonPressed");
             startButton = new MenuElement(new Rectangle(new Point(20, 50), new Point(200, 50)), idle, pressed);
             exitButton = new MenuElement(new Rectangle(new Point(20, 120), new Point(200, 50)), idle, pressed);
         }
