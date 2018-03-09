@@ -50,8 +50,15 @@ namespace _2dracer
                 // cop should not touch the point before going to the next
                 if (withinRange(100, currentDestination) && Route.Count != 0)
                 {
-                    Node nextPlace = new Node(this.Route.Dequeue());
-                    currentDestination = nextPlace; //If reached current target node, fetch next one from the Queue
+                    // Remember when we wondered how often a new path would be calculated?
+
+                    // Right here, this is where we should recalculate it
+
+                    // rather than having a Queue of locations
+                    // enemies should calculate which node they want to go to, as soon as they need to go to that node
+
+
+                    currentDestination = new Node(this.Route.Dequeue()); //If reached current target node, fetch next one from the Queue
                 }
 
                 Vector2 toNode = new Vector2(currentDestination.Location.X - this.Position.X, currentDestination.Location.Y - this.Position.Y); //Vector to the target 
