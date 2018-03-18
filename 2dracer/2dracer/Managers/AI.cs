@@ -83,6 +83,11 @@ namespace _2dracer
             testQueue.Enqueue(node9);
             testQueue.Enqueue(node10);
             #endregion
+
+            foreach (Node colornode in nodes)
+            {
+                colornode.Color = Color.Red;
+            }
         }
 
         public void Update(Vector2 PlayerPos)
@@ -103,87 +108,101 @@ namespace _2dracer
 
             foreach (Node n in nodes) //Draw all the test nodes
             {
-                Game1.spriteBatch.Draw(Game1.square, new Rectangle(n.Location, new Point(10, 10)), Color.Purple);
+                Game1.spriteBatch.Draw(Game1.square, new Rectangle(n.Location, new Point(10, 10)), n.Color);
             }
 
         }
 
-        public void Pathfind(Node target) //Implementation of A* fingers crossed
+        public void AssignNewPathsToEnemies(Node target)//TODO: Integrate with regards to enemies
         {
-           
-            //TODO: Finish AI's Main Pathfind function
-            foreach (Enemy e in enemies) //Do this for every cop that exists
+            for (int i = 0; i < enemies.Length; i++)
             {
-                Queue<Node> ShortestPath = new Queue<Node>();
-
-                Node closest = new Node(new Point(0, 0)) //Temp variable to compare which is the closest
-                {
-                    Heuristic = 100000000
-                };
-                foreach (Node n in nodes) //Worst Case Scenario
-                {
-                    n.AssignHeuristics(target); //Give all the neighbors a heuristic
-                    n.Neighbors.Sort(CompareNodesBasedOnHeuristic);
-                    
-                    for (int i = 0; i < n.Neighbors.Count; i++)
-                    {
-                     //Check all the neighbors for which is the closest
-                        //System.Diagnostics.Debug.WriteLine(n.Location + "'s neighbor's position is: " + n.Neighbors[i].Location + "heuristic is: " + n.Neighbors[i].Heuristic);
-                        if (n.Neighbors[i].Heuristic < closest.Heuristic)
-                        {
-                            closest = new Node(n.Neighbors[i], n.Neighbors[i].Heuristic);
-                            //System.Diagnostics.Debug.WriteLine("closest is now" + closest.ToString());
-                        }
-                        n.Neighbors.Remove(n.Neighbors[i]);
-                    }
-                    //System.Diagnostics.Debug.WriteLine("n's position is: " + n.Location + "||| closest is: " + closest.ToString() + "|||| closest has Heuristic of " + closest.Heuristic);
-
-                    ShortestPath.Enqueue(new Node(closest));
-                    if (closest.Equals(target))
-                    {
-                        //System.Diagnostics.Debug.WriteLine("closest is equal to target, setting route");
-                        e.Route = ShortestPath;
-                        
-                        return; //End the loop early
-                    }
-                }
-            } 
+                enemies[i].Route = Pathfind(nodes[0], target);
+                Console.WriteLine(enemies[i].Route.Peek());
+            }
         }
 
-        private int CompareNodesBasedOnHeuristic(Node x, Node y) //Comparator for sorting the Neighbors List based off heuristics
+        public Queue<Node> Pathfind(Node start, Node target) //Implementation of A* fingers crossed
         {
-            if(x != null)
-            {
-                if(y != null)
+            List<Node> closedSet = new List<Node>();
+            List<Node> openSet = new List<Node>(); //List of discovered nodes
+            openSet.Add(start);
+            
+            start.gScore = 0; //cost of going from start to itself is 0
+            start.fScore = target.DistanceFrom(start); //straight-line distance to the target
+
+            //TODO: Finish AI's Main Pathfind function
+                while (openSet.Count > 0) //Iterate while the path is not empty
                 {
-                    int returnValue = x.Heuristic - y.Heuristic; //get return value based off their individual heuristics
- 
-                    if(returnValue != 0)
+                Node current = new Node();
+                current.fScore = int.MaxValue; //will point to the node in the open set with the lowest fScore
+                    foreach(Node toCheck in openSet) //Check for lowest node in the set of all 'discovered' nodes
                     {
-                        return returnValue;
-                    }
-                    else
-                    {
-                        return 1; //if they're the same it doesn't matter
+                    System.Diagnostics.Debug.Print("open set check: " + toCheck.ToString());
+                        if(toCheck.fScore < current.fScore) 
+                        {
+                        current = toCheck;
+                        }
                     }
 
-                }
-                else
+                    if(current == target)
+                    {
+                    Console.WriteLine("CLOSED SET:");
+                    Queue<Node> path = new Queue<Node>();
+
+                        foreach(Node nodeinPath in closedSet)
+                        {
+                        path.Enqueue(new Node(nodeinPath));
+                        Console.WriteLine(nodeinPath.ToString());
+                        }
+                    path.Enqueue(target);
+                        return path;
+                    }
+                    
+                //Move current to the closed set
+                openSet.Remove(current);
+                closedSet.Add(current);
+                Console.WriteLine("Added " + current.ToString() + " to the closed set");
+                foreach(Node neighbor in current.Neighbors)
                 {
-                    return 1;
+                    Console.WriteLine("neighbor: " + neighbor.ToString());
+                    if(!closedSet.Contains(neighbor))//if this neighbor hasn't been checked yet
+                    {
+                        if(!openSet.Contains(neighbor))
+                        {
+                            openSet.Add(neighbor); //Discover a new node from the current node's neighbors
+                        }
+                        int tentgScore = current.gScore + neighbor.DistanceFrom(current);
+
+                        if(!(tentgScore >= neighbor.gScore)) //recording the best path
+                        {
+                            neighbor.Parent = current;
+                            neighbor.gScore = tentgScore;
+                            neighbor.fScore = neighbor.gScore + target.DistanceFrom(neighbor);
+                            neighbor.Color = Color.Black;
+                        }
+                    }
                 }
+                }
+            return null;
+        }
+
+        private List<Node> ReconstructPath(Node start, Node current)
+        {
+            List<Node> totalPath = new List<Node>();
+            if(current == start)
+            {
+                return totalPath;
             }
             else
             {
-                if(y == null) //if y is null, then x is better by default
-                {
-                    return 1;
-                }
-                else
-                {
-                    return -1;
-                }
+                totalPath.Add(current);
+                ReconstructPath(start, current.Parent);
             }
+            return totalPath;
         }
+
+        
     }
 }
+//Ruben Young

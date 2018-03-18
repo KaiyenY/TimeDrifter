@@ -46,43 +46,36 @@ namespace _2dracer
         {
             if(Route != null) //Don't do anything if there's no Route assigned
             {
-                // set range to 100
+                // set range to 10
                 // cop should not touch the point before going to the next
-                if (withinRange(100, currentDestination) && Route.Count != 0)
+                if (withinRange(10, currentDestination) && Route.Count != 0)
                 {
-                    // Remember when we wondered how often a new path would be calculated?
-
-                    // Right here, this is where we should recalculate it
-
-                    // rather than having a Queue of locations
-                    // enemies should calculate which node they want to go to, as soon as they need to go to that node
-
-
                     currentDestination = new Node(this.Route.Dequeue()); //If reached current target node, fetch next one from the Queue
                 }
 
                 Vector2 toNode = new Vector2(currentDestination.Location.X - this.Position.X, currentDestination.Location.Y - this.Position.Y); //Vector to the target 
-                toNode.Normalize(); //turn to unit vector
+                
 
                 // rot is the rotation that the player SHOULD be moving in
                 // it is not the rotation that the player IS moving in
-                float rot = (float)Math.Atan2(toNode.Y, toNode.X);
-
+                rotation = (float)Math.Atan2(toNode.Y, toNode.X);
+                toNode.Normalize(); //turn to unit vector
+           
                 // if this is not here, then current rotation may be 359 degrees
                 // and the required rotation may be 2 degrees, and then
                 // car will turn in the wrong directoin
                 // this if-statement fixes it, trust me
                 // comment it out and see what happens
-                if (Math.Abs(rot - rotation) > 3.14159)
-                    rot += 2 * 3.14159f;
+                //if (Math.Abs(rot - rotation) > Math.PI)
+                  //  rot += 2 * (float)Math.PI;
 
                 // if player's rotation is not the correct rotation
                 // then slowly turn the player
-                if (rot > rotation)
-                    rotation += 0.02f;
+                //if (rot > rotation)
+                  //  rotation += 0.02f;
 
-                if (rot < rotation)
-                    rotation -= 0.02f;
+                //if (rot < rotation)
+                  //  rotation -= 0.02f;
 
                 //Apply movement with the current rotation of the car
                 position.X += (float)Math.Cos(rotation) * Speed();
@@ -90,7 +83,7 @@ namespace _2dracer
             }
         }
 
-        private bool withinRange(int offset, Node origin) //Creates an acceptable area to check when to get the next target
+        public bool withinRange(int offset, Node origin) //Creates an acceptable area to check when to get the next target
         {
             Rectangle acceptableArea = new Rectangle(origin.Location.X - offset, origin.Location.Y - offset, 2 * offset, 2 * offset);
 
@@ -106,3 +99,4 @@ namespace _2dracer
 
     }
 }
+//Ruben Young

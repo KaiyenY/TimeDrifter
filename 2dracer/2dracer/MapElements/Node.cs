@@ -8,14 +8,44 @@ using System.Threading.Tasks;
 namespace _2dracer
 {
     public class Node
-    {
-        public Point Location { get; set; } //Location in space
-
+    { 
+        //Fields
         public List<Node> Neighbors = new List<Node>(); //Nodes that can be travelled to from this node
 
-        public int Heuristic { get; set; } //Holds the heuristic that the A* algorithm will use
+        private int _fScore = int.MaxValue; //default value is infinity
 
-        public Node Parent { get; set; } //The node from which the heuristic value is coming from
+        private int _gScore = int.MaxValue; //default value is infinity
+
+        public Node Parent { get; set; } //Which node to come from in the most efficient route
+
+        //Properties
+        public Point Location { get; set; } //Location in space
+
+
+        public int gScore {
+            get
+            {
+                return _gScore;
+            }
+            set
+            {
+                _gScore = value;
+            }
+        }
+
+        public int fScore {
+            get
+            {
+                return _fScore;
+            }
+
+            set
+            {
+                _fScore = value;
+            }
+        }
+
+        public Color Color { get; set; }//TODO: delete property, just used to visualize pathfinding
 
         #region Constructors
         public Node(Point location, List<Node> neighbors)
@@ -29,31 +59,26 @@ namespace _2dracer
             Location = location; 
         }
 
-        public Node(Node n, int Heuristic)
+
+        public Node(Node n)//Copies all of the passed Node's attributes
         {
             this.Location = n.Location;
-            this.Heuristic = n.Heuristic;
+            this.Neighbors = new List<Node>(n.Neighbors);
+            this.fScore = n.fScore;
+            this.gScore = n.gScore;
+            this.Parent = n.Parent;
+            this.Color = n.Color;
         }
 
-        public Node(Node n)
-        {
-            this.Location = n.Location;
-        }
+        public Node() { } //Empty Constructor for an empty soul
         #endregion
 
+        #region Methods
         public void PopulateNeighborsList(params Node[] neighbors) //Fills the list of neighbors
         {
             foreach(Node n in neighbors)
             {
                 Neighbors.Add(n);
-            }
-        }
-
-        public void AssignHeuristics(Node target) //Gives all of this node's neighbors a heuristic for A* to use
-        {
-            foreach(Node n in Neighbors)
-            {
-                n.Heuristic = n.DistanceFrom(this) + target.DistanceFrom(n);
             }
         }
 
@@ -64,7 +89,7 @@ namespace _2dracer
 
         public override string ToString() //to make things easier
         {
-            return string.Format("({0}, {1})", this.Location.X, this.Location.Y);
+            return Location.ToString();
         }
 
         public bool Equals(Node n) //Helper method to see whether a node equals another
@@ -78,5 +103,7 @@ namespace _2dracer
                 return false;
             }
         }
+        #endregion
     }
 }
+//Ruben Young
