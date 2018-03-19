@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using _2dracer.MapElements;
+using _2dracer.Managers;
 
 namespace _2dracer
 {
@@ -49,6 +50,7 @@ namespace _2dracer
         private float timeSinceLastReRoute = 0.0f;
 
         public static Map map;
+        private Camera camera;
 
         // Constructor
         public Game1()
@@ -68,7 +70,7 @@ namespace _2dracer
             this.IsMouseVisible = true;
 
             GameState = GameState.Menu;
-
+            camera = new Camera();
 
             base.Initialize();
         }
@@ -150,6 +152,7 @@ namespace _2dracer
                     ai.Update(player.Position);
                     timeSinceLastReRoute += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     map.Update();
+                    camera.Update(player.Position);
                     break;
             }
 
@@ -158,11 +161,11 @@ namespace _2dracer
 
         protected override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
-            GraphicsDevice.Clear(Color.CornflowerBlue);
             switch (GameState)
             {
                 case GameState.Menu:
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
+                    GraphicsDevice.Clear(Color.CornflowerBlue);
 
                     spriteBatch.DrawString(comicSans, "Welcome to Project Apathy", new Vector2(GraphicsDevice.Viewport.Width / 2, 20), Color.White);
                     startButton.DrawWithText(comicSans, "Start", Color.White);
@@ -171,14 +174,17 @@ namespace _2dracer
                     break;
 
                 case GameState.Game:
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
+                    GraphicsDevice.Clear(Color.CornflowerBlue);
+
                     map.Draw();
-
                     Managers.GameMaster.Draw();
-
                     ai.Draw();
                     player.Draw();
                     turret1.Draw();
-                    
+                    spriteBatch.End();
+
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
                     spriteBatch.DrawString(comicSans, "Press Esc to go to the Menu", new Vector2(0, 420), Color.White);
                     break;
             }
