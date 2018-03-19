@@ -31,12 +31,13 @@ namespace _2dracer.Helpers
         // methods
         public override float CalculateMoment(float mass)
         {
-            throw new NotImplementedException();
+            // lots of math to calculate the moment of inertia of a thin disk
+            return (float)(0.5 * mass * Math.Pow(radius, 2) + mass * posOffset.LengthSquared());
         }
 
         public override AABB GetAABB()
         {
-            throw new NotImplementedException();
+            return new AABB(posOffset, radius * 2, radius * 2, parent);
         }
     }
 }

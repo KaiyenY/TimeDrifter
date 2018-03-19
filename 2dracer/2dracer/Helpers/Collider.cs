@@ -19,7 +19,7 @@ namespace _2dracer.Helpers
 
         // properties
         public Vector2 PosOffset { get { return posOffset; } }
-        public Vector2 WorldPos { get { return parent.Position + posOffset; } }
+        public Vector2 WorldPos { get { return parent.Position + RotateVector(posOffset, parent.Rotation); } }
         public GameObject Parent { get { return parent; } }
 
         // constructor
@@ -42,6 +42,13 @@ namespace _2dracer.Helpers
 
         // static helper methods
 
+        public static Vector2 RotateVector(Vector2 vector, float rotation)
+        {
+            // formula for rotating a vector
+            return new Vector2(vector.X * (float)Math.Cos(rotation) - vector.Y * (float)Math.Sin(rotation),
+                               vector.X * (float)Math.Sin(rotation) + vector.Y * (float)Math.Cos(rotation));
+        }
+
         // Calculates the trivial case of AABB vs AABB and returns only whether they are colliding or not
         // Used for broad collision detection to form collision pairs for closer inspection
         public static bool IsCollideBroad(Collider a, Collider b)
@@ -61,7 +68,9 @@ namespace _2dracer.Helpers
             // AABB vs AABB
             if(a is AABB && b is AABB)
             {
-                return AABBVsAABB((AABB)a, (AABB)b);
+                OBB newA = ((AABB)a).GetOBB();
+                OBB newB = ((AABB)b).GetOBB();
+                return OBBVsOBB(newA, newB);
             }
 
             // OBB vs OBB
@@ -106,24 +115,77 @@ namespace _2dracer.Helpers
             throw new Exception();
         }
 
-        private static CollisionManifold AABBVsAABB(AABB a, AABB b)
+        public static CollisionManifold OBBVsOBB(OBB a, OBB b)
+        {
+            float bestDist = float.NegativeInfinity;        // this will be the penetration depth
+            Vector2 resAxis;                                // this will be the resolution axis
+
+            // check OBB A's normals
+            Vector2[] worldNormalsA = a.WorldNormals;
+            for(int i = 0; i < worldNormalsA.Length; i++)
+            {
+                float dist = Vector2.Dot(worldNormalsA[i], b.GetSupportPoint(-worldNormalsA[i]) - a.GetSupportPoint(worldNormalsA[i]));
+
+                if(dist > 0)
+                {
+                    // we found a seperating axis so no collision detected
+                    return new CollisionManifold();
+                }
+                else if(dist > bestDist)
+                {
+                    bestDist = dist;
+                    resAxis = worldNormalsA[i];
+                }
+            }
+
+            // check OBB B's normals
+            Vector2[] worldNormalsB = b.WorldNormals;
+            for (int i = 0; i < worldNormalsB.Length; i++)
+            {
+                float dist = Vector2.Dot(worldNormalsB[i], a.GetSupportPoint(-worldNormalsB[i]) - b.GetSupportPoint(worldNormalsB[i]));
+
+                if (dist > 0)
+                {
+                    // we found a seperating axis so no collision detected
+                    return new CollisionManifold();
+                }
+                else if (dist > bestDist)
+                {
+                    bestDist = dist;
+                    resAxis = worldNormalsB[i];
+                }
+            }
+
+            // if we got this far that means no seperating axis has been found and collision is detected
+            throw new NotImplementedException();
+        }
+
+        public static CollisionManifold OBBVsCircle(OBB a, Circle b)
         {
             throw new NotImplementedException();
         }
 
-        private static CollisionManifold OBBVsOBB(OBB a, OBB b)
+        public static CollisionManifold CircleVsCircle(Circle a, Circle b)
         {
-            throw new NotImplementedException();
-        }
+            float distance = (b.WorldPos - a.WorldPos).Length();
+            float penetrationDepth = a.Radius + b.Radius - distance;
 
-        private static CollisionManifold OBBVsCircle(OBB a, Circle b)
-        {
-            throw new NotImplementedException();
-        }
+            if(penetrationDepth > 0)
+            {
+                // find contact points
+                Vector2 contactPointA = a.Radius * Vector2.Normalize(b.WorldPos - a.WorldPos);
+                Vector2 contactPointB = b.Radius * Vector2.Normalize(a.WorldPos - b.WorldPos);
 
-        private static CollisionManifold CircleVsCircle(Circle a, Circle b)
-        {
-            throw new NotImplementedException();
+                // generate manifold
+                CollisionManifold manifold = new CollisionManifold(true, penetrationDepth, Vector2.Normalize(b.WorldPos - a.WorldPos), a, contactPointB, b, contactPointA);
+
+                return manifold;
+            }
+            else
+            {
+                // returns no collision found
+                return new CollisionManifold();
+            }
         }
     }
 }
