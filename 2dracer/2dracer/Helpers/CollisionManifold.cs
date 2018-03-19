@@ -13,29 +13,32 @@ namespace _2dracer.Helpers
     class CollisionManifold
     {
         // fields
+        public bool isColliding;
+        
         public float penetrationDepth;
         public Vector2 resolutionAxis;
 
         public Collider colliderA;
-        public List<Vector2> contactPointsA;
+        public Vector2 contactPointA;
 
         public Collider colliderB;
-        public List<Vector2> contactPointsB;
+        public Vector2 contactPointB;
 
         // constructor
-        public CollisionManifold(float penetrationDepth, Vector2 resolutionAxis,
-               Collider colliderA, List<Vector2> contactPointsA, Collider colliderB, List<Vector2> contactPointsB)
+        public CollisionManifold(bool isColliding, float penetrationDepth, Vector2 resolutionAxis,
+               Collider colliderA, Vector2 contactPointA, Collider colliderB, Vector2 contactPointB)
         {
+            this.isColliding = isColliding;
             this.penetrationDepth = penetrationDepth;
             this.resolutionAxis = resolutionAxis;
             this.colliderA = colliderA;
-            this.contactPointsA = contactPointsA;
+            this.contactPointA = contactPointA;
             this.colliderB = colliderB;
-            this.contactPointsB = contactPointsB;
+            this.contactPointB = contactPointB;
         }
 
-        public CollisionManifold(float penetrationDepth, Vector2 resolutionAxis, Collider colliderA, Collider colliderB)
-                          : this(penetrationDepth, resolutionAxis, colliderA, new List<Vector2>(), colliderB, new List<Vector2>()) { }
+        public CollisionManifold()
+                          : this(false, 0f, Vector2.Zero, null, Vector2.Zero, null, Vector2.Zero) { }
     }
 }
 

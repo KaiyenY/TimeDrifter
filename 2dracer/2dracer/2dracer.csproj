@@ -50,6 +50,7 @@
     <Compile Include="Managers\AI.cs" />
     <Compile Include="GameObjects\Bullet.cs" />
     <Compile Include="GameObjects\Enemy.cs" />
+    <Compile Include="Managers\Camera.cs" />
     <Compile Include="Managers\CollisionManager.cs" />
     <Compile Include="Managers\GameMaster.cs" />
     <Compile Include="Managers\Input.cs" />

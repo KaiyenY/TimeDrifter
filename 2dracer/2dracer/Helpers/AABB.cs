@@ -21,8 +21,8 @@ namespace _2dracer.Helpers
         public AABB(Vector2 posOffset, float width, float height, GameObject parent)
              : base(posOffset, parent)
         {
-            halfWidth = width * 0.5f;
-            halfHeight = height * 0.5f;
+            halfWidth = Math.Abs(width * 0.5f);
+            halfHeight = Math.Abs(height * 0.5f);
         }
 
         public AABB(float width, float height, GameObject parent)
@@ -31,12 +31,13 @@ namespace _2dracer.Helpers
         // methods
         public override float CalculateMoment(float mass)
         {
-            throw new NotImplementedException();
+            // lots of math to calculate the moment of inertia of a rectangular plate
+            return (float)((1 / 12) * mass * (Math.Pow(halfHeight * 2, 2) + Math.Pow(halfWidth * 2, 2)) + mass * posOffset.LengthSquared());
         }
 
         public override AABB GetAABB()
         {
-            throw new NotImplementedException();
+            return this;
         }
 
         /// <summary>
