@@ -68,7 +68,7 @@ namespace _2dracer
             this.IsMouseVisible = true;
 
             GameState = GameState.Menu;
-
+            
 
             base.Initialize();
         }
@@ -95,7 +95,7 @@ namespace _2dracer
             turret1 = new Turret(gun, bullet);
             player = new Player(car, new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2));
             ai = new AI(cop);
-
+            ai.AssignNewPathsToEnemies(ai.nodes[6]);
             //MenuButtons
             startButton = new MenuElement(new Rectangle(new Point(20, 50), new Point(200, 50)), idle, pressed);
             exitButton = new MenuElement(new Rectangle(new Point(20, 120), new Point(200, 50)), idle, pressed);
@@ -142,11 +142,7 @@ namespace _2dracer
                     // or in this case, the center of the screen
                     player.Update();
                     turret1.Update(gameTime, player.Position);
-                    if(timeSinceLastReRoute > 10)
-                    {
-                        ai.AssignNewPathsToEnemies(ai.nodes[10]);
-                        timeSinceLastReRoute = 0;
-                    }
+                    
                     ai.Update(player.Position);
                     timeSinceLastReRoute += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     map.Update();

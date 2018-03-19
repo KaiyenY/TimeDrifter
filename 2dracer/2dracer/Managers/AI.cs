@@ -118,7 +118,7 @@ namespace _2dracer
             for (int i = 0; i < enemies.Length; i++)
             {
                 enemies[i].Route = Pathfind(nodes[0], target);
-                Console.WriteLine(enemies[i].Route.Peek());
+                
             }
         }
 
@@ -141,6 +141,7 @@ namespace _2dracer
                     System.Diagnostics.Debug.Print("open set check: " + toCheck.ToString());
                         if(toCheck.fScore < current.fScore) 
                         {
+                        System.Diagnostics.Debug.Print(toCheck.ToString() + " has the lowest fScore");
                         current = toCheck;
                         }
                     }
@@ -176,6 +177,7 @@ namespace _2dracer
 
                         if(!(tentgScore >= neighbor.gScore)) //recording the best path
                         {
+                            System.Diagnostics.Debug.Print("Recording the path of " + neighbor.ToString());
                             neighbor.Parent = current;
                             neighbor.gScore = tentgScore;
                             neighbor.fScore = neighbor.gScore + target.DistanceFrom(neighbor);
