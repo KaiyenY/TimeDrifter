@@ -170,7 +170,7 @@ namespace _2dracer
                     spriteBatch.DrawString(comicSans, "Welcome to Project Apathy", new Vector2(GraphicsDevice.Viewport.Width / 2, 20), Color.White);
                     startButton.DrawWithText(comicSans, "Start", Color.White);
                     exitButton.DrawWithText(comicSans, "Exit", Color.White);
-                    spriteBatch.DrawString(comicSans, "Press Esc to Quit", new Vector2(0, 420), Color.White);
+                    spriteBatch.DrawString(comicSans, "Press Esc to Quit", new Vector2(50, 600), Color.White);
                     break;
 
                 case GameState.Game:
@@ -185,7 +185,10 @@ namespace _2dracer
                     spriteBatch.End();
 
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
-                    spriteBatch.DrawString(comicSans, "Press Esc to go to the Menu", new Vector2(0, 420), Color.White);
+                    spriteBatch.DrawString(comicSans, "Press Esc to Quit", new Vector2(50, 600), Color.White);
+
+                    spriteBatch.DrawString(comicSans, "Health: 100", new Vector2(50, 100), Color.White);
+                    spriteBatch.DrawString(comicSans, "Time Juice: 10", new Vector2(250, 100), Color.White);
                     break;
             }
             spriteBatch.End();

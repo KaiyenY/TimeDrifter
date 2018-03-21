@@ -27,7 +27,7 @@ namespace _2dracer
         public void Update()
         {
             // only move bullet if it is close enough to matter
-            if (Math.Abs(position.X) < 1000 || Math.Abs(position.Y) < 1000)
+            if (Math.Abs(position.X) < 100000 || Math.Abs(position.Y) < 100000)
             {
                 float speed = 10;
 
