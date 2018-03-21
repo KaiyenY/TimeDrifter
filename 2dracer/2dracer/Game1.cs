@@ -144,7 +144,7 @@ namespace _2dracer
                     // or in this case, the center of the screen
                     player.Update();
                     turret1.Update(gameTime, player.Position);
-                    if(timeSinceLastReRoute > 10)
+                    if(timeSinceLastReRoute > 6)
                     {
                         ai.AssignNewPathsToEnemies(ai.nodes[10]);
                         timeSinceLastReRoute = 0;
