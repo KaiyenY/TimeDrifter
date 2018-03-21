@@ -31,8 +31,7 @@ namespace _2dracer
 
         // SpriteFonts
         public static SpriteFont comicSans;
-
-        private Turret turret1;
+        
         private Player player;
 
         // Texture2Ds
@@ -81,9 +80,9 @@ namespace _2dracer
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // Texture2Ds
-            Texture2D gun = Content.Load<Texture2D>("Textures/Turret");
-            Texture2D bullet = Content.Load<Texture2D>("bullet");
-            Texture2D car = Content.Load<Texture2D>("Textures/RedCar");
+            Texture2D turretSprite = Content.Load<Texture2D>("Textures/Turret");
+            Texture2D bulletSprite = Content.Load<Texture2D>("bullet");
+            Texture2D playerSprite = Content.Load<Texture2D>("Textures/RedCar");
             Texture2D cop = Content.Load<Texture2D>("cop");
             square = Content.Load<Texture2D>("square");
             tilespritesheet = Content.Load<Texture2D>("Textures/Spritesheet");
@@ -94,8 +93,11 @@ namespace _2dracer
             comicSans = Content.Load<SpriteFont>("comic");
 
             // objects
-            turret1 = new Turret(gun, bullet);
-            player = new Player(car, new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), comicSans);
+            player = new Player(
+                playerSprite, 
+                bulletSprite, 
+                turretSprite,
+                new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2));
             ai = new AI(cop);
 
             //MenuButtons
@@ -143,8 +145,7 @@ namespace _2dracer
                     // update turret position to player car position
                     // or in this case, the center of the screen
                     player.Update(gameTime);
-                    turret1.Update(gameTime, player.Position);
-                    if(timeSinceLastReRoute > 6)
+                    if(timeSinceLastReRoute > 10)
                     {
                         ai.AssignNewPathsToEnemies(ai.nodes[10]);
                         timeSinceLastReRoute = 0;
@@ -170,7 +171,7 @@ namespace _2dracer
                     spriteBatch.DrawString(comicSans, "Welcome to Project Apathy", new Vector2(GraphicsDevice.Viewport.Width / 2, 20), Color.White);
                     startButton.DrawWithText(comicSans, "Start", Color.White);
                     exitButton.DrawWithText(comicSans, "Exit", Color.White);
-                    spriteBatch.DrawString(comicSans, "Press Esc to Quit", new Vector2(50, 600), Color.White);
+                    spriteBatch.DrawString(comicSans, "Press Esc to Quit", new Vector2(0, 420), Color.White);
                     break;
 
                 case GameState.Game:
@@ -181,12 +182,10 @@ namespace _2dracer
                     Managers.GameMaster.Draw();
                     ai.Draw();
                     player.Draw();
-                    turret1.Draw();
                     spriteBatch.End();
 
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
-                    spriteBatch.DrawString(comicSans, "Press Esc to Quit", new Vector2(50, 600), Color.White);
-                    player.DrawHUD();
+                    spriteBatch.DrawString(comicSans, "Press Esc to go to the Menu", new Vector2(0, 420), Color.White);
                     break;
             }
             spriteBatch.End();

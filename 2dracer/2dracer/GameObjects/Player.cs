@@ -12,19 +12,18 @@ namespace _2dracer
 {
     class Player : Mover
     {
-        private int health = 100;
-        private float timeJuice = 0;
-        private SpriteFont font;
+        // Fields
+        private Turret turret;
 
-        public Player(Texture2D tex, Vector2 v, SpriteFont s) :
-            base(
-                new GameObject(v, 0, tex, new Vector2(50, 50))
-                )
+        // Constructor
+        public Player(Texture2D sprite, Texture2D bulletSprite, Texture2D turretSprite, Vector2 position) 
+            : base(new GameObject(position, 0, sprite, new Vector2(64, 128)))
         {
-            font = s;
+            turret = new Turret(turretSprite, bulletSprite);
         }
 
-        public void Update(GameTime gameTime)
+        // Methods
+        public override void Update(GameTime gameTime)
         {
             // turn car
             rotation += Input.GetAxisRaw(Axis.X) * 0.04f;
@@ -34,21 +33,19 @@ namespace _2dracer
             position.X += (float)Math.Cos(rotation) * speed;
             position.Y += (float)Math.Sin(rotation) * speed;
 
-            if(timeJuice < 10)
-                timeJuice += 
+
+            // Update turret
+            turret.Update(gameTime, position);
         }
 
-        public void Draw()
+        public override void Draw()
         {
             rotation += (float)Math.PI/2;
-            base.DrawRect(1);
+            base.Draw();
             rotation -= (float)Math.PI / 2;
-        }
 
-        public void DrawHUD()
-        {
-            Game1.spriteBatch.DrawString(font, "Health: " + health, new Vector2(50, 100), Color.White);
-            Game1.spriteBatch.DrawString(font, "Time Juice: " + (int)timeJuice, new Vector2(250, 100), Color.White);
+            // Draw turret
+            turret.Draw();
         }
     }
 }
