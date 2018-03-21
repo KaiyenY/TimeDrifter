@@ -146,10 +146,10 @@ namespace _2dracer
                     turret1.Update(gameTime, player.Position);
                     if(timeSinceLastReRoute > 6)
                     {
-                        ai.AssignNewPathsToEnemies(ai.nodes[10]);
+                        ai.AssignNewPathsToEnemies(ai.nodes[7]);
                         timeSinceLastReRoute = 0;
                     }
-                    ai.Update(player.Position);
+                    ai.Update();
                     timeSinceLastReRoute += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     map.Update();
                     camera.Update(player.Position);

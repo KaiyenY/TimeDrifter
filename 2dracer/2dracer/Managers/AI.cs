@@ -18,7 +18,7 @@ namespace _2dracer
 
         private Queue<Node> testQueue = new Queue<Node>(); //TEMPORARY queue to test giving instructions to enemies
 
-
+        private Queue<Node> pathToGive = new Queue<Node>();
         public AI(Texture2D tex)
         {
             enemies = new Enemy[3];
@@ -90,7 +90,7 @@ namespace _2dracer
             }
         }
 
-        public void Update(Vector2 PlayerPos)
+        public void Update()
         {
             for (int i = 0; i < enemies.Length; i++)
             {
@@ -146,36 +146,44 @@ namespace _2dracer
                         }
                     }
 
-                    if(current == target)
-                    {
-                    Console.WriteLine("CLOSED SET:");
-                    Queue<Node> path = new Queue<Node>();
+                if (current == target)
+                {
+                    //Console.WriteLine("CLOSED SET:");
+                    //Queue<Node> path = new Queue<Node>();
 
-                        foreach(Node nodeinPath in closedSet)
-                        {
-                        path.Enqueue(new Node(nodeinPath));
-                        Console.WriteLine(nodeinPath.ToString());
-                        }
-                    path.Enqueue(target);
-                        return path;
-                    }
+                    //foreach (Node nodeinPath in closedSet)
+                    //{
+                    //    path.Enqueue(new Node(nodeinPath));
+                    //    Console.WriteLine(nodeinPath.ToString());
+                    //}
+                    //path.Enqueue(target);
+                    Console.WriteLine("Reconstructing path...");
+
+                    Queue<Node> path = ReconstructPath(start, current);
+
                     
+                    return path;
+                }
+
                 //Move current to the closed set
                 openSet.Remove(current);
                 closedSet.Add(current);
                 Console.WriteLine("Added " + current.ToString() + " to the closed set");
+
                 foreach(Node neighbor in current.Neighbors)
                 {
-                    Console.WriteLine("neighbor: " + neighbor.ToString());
+
+                    Console.WriteLine("current: " + current.ToString() + "neighbor: " + neighbor.ToString());
                     if(!closedSet.Contains(neighbor))//if this neighbor hasn't been checked yet
                     {
                         if(!openSet.Contains(neighbor))
                         {
                             openSet.Add(neighbor); //Discover a new node from the current node's neighbors
                         }
+
                         int tentgScore = current.gScore + neighbor.DistanceFrom(current);
 
-                        if(!(tentgScore >= neighbor.gScore)) //recording the best path
+                        if(!(tentgScore > neighbor.gScore)) //recording the best path
                         {
                             System.Diagnostics.Debug.Print("Recording the path of " + neighbor.ToString());
                             neighbor.Parent = current;
@@ -189,22 +197,22 @@ namespace _2dracer
             return null;
         }
 
-        private List<Node> ReconstructPath(Node start, Node current)
+        private Queue<Node> ReconstructPath(Node start, Node current) //Recursive algorithm to rebuild a path
         {
-            List<Node> totalPath = new List<Node>();
+            Console.WriteLine(current.ToString());
             if(current == start)
             {
-                return totalPath;
+                Console.WriteLine("returning1");
+                return pathToGive;
             }
             else
             {
-                totalPath.Add(current);
+                pathToGive.Enqueue(current);
                 ReconstructPath(start, current.Parent);
             }
-            return totalPath;
-        }
-
-        
+            Console.WriteLine("returning2");
+            return pathToGive;
+        }  
     }
 }
 //Ruben Young
