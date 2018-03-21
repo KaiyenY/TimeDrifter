@@ -21,7 +21,7 @@ namespace _2dracer.Managers
 
         public void Update(Vector2 pos)
         {
-            position.X = pos.X - (Game1.screenWidth / 2);
+            position.X = pos.X - (Game1.screenWidth / 2) ;
             position.Y = pos.Y - (Game1.screenHeight / 2);
 
             viewMatrix = Matrix.CreateTranslation(new Vector3(-position, 0));

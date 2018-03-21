@@ -172,11 +172,11 @@ namespace _2dracer
         /// Returns an angle in radians between the mouse cursor and a given game object
         /// </summary>
         /// <param name="obj">Object to determine angle with</param>
-        public static float MouseAngle(GameObject obj)
+        public static float MouseAngle()
         {
             // Get component displacement between cursor and object
-            float xDis = MousePos().X - obj.Position.X;
-            float yDis = MousePos().Y - obj.Position.Y;
+            float xDis = MousePos().X - (Game1.screenWidth / 2);
+            float yDis = MousePos().Y - (Game1.screenHeight / 2);
 
             return (float)Math.Atan2(yDis, xDis);
         }
