@@ -28,8 +28,10 @@ namespace _2dracer.MapElements
         private TileType type;                      // Type of tile
         private bool isEnabled;                     // Determines if tile draws to screen / updates
         private int[] index;                        // Index of this tile in array
-        
+
         // Properties
+        public int[] Index { get { return index; } }
+        public TileType Type { get { return type; } }
         // public Node Node { get { return node; } }
 
         // Constructor

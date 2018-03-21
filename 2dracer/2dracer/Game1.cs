@@ -120,6 +120,11 @@ namespace _2dracer
                     if (Input.KeyTap(Keys.Escape))
                         Exit();
 
+                    if (Input.KeyTap(Keys.U))
+                    {
+                        GameState = GameState.LevelEditor;
+                    }
+
                     if (startButton.IsClicked())
                     {
                         map = new Map();
@@ -133,6 +138,12 @@ namespace _2dracer
                     }
                     break;
 
+                case GameState.LevelEditor:
+                    if (Input.KeyTap(Keys.Escape))
+                        GameState = GameState.Menu;
+
+
+                    break;
 
                 case GameState.Game:
                     if (Input.KeyTap(Keys.Escape))
@@ -172,6 +183,16 @@ namespace _2dracer
                     startButton.DrawWithText(comicSans, "Start", Color.White);
                     exitButton.DrawWithText(comicSans, "Exit", Color.White);
                     spriteBatch.DrawString(comicSans, "Press Esc to Quit", new Vector2(0, 420), Color.White);
+                    break;
+
+                case GameState.LevelEditor:
+
+                    // Acts like a debug mode while in the editor
+                    if (map != null)
+                    {
+                        map.Draw();
+                    }
+
                     break;
 
                 case GameState.Game:
