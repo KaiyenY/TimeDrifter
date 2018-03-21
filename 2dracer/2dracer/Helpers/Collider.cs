@@ -118,7 +118,9 @@ namespace _2dracer.Helpers
         public static CollisionManifold OBBVsOBB(OBB a, OBB b)
         {
             float bestDist = float.NegativeInfinity;        // this will be the penetration depth
-            Vector2 resAxis;                                // this will be the resolution axis
+            Vector2 resAxis = Vector2.UnitX;                // this will be the resolution axis
+            OBB referenceOBB = a;                           // the collider who "owns" the resolution axis
+            OBB incidentOBB = b;                            // the collider whose corner has contacted the reference collider
 
             // check OBB A's normals
             Vector2[] worldNormalsA = a.WorldNormals;
@@ -135,6 +137,8 @@ namespace _2dracer.Helpers
                 {
                     bestDist = dist;
                     resAxis = worldNormalsA[i];
+                    referenceOBB = a;
+                    incidentOBB = b;
                 }
             }
 
@@ -153,16 +157,94 @@ namespace _2dracer.Helpers
                 {
                     bestDist = dist;
                     resAxis = worldNormalsB[i];
+                    referenceOBB = b;
+                    incidentOBB = a;
                 }
             }
 
+            bestDist = Math.Abs(bestDist);          // penetration depth should be positive
+
             // if we got this far that means no seperating axis has been found and collision is detected
-            throw new NotImplementedException();
+            // find contact points
+            Vector2 incidentContact = incidentOBB.GetSupportPoint(-resAxis) - incidentOBB.WorldPos;
+            Vector2 referenceContact = incidentOBB.WorldPos - referenceOBB.WorldPos + incidentContact;
+            referenceContact += bestDist * Vector2.Normalize(resAxis);
+
+            // the new "A" in the manifold should always be the reference face
+            return new CollisionManifold(true, bestDist, resAxis, referenceOBB, referenceContact, incidentOBB, incidentContact);
         }
 
         public static CollisionManifold OBBVsCircle(OBB a, Circle b)
         {
-            throw new NotImplementedException();
+            float bestDist = float.NegativeInfinity;        // the penetration depth
+            Vector2 resAxis = Vector2.UnitX;                // the resolution axis
+
+            Vector2 posDif = b.WorldPos - a.WorldPos;       // find the vector between them in world coordinates
+            posDif = RotateVector(posDif, -a.WorldRot);     // convert to local coordinates of the OBB
+
+            // check if the posDif is inside the OBB
+            if(posDif.X < a.HalfWidth && posDif.X > -a.HalfWidth && posDif.Y < a.HalfHeight && posDif.Y > -a.HalfHeight)
+            {
+                // find the shortest distance from the center of the circle to one of the sides
+                for(int i = 0; i < a.Normals.Length; i++)
+                {
+                    float dist = Vector2.Dot(a.Normals[i], posDif - a.GetSupportPoint(a.Normals[i]));
+
+                    if(dist > 0)
+                    {
+                        // HOW????      no collision detected
+                        return new CollisionManifold();
+                    }
+                    else if (dist > bestDist)
+                    {
+                        bestDist = dist;
+                        resAxis = a.WorldNormals[i];    // resolution axis should be in world coords
+                    }
+                }
+
+                bestDist -= b.Radius;           // the penetration depth shouldn't just be from center to side
+            }
+            else
+            {
+                // clamp the posDif so it is a point on the OBB
+                Vector2 closestPoint = posDif;
+                if(closestPoint.X > a.HalfWidth)
+                {
+                    closestPoint.X = a.HalfWidth;
+                }
+                else if(closestPoint.X < -a.HalfWidth)
+                {
+                    closestPoint.X = -a.HalfWidth;
+                }
+                if (closestPoint.Y > a.HalfHeight)
+                {
+                    closestPoint.Y = a.HalfHeight;
+                }
+                else if (closestPoint.Y < -a.HalfHeight)
+                {
+                    closestPoint.Y = -a.HalfHeight;
+                }
+
+                bestDist = (posDif - closestPoint).Length() - b.Radius;
+                resAxis = Vector2.Normalize(posDif - closestPoint);
+            }
+
+            if (bestDist < 0)
+            {
+                // collision detected
+                // penetration depth should be positive
+                bestDist = Math.Abs(bestDist);
+
+                // find contact points
+                Vector2 contactPointB = b.Radius * -resAxis;
+                Vector2 contactPointA = b.WorldPos - a.WorldPos + contactPointB;
+                contactPointA += bestDist * Vector2.Normalize(resAxis);
+
+                return new CollisionManifold(true, bestDist, resAxis, a, contactPointA, b, contactPointB);
+            }
+
+            // you shouldn't ever get here, but just in case we'll say no collision found
+            return new CollisionManifold();
         }
 
         public static CollisionManifold CircleVsCircle(Circle a, Circle b)

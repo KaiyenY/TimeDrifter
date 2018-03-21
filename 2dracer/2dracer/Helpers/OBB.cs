@@ -33,6 +33,7 @@ namespace _2dracer.Helpers
                 return worldVertices;
             }
         }
+        public Vector2[] Normals { get { return normals; } }
         public Vector2[] WorldNormals
         {
             get
