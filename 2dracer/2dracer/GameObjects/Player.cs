@@ -12,13 +12,18 @@ namespace _2dracer
 {
     class Player : Mover
     {
-        public Player(Texture2D tex, Vector2 v) :
-            base(
-                new GameObject(v, 0, tex, new Vector2(50, 50))
-                )
-        { }
+        // Fields
+        private Turret turret;
 
-        public void Update()
+        // Constructor
+        public Player(Texture2D sprite, Texture2D bulletSprite, Texture2D turretSprite, Vector2 position) 
+            : base(new GameObject(position, 0, sprite, new Vector2(64, 128)))
+        {
+            turret = new Turret(turretSprite, bulletSprite);
+        }
+
+        // Methods
+        public override void Update(GameTime gameTime)
         {
             // turn car
             rotation += Input.GetAxisRaw(Axis.X) * 0.04f;
@@ -27,13 +32,20 @@ namespace _2dracer
             float speed = Input.GetAxisRaw(Axis.Y) * 3;
             position.X += (float)Math.Cos(rotation) * speed;
             position.Y += (float)Math.Sin(rotation) * speed;
+
+
+            // Update turret
+            turret.Update(gameTime, position);
         }
 
-        public void Draw()
+        public override void Draw()
         {
             rotation += (float)Math.PI/2;
-            base.DrawRect(1);
+            base.Draw();
             rotation -= (float)Math.PI / 2;
+
+            // Draw turret
+            turret.Draw();
         }
     }
 }

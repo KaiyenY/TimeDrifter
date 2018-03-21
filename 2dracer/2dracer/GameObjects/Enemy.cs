@@ -15,10 +15,10 @@ namespace _2dracer
         public Queue<Node> Route { get; set; } //The path the enemy will take
         private Node currentDestination; //The node within the path that the car will currently go towards
 
-        public Enemy(Texture2D tex, Vector2 v) :
-            base(v, 0, tex, new Vector2(50, 50))
+        public Enemy(Texture2D sprite, Vector2 position) :
+            base(position, 0, sprite, new Vector2(64, 128))
         {
-            currentDestination = new Node(v.ToPoint()); //initialize current destination to where it begins
+            currentDestination = new Node(position.ToPoint()); //initialize current destination to where it begins
         }
 
         private float Speed()
@@ -33,10 +33,10 @@ namespace _2dracer
             return 3;
         }
 
-        public void Draw()
+        public override void Draw()
         {
             rotation += (float)Math.PI / 2;
-            base.DrawRect(4);
+            base.Draw();
             Game1.spriteBatch.DrawString(Game1.comicSans, "GOING TO " + currentDestination.Location, new Vector2(this.Position.X + 10, this.Position.Y - 10), Color.Red);
             rotation -= (float)Math.PI / 2;
         }
