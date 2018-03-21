@@ -52,7 +52,7 @@ namespace _2dracer
             else
             {
                 // Use mouse input
-                rotation = Input.MouseAngle(this);
+                rotation = Input.MouseAngle();
             }
 
             // a bullet fires every 0.15 seconds

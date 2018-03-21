@@ -97,7 +97,8 @@ namespace _2dracer
                 playerSprite, 
                 bulletSprite, 
                 turretSprite,
-                new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2));
+                new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2),
+                comicSans);
             ai = new AI(cop);
 
             //MenuButtons
@@ -182,7 +183,7 @@ namespace _2dracer
                     spriteBatch.DrawString(comicSans, "Welcome to Project Apathy", new Vector2(GraphicsDevice.Viewport.Width / 2, 20), Color.White);
                     startButton.DrawWithText(comicSans, "Start", Color.White);
                     exitButton.DrawWithText(comicSans, "Exit", Color.White);
-                    spriteBatch.DrawString(comicSans, "Press Esc to Quit", new Vector2(0, 420), Color.White);
+                    spriteBatch.DrawString(comicSans, "Press Esc to Quit", new Vector2(50, 600), Color.White);
                     break;
 
                 case GameState.LevelEditor:
@@ -206,7 +207,8 @@ namespace _2dracer
                     spriteBatch.End();
 
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
-                    spriteBatch.DrawString(comicSans, "Press Esc to go to the Menu", new Vector2(0, 420), Color.White);
+                    spriteBatch.DrawString(comicSans, "Press Esc to go to the Menu", new Vector2(50, 600), Color.White);
+                    player.DrawHUD();
                     break;
             }
             spriteBatch.End();
