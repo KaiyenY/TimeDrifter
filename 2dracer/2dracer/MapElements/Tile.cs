@@ -20,7 +20,7 @@ namespace _2dracer.MapElements
     public class Tile
     {
         // Fields
-        private Node node;                          // The node associated with this tile
+        // private Node node;                          // The node associated with this tile
         private Point size;                         // The size of a tile drawn to the screen
         private Rectangle rect;                     // The position and size of the tile
         private Rectangle sourceRect;               // Which sprite in the sheet the tile needs
@@ -28,9 +28,11 @@ namespace _2dracer.MapElements
         private TileType type;                      // Type of tile
         private bool isEnabled;                     // Determines if tile draws to screen / updates
         private int[] index;                        // Index of this tile in array
-        
+
         // Properties
-        public Node Node { get { return node; } }
+        public int[] Index { get { return index; } }
+        public TileType Type { get { return type; } }
+        // public Node Node { get { return node; } }
 
         // Constructor
         public Tile(Texture2D spritesheet, int[] index, int type)

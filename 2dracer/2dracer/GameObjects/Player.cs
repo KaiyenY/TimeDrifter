@@ -12,28 +12,63 @@ namespace _2dracer
 {
     class Player : Mover
     {
-        public Player(Texture2D tex, Vector2 v) :
-            base(
-                new GameObject(v, 0, tex, new Vector2(50, 50))
-                )
-        { }
+        // Fields
+        private Turret turret;
+        private SpriteFont font;
+        private int health = 100;
+        private double timeJuice = 0;
 
-        public void Update()
+        // Constructor
+        public Player(Texture2D sprite, Texture2D bulletSprite, Texture2D turretSprite, Vector2 position, SpriteFont s) 
+            : base(new GameObject(position, 0, sprite, new Vector2(64, 128)), 
+                  new Vector2(0,0), new Vector2(0,0), 0, 0, 1)
         {
-            // turn car
-            rotation += Input.GetAxisRaw(Axis.X) * 0.04f;
-
-            // move car
-            float speed = Input.GetAxisRaw(Axis.Y) * 3;
-            position.X += (float)Math.Cos(rotation) * speed;
-            position.Y += (float)Math.Sin(rotation) * speed;
+            turret = new Turret(turretSprite, bulletSprite);
+            font = s;
         }
 
-        public void Draw()
+        // Methods
+        public override void Update(GameTime gameTime)
         {
-            rotation += (float)Math.PI/2;
-            base.DrawRect(1);
+            float xAxis = Input.GetAxisRaw(Axis.X);
+
+            // turn car
+            AddTorque(xAxis * 0.4f);
+            if(xAxis == 0) AddTorque(angularAccel * -1);
+
+            // move car
+            float yAxis = Input.GetAxisRaw(Axis.Y);
+            float horsepower = yAxis * 30.0f;
+
+            Vector2 force = new Vector2();
+            force.X += (float)Math.Cos(rotation) * horsepower;
+            force.Y += (float)Math.Sin(rotation) * horsepower;
+
+            AddForce(force);
+            if(yAxis == 0) AddForce(velocity * -1);
+
+            if (timeJuice < 10)
+                timeJuice += gameTime.ElapsedGameTime.TotalMilliseconds/1000;
+
+            // Update turret
+            turret.Update(gameTime, position);
+            base.Update(gameTime);
+        }
+
+        public override void Draw()
+        {
+            rotation += (float)Math.PI / 2;
+            base.Draw();
             rotation -= (float)Math.PI / 2;
+
+            // Draw turret
+            turret.Draw();
+        }
+
+        public void DrawHUD()
+        {
+            Game1.spriteBatch.DrawString(font, "Health: " + health, new Vector2(50, 100), Color.White);
+            Game1.spriteBatch.DrawString(font, "Time Juice: " + (int)timeJuice, new Vector2(250, 100), Color.White);
         }
     }
 }

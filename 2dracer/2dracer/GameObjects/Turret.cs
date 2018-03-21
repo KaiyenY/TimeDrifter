@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,18 +8,17 @@ namespace _2dracer
 {
     class Turret : GameObject
     {
-        private Texture2D t;
-        private Texture2D b;
+        private Texture2D bulletSprite;
         private Bullet[] bullets;
 
         // which index of array will be the "new" bullet
         private int bulletIndex = 0;
 
-        public Turret(Texture2D tex, Texture2D bullet) : 
-            base(new Vector2(0,0), 0, tex, new Vector2(1, 2))
+        public Turret(Texture2D sprite, Texture2D bulletSprite) : 
+            base(new Vector2(0,0), 0, sprite, new Vector2(25, 50))
         {
-            t = tex;
-            b = bullet;
+            this.sprite = sprite;
+            this.bulletSprite = bulletSprite;
 
             // using array so we dont need to
             // reallocate arrays (how List works)
@@ -35,7 +30,7 @@ namespace _2dracer
                 // throw bullets into the void
                 // out of sight, out of mind
 
-                bullets[i] = new Bullet(b, new Vector2(-999, -999), 0);
+                bullets[i] = new Bullet(this.bulletSprite, new Vector2(-999, -999), 0);
             }
         }
 
@@ -57,7 +52,7 @@ namespace _2dracer
             else
             {
                 // Use mouse input
-                rotation = Input.MouseAngle(this);
+                rotation = Input.MouseAngle();
             }
 
             // a bullet fires every 0.15 seconds
@@ -67,7 +62,7 @@ namespace _2dracer
                 timer = 0;
 
                 // set bullet position
-                bullets[bulletIndex] = new Bullet(b, position, rotation);
+                bullets[bulletIndex] = new Bullet(bulletSprite, position, rotation);
 
                 // get index of next bullet to fire, 1-100
                 bulletIndex++;
@@ -81,10 +76,10 @@ namespace _2dracer
                 bullet.Update();
         }
 
-        public void Draw()
+        public override void Draw()
         {
             rotation += (float)Math.PI / 2;
-            base.DrawRect(0.75f);
+            base.Draw();
             rotation -= (float)Math.PI / 2;
 
             // draw all the bullets

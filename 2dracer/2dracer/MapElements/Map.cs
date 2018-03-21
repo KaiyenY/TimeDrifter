@@ -1,5 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using System;
+using System.IO;
+
+using Microsoft.Xna.Framework;
 
 namespace _2dracer.MapElements
 {
@@ -9,24 +11,21 @@ namespace _2dracer.MapElements
     public class Map
     {
         // Fields
-        private Rectangle rect;                             // The map's rectangle
-        private Tile[,] tiles;                              // 2D array of tiles
-
+        private BinaryReader br;            // Reads binary stuff
+        private BinaryWriter bw;            // Writes binary stuff
+        private Rectangle rect;             // The map's rectangle
+        private Tile[,] tiles;              // 2D array of tiles
+        private string defaultPath;
+        
         // Properties
 
         // Constructor
-        public Map()
+        public Map(string path = @"..\..\..\..\Content\Maps\Main.map")
         {
-            tiles = new Tile[5, 5];
-            rect = SetRect();
-
-            for (int y = 0; y < tiles.GetLength(1); y++)
-            {
-                for (int x = 0; x < tiles.GetLength(0); x++)
-                {
-                    tiles[x, y] = new Tile(Game1.tilespritesheet, new int[2] { x, y }, 6);
-                }
-            }
+            // Load map
+            FileStream stream = new FileStream(path, FileMode.Open);
+            
+            Load(stream);
         }
 
         // Methods
@@ -53,6 +52,74 @@ namespace _2dracer.MapElements
             Point position = new Point(0, 0);
             Point size = new Point(tiles.GetLength(0) * 768, tiles.GetLength(1) * 768);
             return new Rectangle(position, size);
+        }
+
+        /// <summary>
+        /// Loads a map from a file
+        /// </summary>
+        private void Load(FileStream stream)
+        {
+            try
+            {
+                br = new BinaryReader(stream);
+
+                // Read map size, set it to the tile array size
+                byte[] mapSize = br.ReadBytes(2);
+
+                tiles = new Tile[mapSize[0], mapSize[1]];
+
+                rect = SetRect();
+
+                // Read information about each tile
+                for (int y = 0; y < mapSize[1]; y++)
+                {
+                    for (int x = 0; x < mapSize[0]; x++)
+                    {
+                        tiles[x, y] = new Tile(Game1.tilespritesheet, new int[2] { x, y }, 6);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in loading file : " + e.Message);
+            }
+            finally
+            {
+                br.Close();
+            }
+        }
+
+        /// <summary>
+        /// Saves a map to a file
+        /// </summary>
+        private void Save(FileStream stream)
+        {
+            try
+            {
+                bw = new BinaryWriter(stream);
+
+                // Write map size to file
+                byte[] mapSize = { (byte)tiles.GetLength(0), (byte)tiles.GetLength(1) };
+                bw.Write(mapSize);
+
+                // Write information from each tile into the file
+                foreach (Tile tile in tiles)
+                {
+                    byte tileType = (byte)tile.Type;                                // Store the type of tile
+                    byte[] index = { (byte)tile.Index[0], (byte)tile.Index[1] };    // Store the location of the tile
+
+                    bw.Write(tileType);
+                    bw.Write(index);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error while saving file : " + e.Message);
+            }
+            finally
+            {
+                bw.Close();
+            }
         }
     }
 }

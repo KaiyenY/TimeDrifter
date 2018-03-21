@@ -12,8 +12,8 @@ namespace _2dracer
 {
     class Bullet : GameObject
     {
-        public Bullet(Texture2D tex, Vector2 pos, float angle) :
-            base (pos, angle, tex, new Vector2(0.5f, 0.5f))
+        public Bullet(Texture2D sprite, Vector2 position, float angle) :
+            base (position, angle, sprite, new Vector2(20))
         {
             //bullet position = gun position
             //we want bullet to start at tip of gun
@@ -27,7 +27,7 @@ namespace _2dracer
         public void Update()
         {
             // only move bullet if it is close enough to matter
-            if (Math.Abs(position.X) < 1000 || Math.Abs(position.Y) < 1000)
+            if (Math.Abs(position.X) < 100000 || Math.Abs(position.Y) < 100000)
             {
                 float speed = 10;
 
@@ -36,10 +36,10 @@ namespace _2dracer
             }
         }
 
-        public void Draw()
+        public override void Draw()
         {
             rotation += (float)Math.PI / 2;
-            base.DrawRect(20);
+            base.Draw();
             rotation -= (float)Math.PI / 2;
         }
     }

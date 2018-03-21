@@ -32,7 +32,7 @@ namespace _2dracer.Managers
             Instantiate(new Mover(new GameObject(new Vector2(50, 50))));
         }
 
-        // methods
+        // Methods
         /// <summary>
         /// Updates all game objects
         /// </summary>
