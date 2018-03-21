@@ -12,13 +12,19 @@ namespace _2dracer
 {
     class Player : Mover
     {
-        public Player(Texture2D tex, Vector2 v) :
+        private int health = 100;
+        private float timeJuice = 0;
+        private SpriteFont font;
+
+        public Player(Texture2D tex, Vector2 v, SpriteFont s) :
             base(
                 new GameObject(v, 0, tex, new Vector2(50, 50))
                 )
-        { }
+        {
+            font = s;
+        }
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             // turn car
             rotation += Input.GetAxisRaw(Axis.X) * 0.04f;
@@ -27,6 +33,9 @@ namespace _2dracer
             float speed = Input.GetAxisRaw(Axis.Y) * 3;
             position.X += (float)Math.Cos(rotation) * speed;
             position.Y += (float)Math.Sin(rotation) * speed;
+
+            if(timeJuice < 10)
+                timeJuice += 
         }
 
         public void Draw()
@@ -34,6 +43,12 @@ namespace _2dracer
             rotation += (float)Math.PI/2;
             base.DrawRect(1);
             rotation -= (float)Math.PI / 2;
+        }
+
+        public void DrawHUD()
+        {
+            Game1.spriteBatch.DrawString(font, "Health: " + health, new Vector2(50, 100), Color.White);
+            Game1.spriteBatch.DrawString(font, "Time Juice: " + (int)timeJuice, new Vector2(250, 100), Color.White);
         }
     }
 }

@@ -95,7 +95,7 @@ namespace _2dracer
 
             // objects
             turret1 = new Turret(gun, bullet);
-            player = new Player(car, new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2));
+            player = new Player(car, new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), comicSans);
             ai = new AI(cop);
 
             //MenuButtons
@@ -142,7 +142,7 @@ namespace _2dracer
 
                     // update turret position to player car position
                     // or in this case, the center of the screen
-                    player.Update();
+                    player.Update(gameTime);
                     turret1.Update(gameTime, player.Position);
                     if(timeSinceLastReRoute > 6)
                     {
@@ -186,9 +186,7 @@ namespace _2dracer
 
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
                     spriteBatch.DrawString(comicSans, "Press Esc to Quit", new Vector2(50, 600), Color.White);
-
-                    spriteBatch.DrawString(comicSans, "Health: 100", new Vector2(50, 100), Color.White);
-                    spriteBatch.DrawString(comicSans, "Time Juice: 10", new Vector2(250, 100), Color.White);
+                    player.DrawHUD();
                     break;
             }
             spriteBatch.End();
