@@ -166,7 +166,7 @@ namespace _2dracer
                     player.Update(gameTime);
                     if(timeSinceLastReRoute > 10)
                     {
-                        ai.AssignNewPathsToEnemies(ai.nodes[7]);
+                        ai.AssignNewPathsToEnemies(ai.nodes[6]);
                         timeSinceLastReRoute = 0;
                     }
                     ai.Update();
