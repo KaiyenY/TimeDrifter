@@ -29,16 +29,24 @@
         private void InitializeComponent()
         {
             this.tileDropDown = new System.Windows.Forms.ComboBox();
+            this.saveDialog = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
             // tileDropDown
             // 
+            this.tileDropDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tileDropDown.FormattingEnabled = true;
             this.tileDropDown.Location = new System.Drawing.Point(12, 12);
             this.tileDropDown.Name = "tileDropDown";
-            this.tileDropDown.Size = new System.Drawing.Size(213, 21);
+            this.tileDropDown.Size = new System.Drawing.Size(229, 28);
             this.tileDropDown.TabIndex = 0;
             this.tileDropDown.Text = "Please select a tile . . .";
+            // 
+            // saveDialog
+            // 
+            this.saveDialog.DefaultExt = "Main";
+            this.saveDialog.Filter = "Map Files (*.map)|*.map";
+            this.saveDialog.InitialDirectory = "C:/";
             // 
             // Editor
             // 
@@ -55,5 +63,6 @@
         #endregion
 
         private System.Windows.Forms.ComboBox tileDropDown;
+        private System.Windows.Forms.SaveFileDialog saveDialog;
     }
 }

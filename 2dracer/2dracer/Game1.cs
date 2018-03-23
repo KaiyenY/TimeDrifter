@@ -118,17 +118,23 @@ namespace _2dracer
             switch (GameState) //Check for gamestate
             {
                 case GameState.Menu:
+
                     if (Input.KeyTap(Keys.Escape))
                         Exit();
 
                     if (Input.KeyTap(Keys.U))
                     {
                         GameState = GameState.LevelEditor;
+
+                        EditorMenu menu = new EditorMenu();
+                        menu.Show();
                     }
 
                     if (startButton.IsClicked())
                     {
-                        map = new Map();
+                        byte[] size = { 5, 5 };
+
+                        map = new Map(size);
 
                         GameState = GameState.Game;
                     }
@@ -142,14 +148,15 @@ namespace _2dracer
                 case GameState.LevelEditor:
                     if (Input.KeyTap(Keys.Escape))
                         GameState = GameState.Menu;
-
-
+                    
                     break;
 
                 case GameState.Game:
                     if (Input.KeyTap(Keys.Escape))
                     {
                         GameState = GameState.Menu;
+
+                        map = null;
                     }
 
                     Managers.GameMaster.Update(gameTime);

@@ -15,17 +15,36 @@ namespace _2dracer.MapElements
         private BinaryWriter bw;            // Writes binary stuff
         private Rectangle rect;             // The map's rectangle
         private Tile[,] tiles;              // 2D array of tiles
-        private string defaultPath;
-        
+
         // Properties
 
         // Constructor
-        public Map(string path = @"..\..\..\..\Content\Maps\Main.map")
+        /// <summary>
+        /// Creates a default map
+        /// </summary>
+        public Map(byte[] mapSize)
+        {
+            tiles = new Tile[mapSize[0], mapSize[1]];
+
+            rect = SetRect();
+
+            // Read information about each tile
+            for (int y = 0; y < tiles.GetLength(1); y++)
+            {
+                for (int x = 0; x < tiles.GetLength(0); x++)
+                {
+                    tiles[x, y] = new Tile(Game1.tilespritesheet, new int[2] { x, y }, 6);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Creates a map from a file
+        /// </summary>
+        public Map(Stream stream)
         {
             // Load map
-            FileStream stream = new FileStream(path, FileMode.Open);
-            
-            Load(stream);
+            Load((FileStream)stream);
         }
 
         // Methods
@@ -92,7 +111,7 @@ namespace _2dracer.MapElements
         /// <summary>
         /// Saves a map to a file
         /// </summary>
-        private void Save(FileStream stream)
+        public void Save(FileStream stream)
         {
             try
             {
