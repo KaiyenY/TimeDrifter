@@ -1,124 +1,105 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace _2dracer.MapElements
 {
-    /// <summary>
-    /// Contains all information for the map
-    /// </summary>
     public class Map
     {
         // Fields
-        private BinaryReader br;            // Reads binary stuff
-        private BinaryWriter bw;            // Writes binary stuff
-        private Rectangle rect;             // The map's rectangle
-        private Tile[,] tiles;              // 2D array of tiles
-        private string defaultPath;
-        
+        private StreamReader sr;                // Reads the map files
+        private List<Node> nodes;               // Holds all the nodes for the map
+        private Tile[,] tiles;                  // Holds all the tiles for the map
+        private Vector2 position;               // Holds the current position of the map
+
         // Properties
+        public Vector2 Pos { get { return position; } }
 
-        // Constructor
-        public Map(string path = @"..\..\..\..\Content\Maps\Main.map")
+        // Constructors
+        /// <summary>
+        /// Generates a map from a file
+        /// </summary>
+        public Map(List<Texture2D> tileSprites)
         {
-            // Load map
-            FileStream stream = new FileStream(path, FileMode.Open);
+            int[] mapSize = new int[2];
+            int[] tileInfo;
             
-            Load(stream);
-        }
-
-        // Methods
-        public void Update()
-        {
-            foreach (Tile tile in tiles)
-            {
-                tile.Update();
-            }
-        }
-        public void Draw()
-        {
-            foreach (Tile tile in tiles)
-            {
-                tile.Draw();
-            }
-        }
-
-        /// <summary>
-        /// Creates the map's rectangle
-        /// </summary>
-        private Rectangle SetRect()
-        {
-            Point position = new Point(0, 0);
-            Point size = new Point(tiles.GetLength(0) * 768, tiles.GetLength(1) * 768);
-            return new Rectangle(position, size);
-        }
-
-        /// <summary>
-        /// Loads a map from a file
-        /// </summary>
-        private void Load(FileStream stream)
-        {
             try
             {
-                br = new BinaryReader(stream);
+                sr = new StreamReader(@"..\..\..\..\Content\Maps\Main.txt");
+                
+                string[] mapInfo = sr.ReadLine().Split(',');        // Split info from file into two
+                mapSize[0] = int.Parse(mapInfo[0]);                 // Set map horizontal size
+                mapSize[1] = int.Parse(mapInfo[1]);                 // SEt map vertical size
 
-                // Read map size, set it to the tile array size
-                byte[] mapSize = br.ReadBytes(2);
+                tileInfo = new int[mapSize[0] * mapSize[1] * 2];    // Sets up array to hold tile information
 
-                tiles = new Tile[mapSize[0], mapSize[1]];
+                // Read all information
+                for (int i = 0; i < tileInfo.Length; i += 2)
+                {
+                    string[] info = sr.ReadLine().Split(',');       // Split info from file
 
-                rect = SetRect();
+                    tileInfo[i] = int.Parse(info[0]);               // Tile type
+                    tileInfo[i + 1] = int.Parse(info[1]);           // Tile rotation
+                }
 
-                // Read information about each tile
+                // Set the starting position of the map
+                position = new Vector2(Game1.screenWidth - (mapSize[0] * 768), Game1.screenHeight - (mapSize[1] * 768));
+                
+                tiles = new Tile[mapSize[0], mapSize[1]];           // Set up tile array
+                nodes = new List<Node>();                           // Set up nodes list
+
+                // Create all tiles; set up nodes and collision stuff as need be
+                int j = 0;
                 for (int y = 0; y < mapSize[1]; y++)
                 {
                     for (int x = 0; x < mapSize[0]; x++)
                     {
-                        tiles[x, y] = new Tile(Game1.tilespritesheet, new int[2] { x, y }, 6);
+                        Vector2 tilePos = new Vector2(x * 768, y * 768);
+
+                        tiles[x, y] = new Tile(
+                            tilePos, 
+                            (TileType)tileInfo[j],
+                            MathHelper.ToRadians(tileInfo[j + 1]), 
+                            tileSprites);
+                        /*
+                        if ((TileType)tileInfo[j] != TileType.Building)
+                        {
+                            // Not a building, has a node
+                            nodes.Add(new Node());
+                        }
+                        else
+                        {
+                            // Something about collisions
+                        }
+                        */
+
+                        j += 2;
                     }
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in loading file : " + e.Message);
+                Console.WriteLine("Error : " + e.Message);
             }
             finally
             {
-                br.Close();
+                if (sr != null)
+                {
+                    sr.Close();
+                }
             }
         }
 
-        /// <summary>
-        /// Saves a map to a file
-        /// </summary>
-        private void Save(FileStream stream)
+        // Methods
+        public void Draw()
         {
-            try
+            foreach (Tile tile in tiles)
             {
-                bw = new BinaryWriter(stream);
-
-                // Write map size to file
-                byte[] mapSize = { (byte)tiles.GetLength(0), (byte)tiles.GetLength(1) };
-                bw.Write(mapSize);
-
-                // Write information from each tile into the file
-                foreach (Tile tile in tiles)
-                {
-                    byte tileType = (byte)tile.Type;                                // Store the type of tile
-                    byte[] index = { (byte)tile.Index[0], (byte)tile.Index[1] };    // Store the location of the tile
-
-                    bw.Write(tileType);
-                    bw.Write(index);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error while saving file : " + e.Message);
-            }
-            finally
-            {
-                bw.Close();
+                tile.Draw();
             }
         }
     }

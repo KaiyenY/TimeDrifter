@@ -15,16 +15,15 @@ namespace _2dracer.Managers
     {
         private Vector2 position;
         public Vector2 Position { get { return position; } }
-
-        private Matrix viewMatrix;
-        public Matrix ViewMatrix { get { return viewMatrix;  } }
+        
+        public Matrix ViewMatrix { get; set; }
 
         public void Update(Vector2 pos)
         {
             position.X = pos.X - (Game1.screenWidth / 2) ;
             position.Y = pos.Y - (Game1.screenHeight / 2);
 
-            viewMatrix = Matrix.CreateTranslation(new Vector3(-position, 0));
+            ViewMatrix = Matrix.CreateTranslation(new Vector3(-position, 0));
         }
     }
 }

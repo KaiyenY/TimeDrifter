@@ -30,14 +30,17 @@ namespace _2dracer
         // Methods
         public override void Update(GameTime gameTime)
         {
+            // Please move some of this code into methods
+            // instead of having it all in here
+
             float xAxis = Input.GetAxisRaw(Axis.X);
+            float yAxis = Input.GetAxisRaw(Axis.Y);
 
             // turn car
             AddTorque(xAxis * 0.4f);
             if(xAxis == 0) AddTorque(angularAccel * -1);
 
             // move car
-            float yAxis = Input.GetAxisRaw(Axis.Y);
             float horsepower = yAxis * 30.0f;
 
             Vector2 force = new Vector2();

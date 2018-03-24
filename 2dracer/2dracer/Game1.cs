@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using _2dracer.MapElements;
 using _2dracer.Managers;
 
@@ -36,7 +37,7 @@ namespace _2dracer
 
         // Texture2Ds
         public static Texture2D square;
-        public static Texture2D tilespritesheet;
+        private List<Texture2D> tileSprites;
 
         //GameState Enum
         private static GameState GameState;
@@ -65,11 +66,13 @@ namespace _2dracer
 
         protected override void Initialize()
         {
-            // show the mouse
-            this.IsMouseVisible = true;
+            IsMouseVisible = true;              // Show the mouse
 
-            GameState = GameState.Menu;
-            camera = new Camera();
+            GameState = GameState.Menu;         // Default GameState
+
+            camera = new Camera();              // Sets up camera
+
+            tileSprites = new List<Texture2D>();
 
             base.Initialize();
         }
@@ -78,16 +81,20 @@ namespace _2dracer
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            
             // Texture2Ds
             Texture2D turretSprite = Content.Load<Texture2D>("Textures/Turret");
             Texture2D bulletSprite = Content.Load<Texture2D>("bullet");
             Texture2D playerSprite = Content.Load<Texture2D>("Textures/RedCar");
             Texture2D cop = Content.Load<Texture2D>("cop");
             square = Content.Load<Texture2D>("square");
-            tilespritesheet = Content.Load<Texture2D>("Textures/Spritesheet");
             Texture2D idle = Content.Load<Texture2D>("ButtonRectangleTemp");
             Texture2D pressed = Content.Load<Texture2D>("buttonPressed");
+
+            for (int i = 0; i < 6; i++)
+            {
+                tileSprites.Add(Content.Load<Texture2D>("Textures/Tiles/Tile" + i));
+            }
 
             // SpriteFonts
             comicSans = Content.Load<SpriteFont>("comic");
@@ -113,22 +120,26 @@ namespace _2dracer
 
         protected override void Update(GameTime gameTime)
         {
-            Input.Update();     // Should be the FIRST thing that updates
+            Input.Update();         // Should be the FIRST thing that updates
             
-            switch (GameState) //Check for gamestate
+            switch (GameState)      //Check for gamestate
             {
                 case GameState.Menu:
+
                     if (Input.KeyTap(Keys.Escape))
                         Exit();
 
                     if (Input.KeyTap(Keys.U))
                     {
+                        // Open up editor
                         GameState = GameState.LevelEditor;
+
+                        Editor editor = new Editor();
                     }
 
                     if (startButton.IsClicked())
                     {
-                        map = new Map();
+                        map = new Map(tileSprites);
 
                         GameState = GameState.Game;
                     }
@@ -142,14 +153,15 @@ namespace _2dracer
                 case GameState.LevelEditor:
                     if (Input.KeyTap(Keys.Escape))
                         GameState = GameState.Menu;
-
-
+                    
                     break;
 
                 case GameState.Game:
                     if (Input.KeyTap(Keys.Escape))
                     {
                         GameState = GameState.Menu;
+
+                        map = null;
                     }
 
                     Managers.GameMaster.Update(gameTime);
@@ -164,7 +176,6 @@ namespace _2dracer
                     }
                     ai.Update();
                     timeSinceLastReRoute += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    map.Update();
                     camera.Update(player.Position);
                     break;
             }
