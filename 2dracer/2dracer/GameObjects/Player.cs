@@ -30,25 +30,40 @@ namespace _2dracer
         // Methods
         public override void Update()
         {
-            // Please move some of this code into methods
-            // instead of having it all in here
-
             float xAxis = Input.GetAxisRaw(Axis.X);
-            float yAxis = Input.GetAxisRaw(Axis.Y);
 
             // turn car
             AddTorque(xAxis * 0.4f);
-            if(xAxis == 0) AddTorque(angularAccel * -1);
+            if (xAxis == 0)
+            {
+                angularVelocity *= 0.9f;
 
+                double totalVelocity = Math.Sqrt(velocity.X * velocity.X + velocity.Y * velocity.Y);
+                velocity.X = (float)totalVelocity * (float)Math.Cos(rotation);
+                velocity.Y = (float)totalVelocity * (float)Math.Sin(rotation);
+            }
             // move car
-            float horsepower = yAxis * 30.0f;
+            float yAxis = Input.GetAxisRaw(Axis.Y);
+            float horsepower = yAxis * 90.0f;
 
             Vector2 force = new Vector2();
             force.X += (float)Math.Cos(rotation) * horsepower;
             force.Y += (float)Math.Sin(rotation) * horsepower;
 
             AddForce(force);
-            if(yAxis == 0) AddForce(velocity * -1);
+
+            // friction of road
+            if (yAxis == 0)
+            {
+                AddForce(velocity * -1);
+            }
+
+            // friction of breaks
+            if (Input.KeyHold(Keys.Space))
+            {
+                AddForce(velocity * -1);
+                angularVelocity *= 0.9f;
+            }
 
             if (timeJuice < 10)
                 timeJuice += Game1.gameTime.ElapsedGameTime.TotalMilliseconds/1000;
@@ -70,6 +85,7 @@ namespace _2dracer
 
         public void DrawHUD()
         {
+            // all HUD stuff is here
             Game1.spriteBatch.DrawString(font, "Health: " + health, new Vector2(50, 100), Color.White);
             Game1.spriteBatch.DrawString(font, "Time Juice: " + (int)timeJuice, new Vector2(250, 100), Color.White);
         }
