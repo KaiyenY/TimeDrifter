@@ -10,13 +10,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _2dracer
 {
-    class Enemy : GameObject
+    class Enemy : Mover
     {
         public Queue<Node> Route { get; set; } //The path the enemy will take
         private Node currentDestination; //The node within the path that the car will currently go towards
 
         public Enemy(Texture2D tex, Vector2 v) :
-            base(v, 0, tex, new Vector2(50, 50))
+            base(new GameObject(v, 0, tex, new Vector2(50, 50)), Vector2.Zero, 0)
         {
             currentDestination = new Node(position.ToPoint()); //initialize current destination to where it begins
         }
@@ -66,8 +66,20 @@ namespace _2dracer
                     rotation -= 0.02f;
 
                 //Apply movement with the current rotation of the car
-                position.X += (float)Math.Cos(rotation) * 3;
-                position.Y += (float)Math.Sin(rotation) * 3;
+
+                double totalVelocity = Math.Sqrt(velocity.X * velocity.X + velocity.Y + velocity.Y);
+
+                // cops slam on breaks if they go too fast
+                if (Math.Abs(totalVelocity) > 100)
+                {
+                    velocity.X /= 2;
+                    velocity.Y /= 2;
+                }
+
+
+                velocity.X += (float)Math.Cos(rotation) * 3;
+                velocity.Y += (float)Math.Sin(rotation) * 3;
+                base.Update();
             }
         }
 
