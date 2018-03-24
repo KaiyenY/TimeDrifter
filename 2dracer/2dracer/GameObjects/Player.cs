@@ -36,7 +36,7 @@ namespace _2dracer
             AddTorque(xAxis * 0.4f);
             if (xAxis == 0)
             {
-                angularVelocity = 0;
+                angularVelocity *= 0.9f;
 
                 double totalVelocity = Math.Sqrt(velocity.X * velocity.X + velocity.Y * velocity.Y);
                 velocity.X = (float)totalVelocity * (float)Math.Cos(rotation);
@@ -62,7 +62,7 @@ namespace _2dracer
             if (Input.KeyHold(Keys.Space))
             {
                 AddForce(velocity * -1);
-                AddTorque(AngularAccel * -1);
+                angularVelocity *= 0.9f;
             }
 
             if (timeJuice < 10)
