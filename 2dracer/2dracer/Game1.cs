@@ -118,7 +118,6 @@ namespace _2dracer
             switch (GameState) //Check for gamestate
             {
                 case GameState.Menu:
-
                     if (Input.KeyTap(Keys.Escape))
                         Exit();
 
@@ -155,8 +154,6 @@ namespace _2dracer
                     if (Input.KeyTap(Keys.Escape))
                     {
                         GameState = GameState.Menu;
-
-                        map = null;
                     }
 
                     Managers.GameMaster.Update(gameTime);

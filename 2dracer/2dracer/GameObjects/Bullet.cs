@@ -10,10 +10,10 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _2dracer
 {
-    class Bullet : GameObject
+    class Bullet : Mover
     {
-        public Bullet(Texture2D sprite, Vector2 position, float angle) :
-            base (position, angle, sprite, new Vector2(20))
+        public Bullet(Texture2D sprite, Vector2 position, float angle)
+            : base(new GameObject(position, angle, sprite, new Vector2(20)), Vector2.Zero, 0)
         {
             //bullet position = gun position
             //we want bullet to start at tip of gun
