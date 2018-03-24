@@ -85,6 +85,7 @@ namespace _2dracer
 
         public void DrawHUD()
         {
+            // all HUD stuff is here
             Game1.spriteBatch.DrawString(font, "Health: " + health, new Vector2(50, 100), Color.White);
             Game1.spriteBatch.DrawString(font, "Time Juice: " + (int)timeJuice, new Vector2(250, 100), Color.White);
         }
