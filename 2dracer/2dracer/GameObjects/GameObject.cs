@@ -26,7 +26,7 @@ namespace _2dracer
         // properties
         public Vector2 Position { get { return position; } }
         public float Rotation { get { return rotation; } }
-        public Texture2D Sprite { get { return sprite; } set { sprite = value; } }
+        public Texture2D Sprite { get { return sprite; } }
         public Color Color { get { return color; } }
         public Vector2 Size { get { return size; } }
         public Vector2 Scale { get { return scale; } }
