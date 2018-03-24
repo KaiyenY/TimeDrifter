@@ -45,7 +45,7 @@ namespace _2dracer
             Vector2 force = new Vector2();
             force.X += (float)Math.Cos(rotation) * horsepower;
             force.Y += (float)Math.Sin(rotation) * horsepower;
-
+            
             AddForce(force);
 
             // friction of road
@@ -57,15 +57,10 @@ namespace _2dracer
             // friction of breaks
             if (Input.KeyHold(Keys.Space))
             {
-                AddForce(velocity * -1);
-
                 // yes! angularVelocity = 0, because breaks stop the car
                 // this wont be in the final version, its just here to make testing the game easier
+                velocity = Vector2.Zero;
                 angularVelocity = 0;
-
-                double totalVelocity = Math.Sqrt(velocity.X * velocity.X + velocity.Y * velocity.Y);
-                velocity.X = (float)totalVelocity * (float)Math.Cos(rotation);
-                velocity.Y = (float)totalVelocity * (float)Math.Sin(rotation);
             }
 
             if (timeJuice < 10)
