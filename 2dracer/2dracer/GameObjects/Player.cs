@@ -28,7 +28,7 @@ namespace _2dracer
         }
 
         // Methods
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
             float xAxis = Input.GetAxisRaw(Axis.X);
 
@@ -48,11 +48,11 @@ namespace _2dracer
             if(yAxis == 0) AddForce(velocity * -1);
 
             if (timeJuice < 10)
-                timeJuice += gameTime.ElapsedGameTime.TotalMilliseconds/1000;
+                timeJuice += Game1.gameTime.ElapsedGameTime.TotalMilliseconds/1000;
 
             // Update turret
-            turret.Update(gameTime, position);
-            base.Update(gameTime);
+            turret.Update(position);
+            base.Update();
         }
 
         public override void Draw()

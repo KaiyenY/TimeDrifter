@@ -50,6 +50,7 @@ namespace _2dracer
 
         public static Map map;
         private Camera camera;
+        public static GameTime gameTime;
 
         // Constructor
         public Game1()
@@ -61,6 +62,8 @@ namespace _2dracer
             graphics.IsFullScreen = fullscreen;                     // Fullscreen or not
             graphics.PreferredBackBufferHeight = screenHeight;      // Window height
             graphics.PreferredBackBufferWidth = screenWidth;        // Window width
+
+            gameTime = new GameTime();
         }
 
         protected override void Initialize()
@@ -111,8 +114,10 @@ namespace _2dracer
             map = null;
         }
 
-        protected override void Update(GameTime gameTime)
+        protected override void Update(GameTime g)
         {
+            gameTime = g;
+
             Input.Update();     // Should be the FIRST thing that updates
             
             switch (GameState) //Check for gamestate
@@ -156,11 +161,11 @@ namespace _2dracer
                         GameState = GameState.Menu;
                     }
 
-                    Managers.GameMaster.Update(gameTime);
+                    Managers.GameMaster.Update();
 
                     // update turret position to player car position
                     // or in this case, the center of the screen
-                    player.Update(gameTime);
+                    player.Update();
                     if(timeSinceLastReRoute > 10)
                     {
                         ai.AssignNewPathsToEnemies(ai.nodes[6]);
@@ -176,8 +181,9 @@ namespace _2dracer
             base.Update(gameTime);
         }
 
-        protected override void Draw(GameTime gameTime)
+        protected override void Draw(GameTime g)
         {
+            gameTime = g;
             switch (GameState)
             {
                 case GameState.Menu:

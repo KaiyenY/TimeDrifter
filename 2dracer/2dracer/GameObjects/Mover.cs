@@ -67,20 +67,20 @@ namespace _2dracer
               : this(g, Vector2.Zero, 0f) { }
 
         // Methods
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
-            UpdatePhysics(gameTime);
+            UpdatePhysics();
         }
 
         // integrates this movers physics (position, velocity, acceleration)
-        public void UpdatePhysics(GameTime gameTime)
+        public void UpdatePhysics()
         {
-            velocity += accel * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            velocity += accel * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds;
+            position += velocity * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds;
             accel *= 0;
 
-            angularVelocity += angularAccel * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            rotation += angularVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            angularVelocity += angularAccel * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds;
+            rotation += angularVelocity * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds;
             angularAccel *= 0;
         }
 
