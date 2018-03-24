@@ -36,7 +36,7 @@ namespace _2dracer
 
         // Texture2Ds
         public static Texture2D square;
-        public static Texture2D tilespritesheet;
+        public static List<Texture2D> tileSprites;
 
         //GameState Enum
         private static GameState GameState;
@@ -68,11 +68,11 @@ namespace _2dracer
 
         protected override void Initialize()
         {
-            // show the mouse
-            this.IsMouseVisible = true;
+            IsMouseVisible = true;                  // Make mouse visible
 
-            GameState = GameState.Menu;
-            camera = new Camera();
+            GameState = GameState.Menu;             // Default GameState    
+            camera = new Camera();                  // Camera thing
+            tileSprites = new List<Texture2D>();    // List of tile sprites
 
             base.Initialize();
         }
@@ -88,9 +88,13 @@ namespace _2dracer
             Texture2D playerSprite = Content.Load<Texture2D>("Textures/RedCar");
             Texture2D cop = Content.Load<Texture2D>("cop");
             square = Content.Load<Texture2D>("square");
-            tilespritesheet = Content.Load<Texture2D>("Textures/Spritesheet");
             Texture2D idle = Content.Load<Texture2D>("ButtonRectangleTemp");
             Texture2D pressed = Content.Load<Texture2D>("buttonPressed");
+
+            for (int i = 0; i < 6; i++)
+            {
+                tileSprites.Add(Content.Load<Texture2D>("Textures/Tiles/Tile" + i));
+            }
 
             // SpriteFonts
             comicSans = Content.Load<SpriteFont>("comic");
@@ -130,15 +134,15 @@ namespace _2dracer
                     {
                         GameState = GameState.LevelEditor;
 
-                        EditorMenu menu = new EditorMenu();
-                        menu.Show();
+                        Editor editor = new Editor();
+                        editor.Show();
                     }
 
                     if (startButton.IsClicked())
                     {
                         byte[] size = { 5, 5 };
 
-                        //map = new Map(size);
+                        map = new Map();
 
                         GameState = GameState.Game;
                     }
@@ -173,7 +177,6 @@ namespace _2dracer
                     }
                     ai.Update();
                     timeSinceLastReRoute += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    map.Update();
                     camera.Update(player.Position);
                     break;
             }

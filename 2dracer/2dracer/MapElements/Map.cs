@@ -16,13 +16,14 @@ namespace _2dracer.MapElements
         private Vector2 position;               // Holds the current position of the map
 
         // Properties
+        public Tile[,] Tiles { get { return tiles; } }
         public Vector2 Pos { get { return position; } }
 
         // Constructors
         /// <summary>
         /// Generates a map from a file
         /// </summary>
-        public Map(List<Texture2D> tileSprites)
+        public Map()
         {
             int[] mapSize = new int[2];
             int[] tileInfo;
@@ -63,8 +64,7 @@ namespace _2dracer.MapElements
                         tiles[x, y] = new Tile(
                             tilePos, 
                             (TileType)tileInfo[j],
-                            MathHelper.ToRadians(tileInfo[j + 1]), 
-                            tileSprites);
+                            MathHelper.ToRadians(tileInfo[j + 1]));
                         /*
                         if ((TileType)tileInfo[j] != TileType.Building)
                         {
@@ -104,3 +104,5 @@ namespace _2dracer.MapElements
         }
     }
 }
+
+// Genoah
