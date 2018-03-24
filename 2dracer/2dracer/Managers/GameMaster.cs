@@ -36,11 +36,11 @@ namespace _2dracer.Managers
         /// <summary>
         /// Updates all game objects
         /// </summary>
-        public static void Update(GameTime gameTime)
+        public static void Update()
         {
             foreach(GameObject g in gameObjects)
             {
-                g.Update(gameTime);
+                g.Update();
             }
         }
         

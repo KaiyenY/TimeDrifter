@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using _2dracer.MapElements;
 using _2dracer.Managers;
 
@@ -37,7 +36,7 @@ namespace _2dracer
 
         // Texture2Ds
         public static Texture2D square;
-        private List<Texture2D> tileSprites;
+        public static Texture2D tilespritesheet;
 
         //GameState Enum
         private static GameState GameState;
@@ -51,6 +50,7 @@ namespace _2dracer
 
         public static Map map;
         private Camera camera;
+        public static GameTime gameTime;
 
         // Constructor
         public Game1()
@@ -62,17 +62,17 @@ namespace _2dracer
             graphics.IsFullScreen = fullscreen;                     // Fullscreen or not
             graphics.PreferredBackBufferHeight = screenHeight;      // Window height
             graphics.PreferredBackBufferWidth = screenWidth;        // Window width
+
+            gameTime = new GameTime();
         }
 
         protected override void Initialize()
         {
-            IsMouseVisible = true;              // Show the mouse
+            // show the mouse
+            this.IsMouseVisible = true;
 
-            GameState = GameState.Menu;         // Default GameState
-
-            camera = new Camera();              // Sets up camera
-
-            tileSprites = new List<Texture2D>();
+            GameState = GameState.Menu;
+            camera = new Camera();
 
             base.Initialize();
         }
@@ -81,20 +81,16 @@ namespace _2dracer
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            
+
             // Texture2Ds
             Texture2D turretSprite = Content.Load<Texture2D>("Textures/Turret");
             Texture2D bulletSprite = Content.Load<Texture2D>("bullet");
             Texture2D playerSprite = Content.Load<Texture2D>("Textures/RedCar");
             Texture2D cop = Content.Load<Texture2D>("cop");
             square = Content.Load<Texture2D>("square");
+            tilespritesheet = Content.Load<Texture2D>("Textures/Spritesheet");
             Texture2D idle = Content.Load<Texture2D>("ButtonRectangleTemp");
             Texture2D pressed = Content.Load<Texture2D>("buttonPressed");
-
-            for (int i = 0; i < 6; i++)
-            {
-                tileSprites.Add(Content.Load<Texture2D>("Textures/Tiles/Tile" + i));
-            }
 
             // SpriteFonts
             comicSans = Content.Load<SpriteFont>("comic");
@@ -118,28 +114,31 @@ namespace _2dracer
             map = null;
         }
 
-        protected override void Update(GameTime gameTime)
+        protected override void Update(GameTime g)
         {
-            Input.Update();         // Should be the FIRST thing that updates
+            gameTime = g;
+
+            Input.Update();     // Should be the FIRST thing that updates
             
-            switch (GameState)      //Check for gamestate
+            switch (GameState) //Check for gamestate
             {
                 case GameState.Menu:
-
                     if (Input.KeyTap(Keys.Escape))
                         Exit();
 
                     if (Input.KeyTap(Keys.U))
                     {
-                        // Open up editor
                         GameState = GameState.LevelEditor;
 
-                        Editor editor = new Editor();
+                        EditorMenu menu = new EditorMenu();
+                        menu.Show();
                     }
 
                     if (startButton.IsClicked())
                     {
-                        map = new Map(tileSprites);
+                        byte[] size = { 5, 5 };
+
+                        map = new Map(size);
 
                         GameState = GameState.Game;
                     }
@@ -160,22 +159,21 @@ namespace _2dracer
                     if (Input.KeyTap(Keys.Escape))
                     {
                         GameState = GameState.Menu;
-
-                        map = null;
                     }
 
-                    Managers.GameMaster.Update(gameTime);
+                    Managers.GameMaster.Update();
 
                     // update turret position to player car position
                     // or in this case, the center of the screen
-                    player.Update(gameTime);
+                    player.Update();
                     if(timeSinceLastReRoute > 10)
                     {
-                        ai.AssignNewPathsToEnemies(ai.nodes[7]);
+                        ai.AssignNewPathsToEnemies(ai.nodes[6]);
                         timeSinceLastReRoute = 0;
                     }
                     ai.Update();
                     timeSinceLastReRoute += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    map.Update();
                     camera.Update(player.Position);
                     break;
             }
@@ -183,8 +181,9 @@ namespace _2dracer
             base.Update(gameTime);
         }
 
-        protected override void Draw(GameTime gameTime)
+        protected override void Draw(GameTime g)
         {
+            gameTime = g;
             switch (GameState)
             {
                 case GameState.Menu:

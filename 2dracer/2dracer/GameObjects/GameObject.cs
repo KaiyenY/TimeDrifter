@@ -68,7 +68,7 @@ namespace _2dracer
         /// <summary>
         /// Updates logic for this game object every frame
         /// </summary>
-        public virtual void Update(GameTime gameTime) { }
+        public virtual void Update() { }
 
         /// <summary>
         /// Draws this object's texture to the screen

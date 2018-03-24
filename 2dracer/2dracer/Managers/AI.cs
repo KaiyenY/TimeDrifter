@@ -124,6 +124,7 @@ namespace _2dracer
 
         public Queue<Node> Pathfind(Node start, Node target) //Implementation of A* fingers crossed
         {
+            pathToGive = new Queue<Node>(); //Reset the path property
             List<Node> closedSet = new List<Node>();
             List<Node> openSet = new List<Node>(); //List of discovered nodes
             openSet.Add(start);
@@ -147,20 +148,10 @@ namespace _2dracer
                     }
 
                 if (current == target)
-                {
-                    //Console.WriteLine("CLOSED SET:");
-                    //Queue<Node> path = new Queue<Node>();
-
-                    //foreach (Node nodeinPath in closedSet)
-                    //{
-                    //    path.Enqueue(new Node(nodeinPath));
-                    //    Console.WriteLine(nodeinPath.ToString());
-                    //}
-                    //path.Enqueue(target);
+                { 
                     Console.WriteLine("Reconstructing path...");
 
-                    Queue<Node> path = ReconstructPath(start, current);
-
+                    Queue<Node> path = new Queue<Node>(ReconstructPath(start, current).Reverse());
                     
                     return path;
                 }
@@ -208,10 +199,9 @@ namespace _2dracer
             else
             {
                 pathToGive.Enqueue(current);
-                ReconstructPath(start, current.Parent);
+                return ReconstructPath(start, current.Parent);
             }
-            Console.WriteLine("returning2");
-            return pathToGive;
+            
         }  
     }
 }

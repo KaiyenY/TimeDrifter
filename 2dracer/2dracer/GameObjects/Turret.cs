@@ -35,10 +35,10 @@ namespace _2dracer
         }
 
         float timer = 0;
-        public void Update(GameTime gameTime, Vector2 pos)
+        public void Update(Vector2 pos)
         {
             // update timer
-            timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            timer += (float)Game1.gameTime.ElapsedGameTime.TotalMilliseconds;
 
             // change position of turret, depending on where car is
             position = pos;
