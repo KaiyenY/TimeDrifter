@@ -21,18 +21,6 @@ namespace _2dracer
             currentDestination = new Node(position.ToPoint()); //initialize current destination to where it begins
         }
 
-        private float Speed()
-        {
-            //use all physics here
-
-            // use acceleration
-            // friction
-            // collision detection
-
-            // to return the velocity at any given time
-            return 3;
-        }
-
         public override void Draw()
         {
             rotation += (float)Math.PI / 2;
@@ -41,14 +29,13 @@ namespace _2dracer
             rotation -= (float)Math.PI / 2;
         }
 
-
         public void UpdatePositionTowardsNextNode() //Moves the car a little along its current route
         {
             if(Route != null) //Don't do anything if there's no Route assigned
             {
-                // set range to 10
+                // set range to 100
                 // cop should not touch the point before going to the next
-                if (withinRange(10, currentDestination) && Route.Count != 0)
+                if (withinRange(100, currentDestination) && Route.Count != 0)
                 {
                     currentDestination = new Node(this.Route.Dequeue()); //If reached current target node, fetch next one from the Queue
                 }
@@ -58,7 +45,7 @@ namespace _2dracer
 
                 // rot is the rotation that the player SHOULD be moving in
                 // it is not the rotation that the player IS moving in
-                rotation = (float)Math.Atan2(toNode.Y, toNode.X);
+                float rot = (float)Math.Atan2(toNode.Y, toNode.X);
                 toNode.Normalize(); //turn to unit vector
            
                 // if this is not here, then current rotation may be 359 degrees
@@ -66,20 +53,21 @@ namespace _2dracer
                 // car will turn in the wrong directoin
                 // this if-statement fixes it, trust me
                 // comment it out and see what happens
-                //if (Math.Abs(rot - rotation) > Math.PI)
-                  //  rot += 2 * (float)Math.PI;
+
+                if (Math.Abs(rot - rotation) > Math.PI)
+                    rot += 2 * (float)Math.PI;
 
                 // if player's rotation is not the correct rotation
                 // then slowly turn the player
-                //if (rot > rotation)
-                  //  rotation += 0.02f;
+                if (rot > rotation)
+                    rotation += 0.02f;
 
-                //if (rot < rotation)
-                  //  rotation -= 0.02f;
+                if (rot < rotation)
+                    rotation -= 0.02f;
 
                 //Apply movement with the current rotation of the car
-                position.X += (float)Math.Cos(rotation) * Speed();
-                position.Y += (float)Math.Sin(rotation) * Speed();
+                position.X += (float)Math.Cos(rotation) * 3;
+                position.Y += (float)Math.Sin(rotation) * 3;
             }
         }
 
