@@ -138,7 +138,7 @@ namespace _2dracer
                     {
                         byte[] size = { 5, 5 };
 
-                        map = new Map(size);
+                        //map = new Map(size);
 
                         GameState = GameState.Game;
                     }
