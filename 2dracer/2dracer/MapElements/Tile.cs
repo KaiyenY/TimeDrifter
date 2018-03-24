@@ -24,10 +24,10 @@ namespace _2dracer.MapElements
         // Properties
 
         // Constructors
-        public Tile(Vector2 position, TileType type, float rotation, List<Texture2D> sprites)
+        public Tile(Vector2 position, TileType type, float rotation)
             : base(position, rotation, new Vector2(768))
         {
-            sprite = sprites[(int)type];
+            sprite = Game1.tileSprites[(int)type];
         }
 
         // Methods
@@ -37,3 +37,5 @@ namespace _2dracer.MapElements
         }
     }
 }
+
+// Genoah

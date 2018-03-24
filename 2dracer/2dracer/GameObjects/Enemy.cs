@@ -16,7 +16,7 @@ namespace _2dracer
         private Node currentDestination; //The node within the path that the car will currently go towards
 
         public Enemy(Texture2D tex, Vector2 v) :
-            base(new GameObject(v, 0, tex, new Vector2(50, 50)), Vector2.Zero, 0)
+            base(new GameObject(v, 0, tex, new Vector2(64, 128)), Vector2.Zero, 0)
         {
             currentDestination = new Node(position.ToPoint()); //initialize current destination to where it begins
         }
