@@ -21,7 +21,7 @@ namespace _2dracer.MapElements
 
         // Constructors
         /// <summary>
-        /// Generates a map from a file
+        /// Generates a map from file
         /// </summary>
         public Map()
         {
@@ -30,7 +30,7 @@ namespace _2dracer.MapElements
             
             try
             {
-                sr = new StreamReader(@"..\..\..\..\Content\Maps\Main.txt");
+                sr = new StreamReader(@"..\..\..\..\Content\Map.txt");
                 
                 string[] mapInfo = sr.ReadLine().Split(',');        // Split info from file into two
                 mapSize[0] = int.Parse(mapInfo[0]);                 // Set map horizontal size
@@ -65,12 +65,13 @@ namespace _2dracer.MapElements
                             tilePos, 
                             (TileType)tileInfo[j],
                             MathHelper.ToRadians(tileInfo[j + 1]));
-                        /*
+                        
                         if ((TileType)tileInfo[j] != TileType.Building)
                         {
                             // Not a building, has a node
-                            nodes.Add(new Node());
+                            // nodes.Add(new Node(new Point(x * 384, y * 384)));
                         }
+                        /*
                         else
                         {
                             // Something about collisions
@@ -90,6 +91,25 @@ namespace _2dracer.MapElements
                 if (sr != null)
                 {
                     sr.Close();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Generates a map in the editor
+        /// </summary>
+        /// <param name="size">Size of tile array</param>
+        public Map(int[] size)
+        {
+            tiles = new Tile[size[0], size[1]];
+
+            for (int y = 0; y < size[1]; y++)
+            {
+                for (int x = 0; x < size[0]; x++)
+                {
+                    Vector2 tilePos = new Vector2(768 * x, 768 * y);
+
+                    tiles[x, y] = new Tile(tilePos, TileType.Grass, 0);
                 }
             }
         }

@@ -14,7 +14,6 @@ namespace _2dracer
     public enum GameState
     {
         Game,
-        LevelEditor,
         Menu
     }
 
@@ -132,8 +131,6 @@ namespace _2dracer
 
                     if (Input.KeyTap(Keys.U))
                     {
-                        GameState = GameState.LevelEditor;
-
                         Editor editor = new Editor();
                         editor.Show();
                     }
@@ -151,12 +148,6 @@ namespace _2dracer
                     {
                         Exit();
                     }
-                    break;
-
-                case GameState.LevelEditor:
-                    if (Input.KeyTap(Keys.Escape))
-                        GameState = GameState.Menu;
-                    
                     break;
 
                 case GameState.Game:
@@ -197,16 +188,6 @@ namespace _2dracer
                     startButton.DrawWithText(comicSans, "Start", Color.White);
                     exitButton.DrawWithText(comicSans, "Exit", Color.White);
                     spriteBatch.DrawString(comicSans, "Press Esc to Quit", new Vector2(50, 600), Color.White);
-                    break;
-
-                case GameState.LevelEditor:
-
-                    // Acts like a debug mode while in the editor
-                    if (map != null)
-                    {
-                        map.Draw();
-                    }
-
                     break;
 
                 case GameState.Game:

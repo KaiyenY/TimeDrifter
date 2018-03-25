@@ -9,15 +9,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Xna.Framework;
 
 namespace _2dracer
 {
+    /// <summary>
+    /// External tool to help with building the map
+    /// </summary>
     public partial class Editor : Form
     {
         // Fields
-        private ImageList images;
+        private ImageList images;           // Holds a list of textures
         private Map map;                    // Holds the map in the editor
-        private PictureBox[,] tiles;        // List of PictureBoxes representing tiles
+        private PictureBox[,] eTiles;       // List of PictureBoxes representing tiles
+        private PictureBox selectedTile;    // The last clicked tile
+        private StreamWriter sw;            // Writes information to Map.txt
+        private string[] imagePaths;        // Paths of all images
 
         // Properties
 
@@ -26,92 +33,280 @@ namespace _2dracer
         {
             Application.EnableVisualStyles();
             InitializeComponent();
+            
+            imagePaths = Directory.GetFiles(@"..\..\..\..\Content\Textures\Tiles");         // Grabs the paths of tile textures
 
-            for (int i = 0; i < 6; i++)
-            {
-                // Load textures into listview maybe
-            }
+            TextureSetUp();                 // Organize textures into list
 
             map = new Map();                // Load default map when starting editor
 
-            // Set up the PictureBox tiles
-            tiles = new PictureBox[map.Tiles.GetLength(0), map.Tiles.GetLength(1)];
-            for (int y = 0; y < tiles.GetLength(1); y++)
-            {
-                for (int x = 0; x < tiles.GetLength(0); x++)
-                {
-                    tiles[x, y] = new PictureBox()
-                    {
-                        Location = new System.Drawing.Point(),          // Determine location
-                        Size = new Size()                               // Determine size
-                    };
-                    tiles[x, y].Show();
-                }
-            }
-
-            // Set up elements of the form
-            SetUp();
+            EditorSetUp();                  // Setup all elements in the editor as need be
         }
 
         // Methods
-        public void SetUp()
+        /// <summary>
+        /// Sets up the editor tiles into a map
+        /// </summary>
+        private void EditorSetUp()
         {
-            /// Setup the texture selection box
-            // Instantiate image list
+            // Set the initial values for the size values
+            xValueBox.Value = map.Tiles.GetLength(0);
+            yValueBox.Value = map.Tiles.GetLength(1);
+
+            // Set up the texture list with images
+            textureBox.SmallImageList = images;
+
+            // Populate the list
+            for (int i = 0; i < 6; i++)
+            {
+                textureBox.Items.Add("", i);
+            }
+
+            ETileSetUp();
+        }
+
+        /// <summary>
+        /// Organizes textures into an image list
+        /// </summary>
+        private void TextureSetUp()
+        {
             images = new ImageList()
             {
-                ImageSize = new Size(150, 150)
+                ImageSize = new Size(textureBox.Width, textureBox.Width)
             };
-
-            // Get array of all tile texture paths
-            string[] paths = Directory.GetFiles(@"..\..\..\..\Content\Textures\Tiles");
 
             try
             {
-                // Put each image into the imagelist
-                foreach (string path in paths)
+                foreach (string path in imagePaths)
                 {
                     images.Images.Add(Image.FromFile(path));
                 }
             }
             catch (Exception e)
             {
-                MessageBox.Show("Error : " + e.Message);
+                MessageBox.Show(e.Message);
             }
-
-            // Add all 
-            textureBox.SmallImageList = images;
-            textureBox.Items.Add("", 0);            // Building
-            textureBox.Items.Add("", 1);            // Straight road
-            textureBox.Items.Add("", 2);            // Corner road
-            textureBox.Items.Add("", 3);            // 3-Way Intersection
-            textureBox.Items.Add("", 4);            // 4-Way Intersection
-
-
-            /// Set up the tile view
-            // Get the amount of rows and columns, add images into the panel accordingly
         }
 
+        /// <summary>
+        /// Sets up all editor tiles
+        /// </summary>
+        private void ETileSetUp()
+        {
+            eTiles = new PictureBox[map.Tiles.GetLength(0), map.Tiles.GetLength(1)];
+            for (int y = 0; y < eTiles.GetLength(1); y++)
+            {
+                for (int x = 0; x < eTiles.GetLength(0); x++)
+                {
+                    // Create a PictureBox to represent a tile in the editor
+                    eTiles[x, y] = new PictureBox()
+                    {
+                        Image = Image.FromFile(imagePaths[(int)map.Tiles[x, y].Type]),
+                        Location = new System.Drawing.Point(384 * x, 384 * y),
+                        Tag = $"{x},{y}",
+                        Size = new Size(384, 384)
+                    };
 
+                    // Get the corresponding map tile
+                    Tile mTile = GetTile(eTiles[x, y].Tag.ToString());
+
+                    // Set the rotation of the editor tile
+                    eTiles[x, y].Image = RotateImage(eTiles[x, y].Image, (float)Math.Round(mTile.Rotation * (180 / Math.PI)));
+
+                    // Add the editor tile to control group
+                    tilePanel.Controls.Add(eTiles[x, y]);
+
+                    // Subscribe click event to TileClick
+                    eTiles[x, y].Click += TileClick;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Rotates image
+        /// </summary>
+        private Image RotateImage(Image image, float rotation)
+        {
+            if (Math.Round(rotation) % 90 == 0)
+            {
+                if (rotation % 360 == 0)
+                {
+                    image.RotateFlip(RotateFlipType.RotateNoneFlipNone);            // No transformation
+                }
+                else if (rotation % 360 == 90 || rotation % 360 == -270)
+                {
+                    image.RotateFlip(RotateFlipType.Rotate90FlipNone);              // Clockwise rotation
+                }
+                else if (rotation % 360 == 180 || rotation % 360 == -180)
+                {
+                    image.RotateFlip(RotateFlipType.Rotate180FlipNone);             // 180 degree rotation
+                }
+                else if (rotation % 360 == 270 || rotation % 360 == -90)
+                {
+                    image.RotateFlip(RotateFlipType.Rotate270FlipNone);             // CounterClockwise rotation
+                }
+                else
+                {
+                    MessageBox.Show("Error in RotateImage : being checked is " + (rotation % 360));         // Something broke
+                }
+            }
+            else
+            {
+                MessageBox.Show("Error : Rotation not multiple of 90. RotateImage failed");
+            }
+            
+
+            return image;
+        }
+
+        /// <summary>
+        /// Return the map tile the editor tile is refering to
+        /// </summary>
+        private Tile GetTile(string eTileTag)
+        {
+            string[] eTileInfo = eTileTag.Split(',');
+
+            int[] index = { int.Parse(eTileInfo[0]), int.Parse(eTileInfo[1]) };
+
+            return map.Tiles[index[0], index[1]];
+        }
+        
+        /// <summary>
+        /// Determines what happens when a button is clicked
+        /// </summary>
         public void ButtonClick(Object sender, EventArgs e)
         {
-            Button button = (Button)sender;
-
-            if (button.Name == "loadButton")
+            if (sender is Button button)
             {
+                Tile mTile = null;
 
+                if (selectedTile != null)
+                {
+                    mTile = GetTile(selectedTile.Tag.ToString());
+                }
+
+                switch (button.Name)
+                {
+                    case "saveButton":
+                        SaveMap();
+                        break;
+
+                    case "cwButton":
+                        if (mTile != null)
+                        {
+                            mTile.Rotation -= MathHelper.PiOver2;
+                            selectedTile.Image = RotateImage(selectedTile.Image, -90);     // rotating 90 not 90 + rotation
+                        }
+                        break;
+
+                    case "ccwButton":
+                        if (mTile != null)
+                        {
+                            mTile.Rotation += MathHelper.PiOver2;
+                            selectedTile.Image = RotateImage(selectedTile.Image, 90);     // rotating 90 not 90 + rotation
+                        }
+                        break;
+
+                    default:
+                        int[] size = { (int)xValueBox.Value, (int)yValueBox.Value };
+                        map = new Map(size);
+                        tilePanel.Controls.Clear();
+                        ETileSetUp();
+                        break;
+                }
             }
-            else if (button.Name == "saveButton")
+            else
             {
 
             }
         }
-
-        public void PictureClick(Object sender, EventArgs e)
+        
+        /// <summary>
+        /// Determines what happens when a tile is clicked
+        /// </summary>
+        public void TileClick(Object sender, EventArgs e)
         {
-            PictureBox pic = (PictureBox)sender;            // Make picturebox tag = index
+            if (sender is PictureBox pic && imagePaths != null && textureBox.SelectedItems.Count > 0)
+            {
+                // Change the currently selected tile
+                selectedTile = pic;
 
-            
+                // Change the image to whichever selected texture
+                pic.Image = Image.FromFile(imagePaths[textureBox.SelectedItems[0].ImageIndex]);
+
+                // Grab the associtated map tile using the editor tile tag
+                Tile mTile = GetTile(pic.Tag.ToString());
+
+                // Change the type of the tile
+                mTile.Type = (TileType)textureBox.SelectedItems[0].ImageIndex;
+
+                // Reset the rotation of the tile
+                mTile.Rotation = 0;
+            }
+            else
+            {
+                Console.WriteLine("Error : Something happened in TileClick");
+            }
+        }
+
+        /// <summary>
+        /// Saves the current configuration to file
+        /// </summary>
+        public void SaveMap()
+        {
+            try
+            {
+                sw = new StreamWriter(@"..\..\..\..\Content\Map.txt");
+
+                sw.WriteLine($"{map.Tiles.GetLength(0)},{map.Tiles.GetLength(1)}");       // Write map array size
+
+                for (int y = 0; y < map.Tiles.GetLength(1); y++)
+                {
+                    for (int x = 0; x < map.Tiles.GetLength(0); x++)
+                    {
+                        Tile mTile = GetTile(eTiles[x, y].Tag.ToString());
+
+                        sw.WriteLine($"{(int)mTile.Type},{MathHelper.ToDegrees(mTile.Rotation)}");                // Name = TileType, Tag = Rotation (in deg)
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error : " + e.Message);
+            }
+            finally
+            {
+                if (sw != null)
+                {
+                    sw.Close();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Resets the rotation value
+        /// </summary>
+        private void ValueChanged(object sender, EventArgs e)
+        {
+            if (sender is NumericUpDown valueBox)
+            {
+                if (valueBox.Value > 270)
+                {
+                    // Set it down to 0
+                    valueBox.Value = 0;
+                }
+                else if (valueBox.Value < 0)
+                {
+                    // Set it up to 270
+                    valueBox.Value = 270;
+                }
+
+                if (valueBox.Value % 90 != 0)
+                {
+                    // If it's not a multiple of 90 it's wrong
+                    valueBox.Value = 0;
+                }
+            }
         }
     }
 }

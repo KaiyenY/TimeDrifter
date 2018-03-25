@@ -24,7 +24,7 @@ namespace _2dracer
                 Update();
         }
 
-        public void Update()
+        public override void Update()
         {
             // only move bullet if it is close enough to matter
             if (Math.Abs(position.X) < 100000 || Math.Abs(position.Y) < 100000)

@@ -28,37 +28,37 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.loadButton = new System.Windows.Forms.Button();
             this.xValueBox = new System.Windows.Forms.NumericUpDown();
             this.yValueBox = new System.Windows.Forms.NumericUpDown();
             this.xLabel = new System.Windows.Forms.Label();
             this.yLabel = new System.Windows.Forms.Label();
             this.saveButton = new System.Windows.Forms.Button();
-            this.openDialog = new System.Windows.Forms.OpenFileDialog();
-            this.saveDialog = new System.Windows.Forms.SaveFileDialog();
             this.tilePanel = new System.Windows.Forms.Panel();
             this.textureBox = new System.Windows.Forms.ListView();
             this.textureTab = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.detailsTab = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.textureBoxLabel = new System.Windows.Forms.Label();
+            this.sizeButton = new System.Windows.Forms.Button();
             this.cwButton = new System.Windows.Forms.Button();
             this.ccwButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.xValueBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.yValueBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // loadButton
-            // 
-            this.loadButton.Location = new System.Drawing.Point(786, 530);
-            this.loadButton.Name = "loadButton";
-            this.loadButton.Size = new System.Drawing.Size(180, 23);
-            this.loadButton.TabIndex = 0;
-            this.loadButton.Text = "Load";
-            this.loadButton.UseVisualStyleBackColor = true;
-            // 
             // xValueBox
             // 
             this.xValueBox.BackColor = System.Drawing.SystemColors.Control;
             this.xValueBox.Location = new System.Drawing.Point(814, 24);
+            this.xValueBox.Maximum = new decimal(new int[] {
+            25,
+            0,
+            0,
+            0});
+            this.xValueBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.xValueBox.Name = "xValueBox";
             this.xValueBox.Size = new System.Drawing.Size(152, 20);
             this.xValueBox.TabIndex = 1;
@@ -104,27 +104,17 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(786, 492);
+            this.saveButton.Location = new System.Drawing.Point(786, 530);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(180, 23);
             this.saveButton.TabIndex = 6;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
-            // 
-            // openDialog
-            // 
-            this.openDialog.DefaultExt = "*.txt";
-            this.openDialog.Filter = "Text files (*.txt)|*.txt";
-            this.openDialog.InitialDirectory = "C://";
-            // 
-            // saveDialog
-            // 
-            this.saveDialog.DefaultExt = "*.txt";
-            this.saveDialog.Filter = "Text files (*.txt)|*.txt";
-            this.saveDialog.InitialDirectory = "C://";
+            this.saveButton.Click += new System.EventHandler(this.ButtonClick);
             // 
             // tilePanel
             // 
+            this.tilePanel.AutoScroll = true;
             this.tilePanel.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.tilePanel.Location = new System.Drawing.Point(12, 12);
             this.tilePanel.Name = "tilePanel";
@@ -139,9 +129,10 @@
             this.textureTab,
             this.detailsTab});
             this.textureBox.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.textureBox.Location = new System.Drawing.Point(786, 101);
+            this.textureBox.Location = new System.Drawing.Point(786, 147);
+            this.textureBox.MultiSelect = false;
             this.textureBox.Name = "textureBox";
-            this.textureBox.Size = new System.Drawing.Size(180, 319);
+            this.textureBox.Size = new System.Drawing.Size(180, 348);
             this.textureBox.TabIndex = 8;
             this.textureBox.UseCompatibleStateImageBehavior = false;
             this.textureBox.View = System.Windows.Forms.View.SmallIcon;
@@ -156,23 +147,45 @@
             this.detailsTab.Text = "Details";
             this.detailsTab.Width = 90;
             // 
+            // textureBoxLabel
+            // 
+            this.textureBoxLabel.AutoSize = true;
+            this.textureBoxLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.textureBoxLabel.Location = new System.Drawing.Point(783, 131);
+            this.textureBoxLabel.Name = "textureBoxLabel";
+            this.textureBoxLabel.Size = new System.Drawing.Size(48, 13);
+            this.textureBoxLabel.TabIndex = 11;
+            this.textureBoxLabel.Text = "Textures";
+            // 
+            // sizeButton
+            // 
+            this.sizeButton.Location = new System.Drawing.Point(836, 95);
+            this.sizeButton.Name = "sizeButton";
+            this.sizeButton.Size = new System.Drawing.Size(82, 23);
+            this.sizeButton.TabIndex = 12;
+            this.sizeButton.Text = "Change Size";
+            this.sizeButton.UseVisualStyleBackColor = true;
+            this.sizeButton.Click += new System.EventHandler(this.ButtonClick);
+            // 
             // cwButton
             // 
-            this.cwButton.Location = new System.Drawing.Point(786, 445);
+            this.cwButton.Location = new System.Drawing.Point(786, 501);
             this.cwButton.Name = "cwButton";
-            this.cwButton.Size = new System.Drawing.Size(82, 23);
-            this.cwButton.TabIndex = 9;
-            this.cwButton.Text = "Rotate CW";
+            this.cwButton.Size = new System.Drawing.Size(75, 23);
+            this.cwButton.TabIndex = 13;
+            this.cwButton.Text = "Rotate Left";
             this.cwButton.UseVisualStyleBackColor = true;
+            this.cwButton.Click += new System.EventHandler(this.ButtonClick);
             // 
             // ccwButton
             // 
-            this.ccwButton.Location = new System.Drawing.Point(884, 445);
+            this.ccwButton.Location = new System.Drawing.Point(891, 501);
             this.ccwButton.Name = "ccwButton";
-            this.ccwButton.Size = new System.Drawing.Size(82, 23);
-            this.ccwButton.TabIndex = 10;
-            this.ccwButton.Text = "Rotate CCW";
+            this.ccwButton.Size = new System.Drawing.Size(75, 23);
+            this.ccwButton.TabIndex = 14;
+            this.ccwButton.Text = "Rotate Right";
             this.ccwButton.UseVisualStyleBackColor = true;
+            this.ccwButton.Click += new System.EventHandler(this.ButtonClick);
             // 
             // Editor
             // 
@@ -182,6 +195,8 @@
             this.ClientSize = new System.Drawing.Size(978, 565);
             this.Controls.Add(this.ccwButton);
             this.Controls.Add(this.cwButton);
+            this.Controls.Add(this.sizeButton);
+            this.Controls.Add(this.textureBoxLabel);
             this.Controls.Add(this.textureBox);
             this.Controls.Add(this.tilePanel);
             this.Controls.Add(this.saveButton);
@@ -189,7 +204,6 @@
             this.Controls.Add(this.xLabel);
             this.Controls.Add(this.yValueBox);
             this.Controls.Add(this.xValueBox);
-            this.Controls.Add(this.loadButton);
             this.Name = "Editor";
             this.Text = "Editor";
             ((System.ComponentModel.ISupportInitialize)(this.xValueBox)).EndInit();
@@ -200,19 +214,17 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button loadButton;
         private System.Windows.Forms.NumericUpDown xValueBox;
         private System.Windows.Forms.NumericUpDown yValueBox;
         private System.Windows.Forms.Label xLabel;
         private System.Windows.Forms.Label yLabel;
         private System.Windows.Forms.Button saveButton;
-        private System.Windows.Forms.OpenFileDialog openDialog;
-        private System.Windows.Forms.SaveFileDialog saveDialog;
         private System.Windows.Forms.Panel tilePanel;
         private System.Windows.Forms.ListView textureBox;
         private System.Windows.Forms.ColumnHeader textureTab;
         private System.Windows.Forms.ColumnHeader detailsTab;
+        private System.Windows.Forms.Label textureBoxLabel;
+        private System.Windows.Forms.Button sizeButton;
         private System.Windows.Forms.Button cwButton;
         private System.Windows.Forms.Button ccwButton;
     }
