@@ -118,6 +118,8 @@ namespace _2dracer
 
                     // Subscribe click event to TileClick
                     eTiles[x, y].Click += TileClick;
+                    eTiles[x, y].MouseEnter += EnterControl;
+                    eTiles[x, y].MouseLeave += ExitControl;
                 }
             }
         }
@@ -250,6 +252,32 @@ namespace _2dracer
         }
 
         /// <summary>
+        /// Controls what happens when mouse enters control
+        /// </summary>
+        public void EnterControl(Object sender, EventArgs e)
+        {
+            if (sender is PictureBox pic && textureBox.SelectedItems.Count > 0)
+            {
+                pic.Image = Image.FromFile(imagePaths[textureBox.SelectedItems[0].ImageIndex]);
+            }
+        }
+
+        /// <summary>
+        /// Controls what happens when mouse exits control
+        /// </summary>
+        public void ExitControl(Object sender, EventArgs e)
+        {
+            if (sender is PictureBox pic)
+            {
+                Tile mTile = GetTile(pic.Tag.ToString());
+
+                pic.Image = Image.FromFile(imagePaths[(int)mTile.Type]);
+
+                pic.Image = RotateImage(pic.Image, MathHelper.ToDegrees(mTile.Rotation));
+            }
+        }
+        
+        /// <summary>
         /// Saves the current configuration to file
         /// </summary>
         public void SaveMap()
@@ -279,32 +307,6 @@ namespace _2dracer
                 if (sw != null)
                 {
                     sw.Close();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Resets the rotation value
-        /// </summary>
-        private void ValueChanged(object sender, EventArgs e)
-        {
-            if (sender is NumericUpDown valueBox)
-            {
-                if (valueBox.Value > 270)
-                {
-                    // Set it down to 0
-                    valueBox.Value = 0;
-                }
-                else if (valueBox.Value < 0)
-                {
-                    // Set it up to 270
-                    valueBox.Value = 270;
-                }
-
-                if (valueBox.Value % 90 != 0)
-                {
-                    // If it's not a multiple of 90 it's wrong
-                    valueBox.Value = 0;
                 }
             }
         }

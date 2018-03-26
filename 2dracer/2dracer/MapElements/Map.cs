@@ -11,13 +11,11 @@ namespace _2dracer.MapElements
     {
         // Fields
         private StreamReader sr;                // Reads the map files
-        private List<Node> nodes;               // Holds all the nodes for the map
-        private Tile[,] tiles;                  // Holds all the tiles for the map
-        private Vector2 position;               // Holds the current position of the map
 
         // Properties
-        public Tile[,] Tiles { get { return tiles; } }
-        public Vector2 Pos { get { return position; } }
+        public List<Node> Nodes { get; }
+        public Tile[,] Tiles { get; }
+        public Vector2 Pos { get; }
 
         // Constructors
         /// <summary>
@@ -48,10 +46,10 @@ namespace _2dracer.MapElements
                 }
 
                 // Set the starting position of the map
-                position = new Vector2(Game1.screenWidth - (mapSize[0] * 768), Game1.screenHeight - (mapSize[1] * 768));
+                Pos = new Vector2(Game1.screenWidth - (mapSize[0] * 768), Game1.screenHeight - (mapSize[1] * 768));
                 
-                tiles = new Tile[mapSize[0], mapSize[1]];           // Set up tile array
-                nodes = new List<Node>();                           // Set up nodes list
+                Tiles = new Tile[mapSize[0], mapSize[1]];           // Set up tile array
+                Nodes = new List<Node>();                           // Set up nodes list
 
                 // Create all tiles; set up nodes and collision stuff as need be
                 int j = 0;
@@ -61,7 +59,7 @@ namespace _2dracer.MapElements
                     {
                         Vector2 tilePos = new Vector2(x * 768, y * 768);
 
-                        tiles[x, y] = new Tile(
+                        Tiles[x, y] = new Tile(
                             tilePos, 
                             (TileType)tileInfo[j],
                             MathHelper.ToRadians(tileInfo[j + 1]));
@@ -69,7 +67,7 @@ namespace _2dracer.MapElements
                         if ((TileType)tileInfo[j] != TileType.Building)
                         {
                             // Not a building, has a node
-                            // nodes.Add(new Node(new Point(x * 384, y * 384)));
+                            Nodes.Add(new Node(new Point(x * 768 + 384, y * 768 + 384)));
                         }
                         /*
                         else
@@ -101,7 +99,7 @@ namespace _2dracer.MapElements
         /// <param name="size">Size of tile array</param>
         public Map(int[] size)
         {
-            tiles = new Tile[size[0], size[1]];
+            Tiles = new Tile[size[0], size[1]];
 
             for (int y = 0; y < size[1]; y++)
             {
@@ -109,7 +107,7 @@ namespace _2dracer.MapElements
                 {
                     Vector2 tilePos = new Vector2(768 * x, 768 * y);
 
-                    tiles[x, y] = new Tile(tilePos, TileType.Grass, 0);
+                    Tiles[x, y] = new Tile(tilePos, TileType.Grass, 0);
                 }
             }
         }
@@ -117,7 +115,7 @@ namespace _2dracer.MapElements
         // Methods
         public void Draw()
         {
-            foreach (Tile tile in tiles)
+            foreach (Tile tile in Tiles)
             {
                 tile.Draw();
             }

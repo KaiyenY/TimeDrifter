@@ -14,7 +14,8 @@ namespace _2dracer
     public enum GameState
     {
         Game,
-        Menu
+        Menu,
+        Pause
     }
 
 
@@ -30,6 +31,7 @@ namespace _2dracer
 
         // SpriteFonts
         public static SpriteFont comicSans;
+        public static SpriteFont comicSans64;
         
         private Player player;
 
@@ -40,8 +42,15 @@ namespace _2dracer
         //GameState Enum
         private static GameState GameState;
 
+        // Menu elements
         private MenuElement startButton;
         private MenuElement exitButton;
+
+        // Pause elements
+        private MenuElement resumeButton;           // Resumes game
+        private MenuElement optionsButton;          // Goes to options
+        private MenuElement exitPauseButton;        // Exits to menu
+        private MenuElement quitButton;             // Quits game
 
         // all cops and tanks
         private AI ai;
@@ -83,12 +92,12 @@ namespace _2dracer
 
             // Texture2Ds
             Texture2D turretSprite = Content.Load<Texture2D>("Textures/Turret");
-            Texture2D bulletSprite = Content.Load<Texture2D>("bullet");
+            Texture2D bulletSprite = Content.Load<Texture2D>("Textures/Bullet");
             Texture2D playerSprite = Content.Load<Texture2D>("Textures/RedCar");
-            Texture2D cop = Content.Load<Texture2D>("cop");
-            square = Content.Load<Texture2D>("square");
-            Texture2D idle = Content.Load<Texture2D>("ButtonRectangleTemp");
-            Texture2D pressed = Content.Load<Texture2D>("buttonPressed");
+            Texture2D cop = Content.Load<Texture2D>("Textures/Cop");
+            square = Content.Load<Texture2D>("Textures/Square");
+            Texture2D idle = Content.Load<Texture2D>("Textures/UI/ButtonRectangleTemp");
+            Texture2D pressed = Content.Load<Texture2D>("Textures/UI/ButtonPressed");
 
             for (int i = 0; i < 6; i++)
             {
@@ -97,19 +106,24 @@ namespace _2dracer
 
             // SpriteFonts
             comicSans = Content.Load<SpriteFont>("comic");
+            comicSans64 = Content.Load<SpriteFont>("comic64");
 
             // objects
             player = new Player(
-                playerSprite, 
-                bulletSprite, 
+                playerSprite,
+                bulletSprite,
                 turretSprite,
                 new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2),
                 comicSans);
             ai = new AI(cop);
 
-            //MenuButtons
-            startButton = new MenuElement(new Rectangle(new Point(20, 50), new Point(200, 50)), idle, pressed);
-            exitButton = new MenuElement(new Rectangle(new Point(20, 120), new Point(200, 50)), idle, pressed);
+            // MenuButtons
+            startButton = new MenuElement(new Rectangle(new Point((screenWidth / 2) - 100, 200), new Point(200, 50)), idle, pressed);
+            exitButton = new MenuElement(new Rectangle(new Point((screenWidth / 2) - 100, 300), new Point(200, 50)), idle, pressed);
+            resumeButton = new MenuElement(new Rectangle(new Point((screenWidth / 2) - 100, 250), new Point(200, 50)), idle, pressed);
+            optionsButton = new MenuElement(new Rectangle(new Point((screenWidth / 2) - 100, 350), new Point(200, 50)), idle, pressed);
+            exitPauseButton = new MenuElement(new Rectangle(new Point((screenWidth / 2) - 100, 450), new Point(200, 50)), idle, pressed);
+            quitButton = new MenuElement(new Rectangle(new Point((screenWidth / 2) - 100, 550), new Point(200, 50)), idle, pressed);
         }
 
         protected override void UnloadContent()
@@ -153,7 +167,7 @@ namespace _2dracer
                 case GameState.Game:
                     if (Input.KeyTap(Keys.Escape))
                     {
-                        GameState = GameState.Menu;
+                        GameState = GameState.Pause;
                     }
 
                     Managers.GameMaster.Update();
@@ -170,6 +184,25 @@ namespace _2dracer
                     timeSinceLastReRoute += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     camera.Update(player.Position);
                     break;
+
+                case GameState.Pause:
+                    if (resumeButton.IsClicked())
+                    {
+                        GameState = GameState.Game;
+                    }
+                    if (optionsButton.IsClicked())
+                    {
+                        // Not implemented
+                    }
+                    if (exitPauseButton.IsClicked())
+                    {
+                        GameState = GameState.Menu;
+                    }
+                    if (quitButton.IsClicked())
+                    {
+                        Exit();
+                    }
+                    break;
             }
 
             base.Update(gameTime);
@@ -184,10 +217,13 @@ namespace _2dracer
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
                     GraphicsDevice.Clear(Color.CornflowerBlue);
 
-                    spriteBatch.DrawString(comicSans, "Welcome to Project Apathy", new Vector2(GraphicsDevice.Viewport.Width / 2, 20), Color.White);
+                    spriteBatch.DrawString(
+                        comicSans64, 
+                        "Welcome to Project Apathy", 
+                        new Vector2((screenWidth / 2) - (comicSans64.MeasureString("Welcome to Project Apathy").X / 2), 20), 
+                        Color.White);
                     startButton.DrawWithText(comicSans, "Start", Color.White);
                     exitButton.DrawWithText(comicSans, "Exit", Color.White);
-                    spriteBatch.DrawString(comicSans, "Press Esc to Quit", new Vector2(50, 600), Color.White);
                     break;
 
                 case GameState.Game:
@@ -203,6 +239,25 @@ namespace _2dracer
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
                     spriteBatch.DrawString(comicSans, "Press Esc to go to the Menu", new Vector2(50, 600), Color.White);
                     player.DrawHUD();
+                    break;
+
+                case GameState.Pause:
+                    spriteBatch.Begin();
+
+                    // Pause title
+                    spriteBatch.DrawString(
+                        comicSans64, 
+                        "Pause", 
+                        new Vector2((screenWidth / 2) - (comicSans64.MeasureString("Pause").X / 2), 100),
+                        Color.White);
+
+                    // Buttons
+                    resumeButton.DrawWithText(comicSans, "Resume", Color.White);
+                    optionsButton.DrawWithText(comicSans, "Options", Color.White);
+                    exitPauseButton.DrawWithText(comicSans, "Quit to Menu", Color.White);
+                    quitButton.DrawWithText(comicSans, "Exit Game", Color.White);
+
+                    spriteBatch.End();
                     break;
             }
             spriteBatch.End();

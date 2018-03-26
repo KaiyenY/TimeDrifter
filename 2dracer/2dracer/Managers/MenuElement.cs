@@ -55,10 +55,9 @@ namespace _2dracer
         /// <param name="text">Text to draw to the middle of the element</param>
         public void DrawWithText(SpriteFont font, string text, Color color)
         {
-            //TODO: Find out why not drawing to the exact centre of the object
             Draw();
-            int middleXCoord = this.Position.Center.X - (int)font.MeasureString(text).X;
-            int middleYCoord = this.Position.Center.Y - (int)font.MeasureString(text).Y;
+            int middleXCoord = Position.Center.X - (int)font.MeasureString(text).X / 2;
+            int middleYCoord = Position.Center.Y - (int)font.MeasureString(text).Y / 2;
             Game1.spriteBatch.DrawString(font, text, new Vector2(middleXCoord, middleYCoord), color);
         }
 

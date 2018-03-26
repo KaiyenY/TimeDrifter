@@ -10,8 +10,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _2dracer
 {
-    class AI
+    public class AI
     {
+        // Fields
         private Enemy[] enemies;
 
         public List<Node> nodes = new List<Node>(); //List of nodes to test A* algorithm
@@ -19,6 +20,8 @@ namespace _2dracer
         private Queue<Node> testQueue = new Queue<Node>(); //TEMPORARY queue to test giving instructions to enemies
 
         private Queue<Node> pathToGive = new Queue<Node>();
+
+        // Constructors
         public AI(Texture2D tex)
         {
             enemies = new Enemy[3];
@@ -87,6 +90,19 @@ namespace _2dracer
             foreach (Node colornode in nodes)
             {
                 colornode.Color = Color.Red;
+            }
+        }
+
+        // This uses the nodes generated from the map, have fun
+        public AI(Texture2D sprite, List<Node> nodes)
+        {
+            this.nodes = nodes;
+
+            enemies = new Enemy[3];
+
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                enemies[i] = new Enemy(sprite, new Vector2(200, 200 * i));
             }
         }
 
