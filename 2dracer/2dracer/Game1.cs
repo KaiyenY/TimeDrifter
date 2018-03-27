@@ -15,13 +15,14 @@ namespace _2dracer
     {
         Game,
         Menu,
+        Options,
         Pause
     }
 
 
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
+        public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
 
         // Options (Maybe implement?)
@@ -40,17 +41,7 @@ namespace _2dracer
         public static List<Texture2D> tileSprites;
 
         //GameState Enum
-        private static GameState GameState;
-
-        // Menu elements
-        private MenuElement startButton;
-        private MenuElement exitButton;
-
-        // Pause elements
-        private MenuElement resumeButton;           // Resumes game
-        private MenuElement optionsButton;          // Goes to options
-        private MenuElement exitPauseButton;        // Exits to menu
-        private MenuElement quitButton;             // Quits game
+        public static GameState GameState;
 
         // all cops and tanks
         private AI ai;
@@ -90,14 +81,14 @@ namespace _2dracer
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            
+
             // Texture2Ds
             Texture2D turretSprite = Content.Load<Texture2D>("Textures/Turret");
             Texture2D bulletSprite = Content.Load<Texture2D>("Textures/Bullet");
             Texture2D playerSprite = Content.Load<Texture2D>("Textures/RedCar");
             Texture2D cop = Content.Load<Texture2D>("Textures/Cop");
             square = Content.Load<Texture2D>("Textures/Square");
-            Texture2D idle = Content.Load<Texture2D>("Textures/UI/ButtonRectangleTemp");
-            Texture2D pressed = Content.Load<Texture2D>("Textures/UI/ButtonPressed");
 
             for (int i = 0; i < 6; i++)
             {
@@ -117,13 +108,20 @@ namespace _2dracer
                 comicSans);
             ai = new AI(cop);
 
-            // MenuButtons
-            startButton = new MenuElement(new Rectangle(new Point((screenWidth / 2) - 100, 200), new Point(200, 50)), idle, pressed);
-            exitButton = new MenuElement(new Rectangle(new Point((screenWidth / 2) - 100, 300), new Point(200, 50)), idle, pressed);
-            resumeButton = new MenuElement(new Rectangle(new Point((screenWidth / 2) - 100, 250), new Point(200, 50)), idle, pressed);
-            optionsButton = new MenuElement(new Rectangle(new Point((screenWidth / 2) - 100, 350), new Point(200, 50)), idle, pressed);
-            exitPauseButton = new MenuElement(new Rectangle(new Point((screenWidth / 2) - 100, 450), new Point(200, 50)), idle, pressed);
-            quitButton = new MenuElement(new Rectangle(new Point((screenWidth / 2) - 100, 550), new Point(200, 50)), idle, pressed);
+            // Load UI
+            foreach (UIElement element in UIManager.Elements)
+            {
+                // Will make this better soonish
+                if (element.SpritePath != null)
+                {
+                    element.Sprite = Content.Load<Texture2D>(element.SpritePath);
+                }
+                if (element.Font != comicSans64)
+                {
+                    element.Font = comicSans;
+                }
+            }
+
         }
 
         protected override void UnloadContent()
@@ -136,6 +134,8 @@ namespace _2dracer
             gameTime = g;
 
             Input.Update();     // Should be the FIRST thing that updates
+
+            UIManager.Update();         // Updates all UI elements
             
             switch (GameState) //Check for gamestate
             {
@@ -148,20 +148,6 @@ namespace _2dracer
                         Editor editor = new Editor();
                         editor.Show();
                     }
-
-                    if (startButton.IsClicked())
-                    {
-                        byte[] size = { 5, 5 };
-
-                        map = new Map();
-
-                        GameState = GameState.Game;
-                    }
-
-                    if(exitButton.IsClicked())
-                    {
-                        Exit();
-                    }
                     break;
 
                 case GameState.Game:
@@ -170,38 +156,18 @@ namespace _2dracer
                         GameState = GameState.Pause;
                     }
 
-                    Managers.GameMaster.Update();
+                    GameMaster.Update();
 
-                    // update turret position to player car position
-                    // or in this case, the center of the screen
                     player.Update();
-                    if(timeSinceLastReRoute > 10)
+                    camera.Update(player.Position);
+
+                    if (timeSinceLastReRoute > 10)
                     {
                         ai.AssignNewPathsToEnemies(ai.nodes[6]);
                         timeSinceLastReRoute = 0;
                     }
                     ai.Update();
                     timeSinceLastReRoute += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    camera.Update(player.Position);
-                    break;
-
-                case GameState.Pause:
-                    if (resumeButton.IsClicked())
-                    {
-                        GameState = GameState.Game;
-                    }
-                    if (optionsButton.IsClicked())
-                    {
-                        // Not implemented
-                    }
-                    if (exitPauseButton.IsClicked())
-                    {
-                        GameState = GameState.Menu;
-                    }
-                    if (quitButton.IsClicked())
-                    {
-                        Exit();
-                    }
                     break;
             }
 
@@ -211,51 +177,48 @@ namespace _2dracer
         protected override void Draw(GameTime g)
         {
             gameTime = g;
+
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+
             switch (GameState)
             {
                 case GameState.Menu:
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
-                    GraphicsDevice.Clear(Color.CornflowerBlue);
 
-                    spriteBatch.DrawString(
-                        comicSans64, 
-                        "Welcome to Project Apathy", 
-                        new Vector2((screenWidth / 2) - (comicSans64.MeasureString("Welcome to Project Apathy").X / 2), 20), 
-                        Color.White);
-                    startButton.DrawWithText(comicSans, "Start", Color.White);
-                    exitButton.DrawWithText(comicSans, "Exit", Color.White);
+                    UIManager.Draw();
+
+                    spriteBatch.End();
                     break;
 
                 case GameState.Game:
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
-                    GraphicsDevice.Clear(Color.CornflowerBlue);
-
+                    
+                    GameMaster.Draw();          // Need to put everything inside of this
                     map.Draw();
-                    Managers.GameMaster.Draw();
                     ai.Draw();
                     player.Draw();
-                    spriteBatch.End();
+                    UIManager.Draw();
 
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
-                    spriteBatch.DrawString(comicSans, "Press Esc to go to the Menu", new Vector2(50, 600), Color.White);
-                    player.DrawHUD();
+                    spriteBatch.End();
                     break;
 
                 case GameState.Pause:
                     spriteBatch.Begin();
 
-                    // Pause title
-                    spriteBatch.DrawString(
-                        comicSans64, 
-                        "Pause", 
-                        new Vector2((screenWidth / 2) - (comicSans64.MeasureString("Pause").X / 2), 100),
-                        Color.White);
+                    map.Draw();
+                    ai.Draw();
+                    player.Draw();
+                    UIManager.Draw();
 
-                    // Buttons
-                    resumeButton.DrawWithText(comicSans, "Resume", Color.White);
-                    optionsButton.DrawWithText(comicSans, "Options", Color.White);
-                    exitPauseButton.DrawWithText(comicSans, "Quit to Menu", Color.White);
-                    quitButton.DrawWithText(comicSans, "Exit Game", Color.White);
+                    spriteBatch.End();
+                    break;
+
+                case GameState.Options:
+                    spriteBatch.Begin();
+
+                    GraphicsDevice.Clear(Color.Black);
+
+                    UIManager.Draw();
 
                     spriteBatch.End();
                     break;

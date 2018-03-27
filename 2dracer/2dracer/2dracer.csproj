@@ -60,12 +60,14 @@
     <Compile Include="Managers\CollisionManager.cs" />
     <Compile Include="Managers\GameMaster.cs" />
     <Compile Include="Managers\Input.cs" />
+    <Compile Include="Managers\UIManager.cs" />
     <Compile Include="MapElements\Map.cs" />
     <Compile Include="MapElements\Node.cs" />
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
-    <Compile Include="Managers\MenuElement.cs" />
+    <Compile Include="UI\Button.cs" />
+    <Compile Include="UI\UIElement.cs" />
     <Compile Include="GameObjects\Mover.cs" />
     <Compile Include="MapElements\Tile.cs" />
     <Compile Include="Program.cs" />
