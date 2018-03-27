@@ -14,6 +14,7 @@ namespace _2dracer
     public enum GameState
     {
         Game,
+        LevelEditor,
         Menu,
         Options,
         Pause
@@ -34,7 +35,7 @@ namespace _2dracer
         public static SpriteFont comicSans;
         public static SpriteFont comicSans64;
         
-        private Player player;
+        public static Player player;
 
         // Texture2Ds
         public static Texture2D square;
@@ -80,9 +81,7 @@ namespace _2dracer
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
             
-
             // Texture2Ds
             Texture2D turretSprite = Content.Load<Texture2D>("Textures/Turret");
             Texture2D bulletSprite = Content.Load<Texture2D>("Textures/Bullet");
@@ -139,17 +138,6 @@ namespace _2dracer
             
             switch (GameState) //Check for gamestate
             {
-                case GameState.Menu:
-                    if (Input.KeyTap(Keys.Escape))
-                        Exit();
-
-                    if (Input.KeyTap(Keys.U))
-                    {
-                        Editor editor = new Editor();
-                        editor.Show();
-                    }
-                    break;
-
                 case GameState.Game:
                     if (Input.KeyTap(Keys.Escape))
                     {
@@ -169,6 +157,22 @@ namespace _2dracer
                     ai.Update();
                     timeSinceLastReRoute += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     break;
+
+                case GameState.Menu:
+                    if (Input.KeyTap(Keys.U))
+                    {
+                        Editor editor = new Editor();
+                        editor.Show();
+
+                        GameState = GameState.LevelEditor;
+                    }
+                    break;
+
+                case GameState.Options:
+                    break;
+
+                case GameState.Pause:
+                    break;
             }
 
             base.Update(gameTime);
@@ -182,14 +186,6 @@ namespace _2dracer
 
             switch (GameState)
             {
-                case GameState.Menu:
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
-
-                    UIManager.Draw();
-
-                    spriteBatch.End();
-                    break;
-
                 case GameState.Game:
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
                     
@@ -200,6 +196,18 @@ namespace _2dracer
                     UIManager.Draw();
 
                     spriteBatch.End();
+                    break;
+
+                case GameState.Menu:
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
+
+                    UIManager.Draw();
+
+                    spriteBatch.End();
+                    break;
+
+                case GameState.LevelEditor:
+                    GraphicsDevice.Clear(Color.Black);
                     break;
 
                 case GameState.Pause:

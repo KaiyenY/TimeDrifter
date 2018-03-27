@@ -72,7 +72,7 @@ namespace _2dracer
         {
             images = new ImageList()
             {
-                ImageSize = new Size(textureBox.Width, textureBox.Width)
+                ImageSize = new Size((int)(textureBox.Width / 1.25f), (int)(textureBox.Width / 1.25f))
             };
 
             try
@@ -176,7 +176,7 @@ namespace _2dracer
         /// <summary>
         /// Determines what happens when a button is clicked
         /// </summary>
-        public void ButtonClick(Object sender, EventArgs e)
+        private void ButtonClick(Object sender, EventArgs e)
         {
             if (sender is Button button)
             {
@@ -199,6 +199,9 @@ namespace _2dracer
                             mTile.Rotation -= MathHelper.PiOver2;
                             selectedTile.Image = RotateImage(selectedTile.Image, -90);     // rotating 90 not 90 + rotation
                         }
+
+                        // Update Tile info
+                        UpdateTileInfo();
                         break;
 
                     case "ccwButton":
@@ -207,6 +210,9 @@ namespace _2dracer
                             mTile.Rotation += MathHelper.PiOver2;
                             selectedTile.Image = RotateImage(selectedTile.Image, 90);     // rotating 90 not 90 + rotation
                         }
+
+                        // Update Tile info
+                        UpdateTileInfo();
                         break;
 
                     default:
@@ -214,6 +220,9 @@ namespace _2dracer
                         map = new Map(size);
                         tilePanel.Controls.Clear();
                         ETileSetUp();
+
+                        // Update Tile info
+                        UpdateTileInfo();
                         break;
                 }
             }
@@ -226,7 +235,7 @@ namespace _2dracer
         /// <summary>
         /// Determines what happens when a tile is clicked
         /// </summary>
-        public void TileClick(Object sender, EventArgs e)
+        private void TileClick(Object sender, EventArgs e)
         {
             if (sender is PictureBox pic && imagePaths != null && textureBox.SelectedItems.Count > 0)
             {
@@ -244,6 +253,16 @@ namespace _2dracer
 
                 // Reset the rotation of the tile
                 mTile.Rotation = 0;
+
+                // Update Tile info
+                UpdateTileInfo();
+            }
+            else if (sender is PictureBox pict)
+            {
+                selectedTile = pict;
+
+                // Update Tile info
+                UpdateTileInfo();
             }
             else
             {
@@ -254,7 +273,7 @@ namespace _2dracer
         /// <summary>
         /// Controls what happens when mouse enters control
         /// </summary>
-        public void EnterControl(Object sender, EventArgs e)
+        private void EnterControl(Object sender, EventArgs e)
         {
             if (sender is PictureBox pic && textureBox.SelectedItems.Count > 0)
             {
@@ -265,7 +284,7 @@ namespace _2dracer
         /// <summary>
         /// Controls what happens when mouse exits control
         /// </summary>
-        public void ExitControl(Object sender, EventArgs e)
+        private void ExitControl(Object sender, EventArgs e)
         {
             if (sender is PictureBox pic)
             {
@@ -280,7 +299,7 @@ namespace _2dracer
         /// <summary>
         /// Saves the current configuration to file
         /// </summary>
-        public void SaveMap()
+        private void SaveMap()
         {
             try
             {
@@ -309,6 +328,30 @@ namespace _2dracer
                     sw.Close();
                 }
             }
+        }
+
+        /// <summary>
+        /// Updates selected tile information
+        /// </summary>
+        private void UpdateTileInfo()
+        {
+            if (selectedTile != null)
+            {
+                string[] eTileInfo = selectedTile.Tag.ToString().Split(',');
+
+                int[] index = { int.Parse(eTileInfo[0]), int.Parse(eTileInfo[1]) };
+
+                indexValueLabel.Text = $"({index[0]}, {index[1]})";
+                rotationValueLabel.Text = $"{MathHelper.ToDegrees(GetTile(selectedTile.Tag.ToString()).Rotation)}";
+            }
+        }
+
+        /// <summary>
+        /// Chagnes the GameState back to Menu
+        /// </summary>
+        private void Editor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Game1.GameState = GameState.Menu;
         }
     }
 }

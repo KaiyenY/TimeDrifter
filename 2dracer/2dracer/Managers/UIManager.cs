@@ -37,10 +37,10 @@ namespace _2dracer.Managers
 
                 // Option Elements
                 new UIElement(new Point((Game1.screenWidth / 2), 100), Game1.comicSans64, GameState.Options, "Options"),
-                new Button(new Point((Game1.screenWidth / 2) - 100, 450), GameState.Options, "Menu", "Exit to Menu")
+                new Button(new Point((Game1.screenWidth / 2) - 100, 450), GameState.Options, "Menu", "Exit to Menu"),
 
                 // Game Elements
-
+                new UIElement(new Point(100, 100), Game1.comicSans, GameState.Game, "Health :" + Game1.player.Health)
             };
         }
 

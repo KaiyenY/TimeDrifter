@@ -10,13 +10,15 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _2dracer
 {
-    class Player : Mover
+    public class Player : Mover
     {
         // Fields
         private Turret turret;
         private SpriteFont font;
-        private int health = 100;
-        private double timeJuice = 0;
+        private double timeJuice;
+
+        // Properties
+        public int Health { get; private set; }
 
         // Constructor
         public Player(Texture2D sprite, Texture2D bulletSprite, Texture2D turretSprite, Vector2 position, SpriteFont s) 
@@ -25,6 +27,8 @@ namespace _2dracer
         {
             turret = new Turret(turretSprite, bulletSprite);
             font = s;
+            Health = 100;
+            timeJuice = 0;
         }
 
         // Methods
@@ -80,13 +84,6 @@ namespace _2dracer
 
             // Draw turret
             turret.Draw();
-        }
-
-        public void DrawHUD()
-        {
-            // all HUD stuff is here
-            Game1.spriteBatch.DrawString(font, "Health: " + health, new Vector2(50, 100), Color.White);
-            Game1.spriteBatch.DrawString(font, "Time Juice: " + (int)timeJuice, new Vector2(250, 100), Color.White);
         }
     }
 }
