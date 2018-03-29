@@ -32,20 +32,23 @@ namespace _2dracer
             float xAxis = Input.GetAxisRaw(Axis.X);
 
             // turn car
-            AddTorque(xAxis * 0.4f);
+            AddTorque(xAxis * 0.6f);
             if (xAxis == 0)
             {
                 angularVelocity *= 0.99f;
             }
             // move car
             float yAxis = Input.GetAxisRaw(Axis.Y);
-            float horsepower = yAxis * 90.0f;
+            float horsepower = yAxis * 300.0f;
 
             Vector2 force = new Vector2();
             force.X += (float)Math.Cos(rotation) * horsepower;
             force.Y += (float)Math.Sin(rotation) * horsepower;
             
             AddForce(force);
+
+            // sliding friction?
+            AddForce(velocity * -1);
 
             // friction of road
             if (yAxis == 0)
@@ -64,7 +67,6 @@ namespace _2dracer
 
             if (TimeJuice < 10)
                 TimeJuice += Game1.gameTime.ElapsedGameTime.TotalMilliseconds/1000;
-
 
             // Update turret
             turret.Update(position);
