@@ -58,6 +58,9 @@ namespace _2dracer.Managers
                     element.Update();
                 }
             }
+
+            Elements[9] = new UIElement(new Point(100, 100), Game1.comicSans, GameState.Game, "Health :" + Game1.player.Health);
+            Elements[10] = new UIElement(new Point(Game1.screenWidth - 100, 100), Game1.comicSans, GameState.Game, "Time Juice :" + (int)Game1.player.TimeJuice);
         }
 
         /// <summary>
