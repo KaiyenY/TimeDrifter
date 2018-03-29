@@ -106,7 +106,7 @@ namespace _2dracer
                         Tag = $"{x},{y}",
                         Size = new Size(384, 384)
                     };
-
+            
                     // Get the corresponding map tile
                     Tile mTile = GetTile(eTiles[x, y].Tag.ToString());
 

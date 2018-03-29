@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using _2dracer.MapElements;
@@ -107,6 +109,24 @@ namespace _2dracer
                 comicSans);
             ai = new AI(cop);
 
+            // Load Audio
+            foreach (string path in AudioManager.MPaths)
+            {
+                // Add song to list of songs
+                AudioManager.Music.Add(
+                    Content.Load<Song>(path));
+            }
+            foreach (string path in AudioManager.SEPaths)
+            {
+                // Used to get the key of the sound effect
+                string[] directories = path.Split(',');
+
+                // Add the sound effect to the dictionary
+                AudioManager.SoundEffects.Add(
+                    directories[directories.Length - 1],
+                    Content.Load<SoundEffect>(path));
+            }
+
             // Load UI
             foreach (UIElement element in UIManager.Elements)
             {
@@ -193,8 +213,11 @@ namespace _2dracer
                     map.Draw();
                     ai.Draw();
                     player.Draw();
-                    UIManager.Draw();
 
+                    spriteBatch.End();
+
+                    spriteBatch.Begin();
+                    UIManager.Draw();
                     spriteBatch.End();
                     break;
 

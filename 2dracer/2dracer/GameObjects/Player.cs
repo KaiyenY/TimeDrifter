@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace _2dracer
 {
@@ -15,9 +10,9 @@ namespace _2dracer
         // Fields
         private Turret turret;
         private SpriteFont font;
-        private double timeJuice;
 
         // Properties
+        public double TimeJuice { get; private set; }
         public int Health { get; private set; }
 
         // Constructor
@@ -28,7 +23,7 @@ namespace _2dracer
             turret = new Turret(turretSprite, bulletSprite);
             font = s;
             Health = 100;
-            timeJuice = 0;
+            TimeJuice = 0;
         }
 
         // Methods
@@ -67,8 +62,8 @@ namespace _2dracer
                 angularVelocity = 0;
             }
 
-            if (timeJuice < 10)
-                timeJuice += Game1.gameTime.ElapsedGameTime.TotalMilliseconds/1000;
+            if (TimeJuice < 10)
+                TimeJuice += Game1.gameTime.ElapsedGameTime.TotalMilliseconds/1000;
 
 
             // Update turret

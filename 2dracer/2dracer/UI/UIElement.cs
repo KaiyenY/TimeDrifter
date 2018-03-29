@@ -67,7 +67,13 @@ namespace _2dracer
         /// <summary>
         /// Update element on screen
         /// </summary>
-        public virtual void Update() { }
+        public virtual void Update()
+        {
+            if (State == GameState.Game)
+            {
+                // Something about updating score, health, and time juice
+            }
+        }
 
         /// <summary>
         /// Draw element to the screen

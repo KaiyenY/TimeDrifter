@@ -40,7 +40,8 @@ namespace _2dracer.Managers
                 new Button(new Point((Game1.screenWidth / 2) - 100, 450), GameState.Options, "Menu", "Exit to Menu"),
 
                 // Game Elements
-                new UIElement(new Point(100, 100), Game1.comicSans, GameState.Game, "Health :" + Game1.player.Health)
+                new UIElement(new Point(100, 100), Game1.comicSans, GameState.Game, "Health :" + Game1.player.Health),
+                new UIElement(new Point(Game1.screenWidth - 100, 100), Game1.comicSans, GameState.Game, "Time Juice :" + Game1.player.TimeJuice)
             };
         }
 
