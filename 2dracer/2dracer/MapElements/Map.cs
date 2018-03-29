@@ -15,7 +15,7 @@ namespace _2dracer.MapElements
         // Properties
         public List<Node> Nodes { get; }
         public Tile[,] Tiles { get; }
-        public Vector2 Pos { get; }
+        public Vector2 Size { get; }
 
         // Constructors
         /// <summary>
@@ -44,9 +44,6 @@ namespace _2dracer.MapElements
                     tileInfo[i] = int.Parse(info[0]);               // Tile type
                     tileInfo[i + 1] = int.Parse(info[1]);           // Tile rotation
                 }
-
-                // Set the starting position of the map
-                Pos = new Vector2(Game1.screenWidth - (mapSize[0] * 768), Game1.screenHeight - (mapSize[1] * 768));
                 
                 Tiles = new Tile[mapSize[0], mapSize[1]];           // Set up tile array
                 Nodes = new List<Node>();                           // Set up nodes list
@@ -79,6 +76,8 @@ namespace _2dracer.MapElements
                         j += 2;
                     }
                 }
+
+                Size = new Vector2(768 * Tiles.GetLength(0), 768 * Tiles.GetLength(1));
             }
             catch (Exception e)
             {

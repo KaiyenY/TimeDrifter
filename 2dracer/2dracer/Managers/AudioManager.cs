@@ -53,11 +53,12 @@ namespace _2dracer.Managers
         /// <summary>
         /// Plays a song
         /// </summary>
-        /// <param name="songName">Name of the song to play</param>
+        /// <param name="trackNumber">The track index to play</param>
         /// <param name="volume">Volume the song should play at</param>
-        public static void PlayMusic(string songName, float volume)
+        public static void PlayMusic(int trackNumber, float volume = 1.0f)
         {
-            
+            MediaPlayer.Volume = volume;
+            MediaPlayer.Play(Music[trackNumber]);
         }
 
         /// <summary>

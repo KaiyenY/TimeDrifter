@@ -29,7 +29,7 @@ namespace _2dracer
             // only move bullet if it is close enough to matter
             if (Math.Abs(position.X) < 100000 || Math.Abs(position.Y) < 100000)
             {
-                float speed = 400;
+                float speed = 1000;
 
                 velocity.X = (float)Math.Cos(rotation) * speed;
                 velocity.Y = (float)Math.Sin(rotation) * speed;

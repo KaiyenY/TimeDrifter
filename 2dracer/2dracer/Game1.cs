@@ -51,7 +51,7 @@ namespace _2dracer
         private float timeSinceLastReRoute = 0.0f;
 
         public static Map map;
-        private Camera camera;
+        public static Camera camera;
         public static GameTime gameTime;
 
         // Constructor
@@ -110,12 +110,11 @@ namespace _2dracer
             ai = new AI(cop);
 
             // Load Audio
-            /*
             foreach (string path in AudioManager.MPaths)
             {
                 // Add song to list of songs
-                AudioManager.Music.Add(
-                    Content.Load<Song>(path));
+                // AudioManager.Music.Add(
+                    // Content.Load<Song>(path));
             }
             foreach (string path in AudioManager.SEPaths)
             {
@@ -123,11 +122,10 @@ namespace _2dracer
                 string[] directories = path.Split(',');
 
                 // Add the sound effect to the dictionary
-                AudioManager.SoundEffects.Add(
-                    directories[directories.Length - 1],
-                    Content.Load<SoundEffect>(path));
+                // AudioManager.SoundEffects.Add(
+                    // directories[directories.Length - 1],
+                    // Content.Load<SoundEffect>($@""));
             }
-            */
 
             // Load UI
             foreach (UIElement element in UIManager.Elements)
@@ -165,11 +163,15 @@ namespace _2dracer
                     {
                         GameState = GameState.Pause;
                     }
+                    if (MediaPlayer.State != MediaState.Playing)
+                    {
+                        // AudioManager.PlayMusic(0);
+                    }
 
                     GameMaster.Update();
 
                     player.Update();
-                    camera.Update(player.Position);
+                    camera.Update();
 
                     if (timeSinceLastReRoute > 10)
                     {
@@ -236,13 +238,16 @@ namespace _2dracer
                     break;
 
                 case GameState.Pause:
-                    spriteBatch.Begin();
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
 
                     map.Draw();
                     ai.Draw();
                     player.Draw();
-                    UIManager.Draw();
 
+                    spriteBatch.End();
+
+                    spriteBatch.Begin();
+                    UIManager.Draw();
                     spriteBatch.End();
                     break;
 

@@ -171,3 +171,15 @@
 /processorParam:TextureFormat=Color
 /build:Textures/UI/Button.png
 
+#begin Audio/Tracks/ExtremeAction.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Tracks/ExtremeAction.mp3
+
+#begin Audio/Tracks/HappyRock.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Tracks/HappyRock.mp3
+

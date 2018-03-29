@@ -35,13 +35,13 @@ namespace _2dracer
         }
 
         float timer = 0;
-        public void Update(Vector2 pos)
+        public override void Update()
         {
             // update timer
             timer += (float)Game1.gameTime.ElapsedGameTime.TotalMilliseconds;
 
             // change position of turret, depending on where car is
-            position = pos;
+            position = Game1.player.Position;
 
             // get angle that the turret should be facing
             if (Input.ControlConnected())
@@ -52,7 +52,7 @@ namespace _2dracer
             else
             {
                 // Use mouse input
-                rotation = Input.MouseAngle();
+                rotation = Input.MouseAngle(this);
             }
 
             // a bullet fires every 0.15 seconds
