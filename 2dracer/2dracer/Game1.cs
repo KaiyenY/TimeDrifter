@@ -110,6 +110,7 @@ namespace _2dracer
             ai = new AI(cop);
 
             // Load Audio
+            /*
             foreach (string path in AudioManager.MPaths)
             {
                 // Add song to list of songs
@@ -126,6 +127,7 @@ namespace _2dracer
                     directories[directories.Length - 1],
                     Content.Load<SoundEffect>(path));
             }
+            */
 
             // Load UI
             foreach (UIElement element in UIManager.Elements)

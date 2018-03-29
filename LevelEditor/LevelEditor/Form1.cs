@@ -10,9 +10,12 @@ using System.Windows.Forms;
 
 namespace LevelEditor
 {
-    public partial class Form1 : Form
+    /// <summary>
+    /// Form that edits tile-based maps
+    /// </summary>
+    public partial class Designer : Form
     {
-        public Form1()
+        public Designer()
         {
             InitializeComponent();
         }
