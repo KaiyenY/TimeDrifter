@@ -76,12 +76,25 @@ namespace _2dracer
         public void UpdatePhysics()
         {
             velocity += accel * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds;
-            position += velocity * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds;
             accel *= 0;
 
             angularVelocity += angularAccel * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds;
-            rotation += angularVelocity * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds;
             angularAccel *= 0;
+
+            bool slowMotion = Player.slowMo; // slowMo is in Player.cs 
+
+            if (slowMotion)
+            {
+                position += velocity * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds / 2;
+                rotation += angularVelocity * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds / 2;
+            }
+
+            else
+            {
+                position += velocity * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds;
+                rotation += angularVelocity * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds;
+            }
+
         }
 
         // adds force to the center of the mover

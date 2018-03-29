@@ -105,8 +105,8 @@ namespace _2dracer
                 playerSprite,
                 bulletSprite,
                 turretSprite,
-                new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2),
-                comicSans);
+                new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2)
+                );
             ai = new AI(cop);
 
             // Load Audio
