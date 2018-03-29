@@ -9,19 +9,19 @@ namespace _2dracer
     {
         // Fields
         private Turret turret;
-        private SpriteFont font;
+
+        public static bool slowMo = false;
 
         // Properties
         public double TimeJuice { get; private set; }
         public int Health { get; private set; }
 
         // Constructor
-        public Player(Texture2D sprite, Texture2D bulletSprite, Texture2D turretSprite, Vector2 position, SpriteFont s) 
+        public Player(Texture2D sprite, Texture2D bulletSprite, Texture2D turretSprite, Vector2 position) 
             : base(new GameObject(position, 0, sprite, new Vector2(64, 128)), 
                   new Vector2(0,0), new Vector2(0,0), 0, 0, 1)
         {
             turret = new Turret(turretSprite, bulletSprite);
-            font = s;
             Health = 100;
             TimeJuice = 0;
         }
@@ -32,7 +32,7 @@ namespace _2dracer
             float xAxis = Input.GetAxisRaw(Axis.X);
 
             // turn car
-            AddTorque(xAxis * 2);
+            AddTorque(xAxis * 1);
             angularVelocity *= 0.99f;
 
 
@@ -48,9 +48,20 @@ namespace _2dracer
             // sliding friction?
             AddForce(velocity * -1);
 
-            if (TimeJuice < 10)
+            if (Input.KeyTap(Keys.P))
+                slowMo = !slowMo;
+
+            if (!slowMo && TimeJuice < 10)
                 TimeJuice += Game1.gameTime.ElapsedGameTime.TotalMilliseconds/1000;
 
+            if (slowMo)
+                TimeJuice -= Game1.gameTime.ElapsedGameTime.TotalMilliseconds / 500;
+
+            if (TimeJuice <= 0)
+            {
+                TimeJuice = 0;
+                slowMo = false;
+            }
             // Update turret
             turret.Update(position);
             base.Update();
