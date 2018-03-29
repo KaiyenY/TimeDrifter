@@ -32,11 +32,10 @@ namespace _2dracer
             float xAxis = Input.GetAxisRaw(Axis.X);
 
             // turn car
-            AddTorque(xAxis * 0.6f);
-            if (xAxis == 0)
-            {
-                angularVelocity *= 0.99f;
-            }
+            AddTorque(xAxis * 2);
+            angularVelocity *= 0.99f;
+
+
             // move car
             float yAxis = Input.GetAxisRaw(Axis.Y);
             float horsepower = yAxis * 300.0f;
@@ -44,26 +43,10 @@ namespace _2dracer
             Vector2 force = new Vector2();
             force.X += (float)Math.Cos(rotation) * horsepower;
             force.Y += (float)Math.Sin(rotation) * horsepower;
-            
             AddForce(force);
 
             // sliding friction?
             AddForce(velocity * -1);
-
-            // friction of road
-            if (yAxis == 0)
-            {
-                AddForce(velocity * -1);
-            }
-
-            // friction of breaks
-            if (Input.KeyHold(Keys.Space))
-            {
-                // yes! angularVelocity = 0, because breaks stop the car
-                // this wont be in the final version, its just here to make testing the game easier
-                velocity = Vector2.Zero;
-                angularVelocity = 0;
-            }
 
             if (TimeJuice < 10)
                 TimeJuice += Game1.gameTime.ElapsedGameTime.TotalMilliseconds/1000;
