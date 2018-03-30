@@ -46,8 +46,8 @@ namespace _2dracer.GameObjects
         /// </summary>
         protected void Accelerate(float direction)
         {
-            float xForce = (float)Math.Cos(rotation) * horsePower;
-            float yForce = (float)Math.Sin(rotation) * horsePower;
+            float xForce = (float)Math.Cos(rotation) * horsePower * direction;
+            float yForce = (float)Math.Sin(rotation) * horsePower * direction;
             AddForce(new Vector2(xForce, yForce));
 
             CapVelocity();
