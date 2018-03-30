@@ -15,12 +15,15 @@ namespace _2dracer
         // Fields
         public Queue<Node> Route { get; set; } //The path the enemy will take
         private Node currentDestination; //The node within the path that the car will currently go towards
+        private float prevRotation;
+        private bool enableDurp;
 
         // Constructor
         public Enemy(string spritePath, Vector2 position) 
             : base(new GameObject(position, 0, spritePath, new Vector2(64, 128)), Vector2.Zero, 0)
         {
             currentDestination = new Node(base.position.ToPoint()); //initialize current destination to where it begins
+            prevRotation = rotation;
         }
 
         // Methods
@@ -89,6 +92,26 @@ namespace _2dracer
 
                 velocity.X += (float)Math.Cos(rotation) * 3;
                 velocity.Y += (float)Math.Sin(rotation) * 3;
+
+                if (Input.KeyTap(Keys.I))
+                {
+                    enableDurp = !enableDurp;
+                }
+
+                if (!enableDurp)
+                {
+                    if (prevRotation != rotation)
+                    {
+                        float rotDiff = prevRotation - rotation;
+
+                        velocity = new Vector2(
+                            (float)(velocity.X * Math.Cos(-rotDiff) - velocity.Y * Math.Sin(-rotDiff)),
+                            (float)(velocity.X * Math.Sin(-rotDiff) + velocity.Y * Math.Cos(-rotDiff)));
+
+
+                        prevRotation = rotation;
+                    }
+                }
             }
         }
 

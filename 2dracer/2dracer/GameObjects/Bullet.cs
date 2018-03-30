@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using _2dracer.Managers;
+
 namespace _2dracer
 {
     public class Bullet : Mover
@@ -31,15 +33,12 @@ namespace _2dracer
 
         public override void Update()
         {
-            if (Input.KeyTap(Keys.Space))
-            {
-                // Fire bullet
-            }
-
             // only move bullet if it is close enough to matter
             if (Math.Abs(position.X) < 100000 || Math.Abs(position.Y) < 100000)
             {
-                float speed = 1000;
+                Player player = (Player)GameMaster.GameObjects[0];
+
+                float speed = player.TopSpeed * 1.5f;
 
                 velocity.X = (float)Math.Cos(rotation) * speed;
                 velocity.Y = (float)Math.Sin(rotation) * speed;

@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using _2dracer.GameObjects;
+
 namespace _2dracer.Managers
 {
     static class GameMaster
