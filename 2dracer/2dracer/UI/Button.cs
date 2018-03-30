@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using _2dracer.Managers;
+
 namespace _2dracer.UI
 {
     /// <summary>
@@ -39,6 +41,8 @@ namespace _2dracer.UI
                         if (Game1.map == null)
                         {
                             Game1.map = new MapElements.Map();
+
+                            Game1.ai = new AI(GameMaster.Enemies);          // Add map nodes
                         }
                         break;
 
@@ -49,6 +53,8 @@ namespace _2dracer.UI
                         if (Game1.map != null)
                         {
                             Game1.map = null;
+
+                            Game1.ai = null;
                         }
                         break;
 

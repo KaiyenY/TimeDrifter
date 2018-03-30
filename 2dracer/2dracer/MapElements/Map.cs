@@ -64,7 +64,7 @@ namespace _2dracer.MapElements
                         if ((TileType)tileInfo[j] != TileType.Building)
                         {
                             // Not a building, has a node
-                            Nodes.Add(new Node(new Point(x * 768 + 384, y * 768 + 384)));
+                            Nodes.Add(new Node(new Point((x * 768), (y * 768))));
                         }
                         /*
                         else
@@ -117,6 +117,10 @@ namespace _2dracer.MapElements
             foreach (Tile tile in Tiles)
             {
                 tile.Draw();
+            }
+            foreach (Node node in Nodes)
+            {
+                Game1.spriteBatch.Draw(Game1.square, new Rectangle(node.Location, new Point(25, 25)), Color.Red);
             }
         }
     }

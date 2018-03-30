@@ -10,10 +10,15 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _2dracer
 {
-    class Bullet : Mover
+    public class Bullet : Mover
     {
-        public Bullet(Texture2D sprite, Vector2 position, float angle)
-            : base(new GameObject(position, angle, sprite, new Vector2(20)), Vector2.Zero, 0)
+        // Fields
+
+        // Properties
+
+        // Constructor
+        public Bullet(Vector2 position, float angle)
+            : base(new GameObject(position, angle, "Textures/Bullet", new Vector2(20)), Vector2.Zero, 0)
         {
             //bullet position = gun position
             //we want bullet to start at tip of gun
@@ -26,6 +31,11 @@ namespace _2dracer
 
         public override void Update()
         {
+            if (Input.KeyTap(Keys.Space))
+            {
+                // Fire bullet
+            }
+
             // only move bullet if it is close enough to matter
             if (Math.Abs(position.X) < 100000 || Math.Abs(position.Y) < 100000)
             {
@@ -43,6 +53,24 @@ namespace _2dracer
             rotation += (float)Math.PI / 2;
             base.Draw();
             rotation -= (float)Math.PI / 2;
+        }
+
+        /// <summary>
+        /// Sets the position of the bullet
+        /// </summary>
+        /// <param name="position">Where to place the bullet</param>
+        public void SetPosition(Vector2 position)
+        {
+            this.position = position;
+        }
+
+        /// <summary>
+        /// Sets the rotation of the bullet
+        /// </summary>
+        /// <param name="rotation">Rotation to face</param>
+        public void SetRotation(float rotation)
+        {
+            this.rotation = rotation;
         }
     }
 }

@@ -10,17 +10,20 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _2dracer
 {
-    class Enemy : Mover
+    public class Enemy : Mover
     {
+        // Fields
         public Queue<Node> Route { get; set; } //The path the enemy will take
         private Node currentDestination; //The node within the path that the car will currently go towards
 
-        public Enemy(Texture2D tex, Vector2 v) :
-            base(new GameObject(v, 0, tex, new Vector2(64, 128)), Vector2.Zero, 0)
+        // Constructor
+        public Enemy(string spritePath, Vector2 position) 
+            : base(new GameObject(position, 0, spritePath, new Vector2(64, 128)), Vector2.Zero, 0)
         {
-            currentDestination = new Node(position.ToPoint()); //initialize current destination to where it begins
+            currentDestination = new Node(base.position.ToPoint()); //initialize current destination to where it begins
         }
 
+        // Methods
         public override void Draw()
         {
             rotation += (float)Math.PI / 2;
@@ -29,13 +32,20 @@ namespace _2dracer
             rotation -= (float)Math.PI / 2;
         }
 
+        public override void Update()
+        {
+            UpdatePositionTowardsNextNode();
+
+            base.Update();
+        }
+
         public void UpdatePositionTowardsNextNode() //Moves the car a little along its current route
         {
             if(Route != null) //Don't do anything if there's no Route assigned
             {
                 // set range to 100
                 // cop should not touch the point before going to the next
-                if (withinRange(100, currentDestination) && Route.Count != 0)
+                if (WithinRange(100, currentDestination) && Route.Count != 0)
                 {
                     currentDestination = new Node(this.Route.Dequeue()); //If reached current target node, fetch next one from the Queue
                 }
@@ -79,11 +89,10 @@ namespace _2dracer
 
                 velocity.X += (float)Math.Cos(rotation) * 3;
                 velocity.Y += (float)Math.Sin(rotation) * 3;
-                base.Update();
             }
         }
 
-        public bool withinRange(int offset, Node origin) //Creates an acceptable area to check when to get the next target
+        public bool WithinRange(int offset, Node origin) //Creates an acceptable area to check when to get the next target
         {
             Rectangle acceptableArea = new Rectangle(origin.Location.X - offset, origin.Location.Y - offset, 2 * offset, 2 * offset);
 
@@ -96,9 +105,6 @@ namespace _2dracer
                 return false;
             }
         }
-
-        
-
     }
 }
 //Ruben Young

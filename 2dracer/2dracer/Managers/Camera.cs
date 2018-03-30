@@ -21,7 +21,7 @@ namespace _2dracer.Managers
 
         public void Update()
         {
-            Vector2 pos = Game1.player.Position;
+            Vector2 pos = GameMaster.GameObjects[0].Position;
             Vector2 mapSize = Game1.map.Size;
 
             // Through complicated stuff, these two checks will make sure the

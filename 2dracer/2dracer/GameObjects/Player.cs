@@ -2,32 +2,32 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using _2dracer.Managers;
 
 namespace _2dracer
 {
     public class Player : Mover
     {
         // Fields
-        private Turret turret;
         private float prevRotation;         // Keeps track of previous frame rotation
         private float topSpeed;             // The maximum speed the player can achieve
 
         public static bool slowMo = false;
 
         // Properties
+        public Texture2D BulletSprite { get; set; }
         public double TimeJuice { get; private set; }
         public int Health { get; private set; }
 
         // Constructor
-        public Player(Texture2D sprite, Texture2D bulletSprite, Texture2D turretSprite, Vector2 position) 
-            : base(new GameObject(position, 0, sprite, new Vector2(64, 128)), 
+        public Player(Vector2 position) 
+            : base(new GameObject(position, 0, "Textures/RedCar", new Vector2(64, 128)), 
                   new Vector2(0,0), new Vector2(0,0), 0, 0, 1)
         {
-            turret = new Turret(turretSprite, bulletSprite);
             Health = 100;
             TimeJuice = 0;
             prevRotation = rotation;
-            topSpeed = 500;
+            topSpeed = 1000f;
         }
 
         // Methods
@@ -38,9 +38,7 @@ namespace _2dracer
             Turn();
 
             Juice();
-            
-            // Update turret
-            turret.Update();
+
             base.Update();
         }
 
@@ -49,9 +47,15 @@ namespace _2dracer
             rotation += (float)Math.PI / 2;
             base.Draw();
             rotation -= (float)Math.PI / 2;
-
-            // Draw turret
-            turret.Draw();
+            #region Draw HUD
+            // Will change this after UI class is updated
+            Game1.spriteBatch.End();
+            Game1.spriteBatch.Begin();
+            Game1.spriteBatch.DrawString(Game1.comicSans, $"Health : {Health}", new Vector2(100, 100), Color.White);
+            Game1.spriteBatch.DrawString(Game1.comicSans, $"Time Juice : {TimeJuice:N0}", new Vector2(Game1.screenWidth - 300, 100), Color.White);
+            Game1.spriteBatch.End();
+            Game1.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Game1.camera.ViewMatrix);
+            #endregion
         }
 
         /// <summary>
@@ -60,7 +64,7 @@ namespace _2dracer
         private void Movement()
         {
             float yAxis = Input.GetAxisRaw(Axis.Y);
-            float horsePower = yAxis * 100f;
+            float horsePower = yAxis * 200f;
 
             // Movement stuff here
             if (yAxis != 0)
@@ -74,6 +78,12 @@ namespace _2dracer
                 AddForce(velocity / -2);
             }
 
+            // E-Brake
+            if (Input.KeyTap(Keys.Space))
+            {
+                velocity = Vector2.Zero;
+            }
+
             // Controls the top speed of the car
             if (velocity.Length() > topSpeed || velocity.Length() < -topSpeed)
             {
@@ -81,7 +91,7 @@ namespace _2dracer
                     topSpeed * (float)Math.Cos(rotation),
                     topSpeed * (float)Math.Sin(rotation));
             }
-
+            
             // Makes sure the car doesn't fly off the map * needs fixed
             if (position.X <= -386 ||
                 position.X >= Game1.map.Size.X - 386)
@@ -112,6 +122,11 @@ namespace _2dracer
                     if (angularVelocity >= 0)
                     {
                         AddTorque(xAxis * (topSpeed / velocity.Length()) * 0.25f);
+
+                        if (angularVelocity >= 2f)
+                        {
+                            angularVelocity = 2f;
+                        }
                     }
                     else
                     {
@@ -124,6 +139,11 @@ namespace _2dracer
                     if (angularVelocity <= 0)
                     {
                         AddTorque(xAxis * (topSpeed / velocity.Length()) * 0.5f);
+                        
+                        if (angularVelocity <= -2f)
+                        {
+                            angularVelocity = -2f;
+                        }
                     }
                     else
                     {

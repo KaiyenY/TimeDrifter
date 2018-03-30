@@ -13,7 +13,7 @@ namespace _2dracer
     public class AI
     {
         // Fields
-        private Enemy[] enemies;
+        private List<Enemy> enemies;
 
         public List<Node> nodes = new List<Node>(); //List of nodes to test A* algorithm
 
@@ -22,15 +22,9 @@ namespace _2dracer
         private Queue<Node> pathToGive = new Queue<Node>();
 
         // Constructors
-        public AI(Texture2D tex)
+        public AI(List<Enemy> enemies)
         {
-            enemies = new Enemy[3];
-
-            for (int i = 0; i < enemies.Length; i++)
-            {
-                enemies[i] = new Enemy(tex, new Vector2(200, 200*i));
-            }
-            
+            this.enemies = enemies;
 
             #region node populating
             //Create nodes
@@ -94,47 +88,18 @@ namespace _2dracer
         }
 
         // This uses the nodes generated from the map, have fun
-        public AI(Texture2D sprite, List<Node> nodes)
+        public AI(List<Enemy> enemies, List<Node> nodes)
         {
             this.nodes = nodes;
 
-            enemies = new Enemy[3];
-
-            for (int i = 0; i < enemies.Length; i++)
-            {
-                enemies[i] = new Enemy(sprite, new Vector2(200, 200 * i));
-            }
-        }
-
-        public void Update()
-        {
-            for (int i = 0; i < enemies.Length; i++)
-            {
-                enemies[i].UpdatePositionTowardsNextNode();
-            }
-        }
-
-        public void Draw()
-        {
-            for (int i = 0; i < enemies.Length; i++)
-            {
-                enemies[i].Draw();
-            }
-               
-
-            foreach (Node n in nodes) //Draw all the test nodes
-            {
-                Game1.spriteBatch.Draw(Game1.square, new Rectangle(n.Location, new Point(10, 10)), n.Color);
-            }
-
+            this.enemies = enemies;
         }
 
         public void AssignNewPathsToEnemies(Node target)//TODO: Integrate with regards to enemies
         {
-            for (int i = 0; i < enemies.Length; i++)
+            for (int i = 0; i < enemies.Count; i++)
             {
                 enemies[i].Route = Pathfind(nodes[0], target);
-                
             }
         }
 

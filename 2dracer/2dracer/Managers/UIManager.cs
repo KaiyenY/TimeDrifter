@@ -40,8 +40,6 @@ namespace _2dracer.Managers
                 new Button(new Point((Game1.screenWidth / 2) - 100, 450), GameState.Options, "Menu", "Exit to Menu"),
 
                 // Game Elements
-                new UIElement(new Point(100, 100), Game1.comicSans, GameState.Game, "Health :" + Game1.player.Health),
-                new UIElement(new Point(Game1.screenWidth - 100, 100), Game1.comicSans, GameState.Game, "Time Juice :" + Game1.player.TimeJuice)
             };
         }
 
@@ -58,10 +56,6 @@ namespace _2dracer.Managers
                     element.Update();
                 }
             }
-
-            // This is disgusting noooooo
-            Elements[9] = new UIElement(new Point(100, 100), Game1.comicSans, GameState.Game, "Health :" + Game1.player.Health);
-            Elements[10] = new UIElement(new Point(Game1.screenWidth - 100, 100), Game1.comicSans, GameState.Game, "Time Juice :" + (int)Game1.player.TimeJuice);
         }
 
         /// <summary>
@@ -69,7 +63,7 @@ namespace _2dracer.Managers
         /// </summary>
         public static void Draw()
         {
-            // Game1.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
+            Game1.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
 
             foreach (UIElement element in Elements)
             {
@@ -79,7 +73,7 @@ namespace _2dracer.Managers
                 }
             }
 
-            // Game1.spriteBatch.End();
+            Game1.spriteBatch.End();
         }
         #endregion
     }

@@ -17,6 +17,7 @@ namespace _2dracer
         protected float rotation;       // rotation in degrees from +x axis (remember y is flipped)
 
         protected Texture2D sprite;     // static sprite
+        protected string spritePath;    // Will hold path to sprite (helps when loading textures)
         protected Color color;          // color tint of the sprite
         protected Vector2 size;         // fixed standard size (width and height) of objects of this type
         protected Vector2 scale;        // the scaling factor for this particular object
@@ -27,6 +28,7 @@ namespace _2dracer
         public Vector2 Position { get { return position; } }
         public float Rotation { get { return rotation; } }
         public Texture2D Sprite { get { return sprite; } set { sprite = value; } }
+        public string SpritePath { get { return spritePath; } }
         public Color Color { get { return color; } }
         public Vector2 Size { get { return size; } }
         public Vector2 Scale { get { return scale; } }
@@ -34,14 +36,14 @@ namespace _2dracer
 
         // constructors
         public GameObject(GameObject g)
-                   : this(g.Position, g.Rotation, g.Sprite, g.Color, g.Size, g.Scale, g.IsEnabled) { }
+                   : this(g.Position, g.Rotation, g.SpritePath, g.Color, g.Size, g.Scale, g.IsEnabled) { }
         
-        public GameObject(Vector2 position, float rotation, Texture2D sprite, Color color, Vector2 size, Vector2 scale, bool startEnabled)
+        public GameObject(Vector2 position, float rotation, string spritePath, Color color, Vector2 size, Vector2 scale, bool startEnabled)
         {
             this.position = position;
             this.rotation = rotation;
 
-            this.sprite = sprite;
+            this.spritePath = spritePath;
             this.color = color;
             this.size = size;
             this.scale = scale;
@@ -49,17 +51,17 @@ namespace _2dracer
             isEnabled = startEnabled;
         }
 
-        public GameObject(Vector2 position, float rotation, Texture2D sprite, Color color, Vector2 size, Vector2 scale)
-                   : this(position, rotation, sprite, color, size, scale, true) { }
+        public GameObject(Vector2 position, float rotation, string spritePath, Color color, Vector2 size, Vector2 scale)
+                   : this(position, rotation, spritePath, color, size, scale, true) { }
 
-        public GameObject(Vector2 position, float rotation, Texture2D sprite, Vector2 size, Vector2 scale)
-                   : this(position, rotation, sprite, Color.White, size, scale) { }
+        public GameObject(Vector2 position, float rotation, string spritePath, Vector2 size, Vector2 scale)
+                   : this(position, rotation, spritePath, Color.White, size, scale) { }
 
-        public GameObject(Vector2 position, float rotation, Texture2D sprite, Vector2 size)
-                   : this(position, rotation, sprite, size, Vector2.One) { }
+        public GameObject(Vector2 position, float rotation, string spritePath, Vector2 size)
+                   : this(position, rotation, spritePath, size, Vector2.One) { }
 
         public GameObject(Vector2 position, float rotation, Vector2 size)
-                   : this(position, rotation, Game1.square, size) { }
+                   : this(position, rotation, "Textures/Square", size) { }
 
         public GameObject(Vector2 size)
                    : this(Vector2.Zero, 0f, size) { }

@@ -16,20 +16,37 @@ namespace _2dracer.Managers
         private static List<GameObject> gameObjects;
         private static List<Mover> movers;
         private static List<Rigid> rigids;
+        private static List<Bullet> bullets;
+        private static List<Enemy> enemies;
 
         // properties
         public static List<GameObject> GameObjects { get { return gameObjects; } }
         public static List<Mover> Movers { get { return movers; } }
         public static List<Rigid> Rigids { get { return rigids; } }
+        public static List<Bullet> Bullets { get { return bullets; } }
+        public static List<Enemy> Enemies { get { return enemies; } }
 
         static GameMaster()
         {
             gameObjects = new List<GameObject>();
             movers = new List<Mover>();
             rigids = new List<Rigid>();
+            bullets = new List<Bullet>(50);
+            enemies = new List<Enemy>();
 
-            // TODO: Add instatiation here instead of in Game1
-            Instantiate(new Mover(new GameObject(new Vector2(50, 50))));
+            // Instantiate GameObjects here please
+            Instantiate(new Player(new Vector2(Game1.screenWidth / 2, Game1.screenHeight / 2)));
+            Instantiate(new Turret());
+
+            for (int i = 0; i < bullets.Capacity; i++)
+            {
+                Instantiate(new Bullet(new Vector2(-999, -999), 0));
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                Instantiate(new Enemy("Textures/Cop", new Vector2(200, 200 * i)));
+            }
         }
 
         // Methods
@@ -38,7 +55,7 @@ namespace _2dracer.Managers
         /// </summary>
         public static void Update()
         {
-            foreach(GameObject g in gameObjects)
+            foreach (GameObject g in gameObjects)
             {
                 g.Update();
             }
@@ -71,6 +88,14 @@ namespace _2dracer.Managers
             if(g is Rigid)
             {
                 rigids.Add((Rigid)g);
+            }
+            if(g is Bullet)
+            {
+                bullets.Add((Bullet)g);
+            }
+            if(g is Enemy)
+            {
+                enemies.Add((Enemy)g);
             }
         }
 
