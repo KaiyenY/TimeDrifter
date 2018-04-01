@@ -15,6 +15,7 @@ namespace _2dracer
         // Fields
         public Queue<Node> Route { get; set; } //The path the enemy will take
         private Node currentDestination; //The node within the path that the car will currently go towards
+        private Node mostRecent; //This node holds the center node of the tile the car just stepped on. Used for A* calculations
         private float prevRotation;
         private bool enableDurp;
 
@@ -40,6 +41,16 @@ namespace _2dracer
             UpdatePositionTowardsNextNode();
 
             base.Update();
+        }
+
+        /// <summary>
+        /// Finds route to the Node the Player just stepped on. 
+        /// </summary>
+        /// <param name="Destination">Pass in the target</param>
+        public void FindRoute(Node Destination)
+        {
+            //Use the AI class' A* logic
+            this.Route = AI.Pathfind(mostRecent, Destination);
         }
 
         public void UpdatePositionTowardsNextNode() //Moves the car a little along its current route
@@ -115,12 +126,13 @@ namespace _2dracer
             }
         }
 
-        public bool WithinRange(int offset, Node origin) //Creates an acceptable area to check when to get the next target
+        public bool WithinRange(int offset, Node center) //Creates an acceptable area to check when to get the next target
         {
-            Rectangle acceptableArea = new Rectangle(origin.Location.X - offset, origin.Location.Y - offset, 2 * offset, 2 * offset);
-
+            Rectangle acceptableArea = new Rectangle(center.Location.X - offset, center.Location.Y - offset, 2 * offset, 2 * offset);
+            
             if (acceptableArea.Contains(this.Position))
             {
+                this.mostRecent = center; //Hold the fact that this node was just stepped on. 
                 return true;
             }
             else

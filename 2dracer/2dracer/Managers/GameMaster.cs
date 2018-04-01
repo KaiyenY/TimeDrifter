@@ -110,6 +110,8 @@ namespace _2dracer.Managers
             movers.Clear();
             rigids.Clear();
         }
+
+        //TODO: Create a method/event that is triggered each time the player steps into a new tile (to calculate pathfinding based on that)
     }
 }
 

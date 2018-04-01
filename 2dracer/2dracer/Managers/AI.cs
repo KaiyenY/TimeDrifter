@@ -10,22 +10,19 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _2dracer
 {
-    public class AI
+    public static class AI
     {
         // Fields
-        private List<Enemy> enemies;
 
-        public List<Node> nodes = new List<Node>(); //List of nodes to test A* algorithm
+        public static List<Node> nodes = new List<Node>(); //List of nodes to test A* algorithm
 
-        private Queue<Node> testQueue = new Queue<Node>(); //TEMPORARY queue to test giving instructions to enemies
+        private static Queue<Node> testQueue = new Queue<Node>(); //TEMPORARY queue to test giving instructions to enemies
 
-        private Queue<Node> pathToGive = new Queue<Node>();
+        private static Queue<Node> pathToGive = new Queue<Node>();
 
         // Constructors
-        public AI(List<Enemy> enemies)
+        static AI()
         {
-            this.enemies = enemies;
-
             #region node populating
             //Create nodes
             Node nodeStart = new Node(new Point(400, 200));
@@ -40,7 +37,7 @@ namespace _2dracer
             Node node9 = new Node(new Point(1000, 600));
             Node node10 = new Node(new Point(600, 700));
 
-            //Populate each node's list of neighbors sigh
+            //Populate each node's list of neighbors
             nodeStart.PopulateNeighborsList(node1);
             node1.PopulateNeighborsList(nodeStart, node3, node2);
             node2.PopulateNeighborsList(node1, node6, node5);
@@ -88,22 +85,15 @@ namespace _2dracer
         }
 
         // This uses the nodes generated from the map, have fun
-        public AI(List<Enemy> enemies, List<Node> nodes)
-        {
-            this.nodes = nodes;
+        //public AI(List<Enemy> enemies, List<Node> nodes)
+        //{
+        //    this.nodes = nodes;
 
-            this.enemies = enemies;
-        }
+        //    this.enemies = enemies;
+        //}
 
-        public void AssignNewPathsToEnemies(Node target)//TODO: Integrate with regards to enemies
-        {
-            for (int i = 0; i < enemies.Count; i++)
-            {
-                enemies[i].Route = Pathfind(nodes[0], target);
-            }
-        }
 
-        public Queue<Node> Pathfind(Node start, Node target) //Implementation of A* fingers crossed
+        public static Queue<Node> Pathfind(Node start, Node target) //Implementation of A* fingers crossed
         {
             pathToGive = new Queue<Node>(); //Reset the path property
             List<Node> closedSet = new List<Node>();
@@ -128,7 +118,7 @@ namespace _2dracer
                         }
                     }
 
-                if (current == target)
+                if (current == target) //Found the Node!
                 { 
                     Console.WriteLine("Reconstructing path...");
 
@@ -169,7 +159,7 @@ namespace _2dracer
             return null;
         }
 
-        private Queue<Node> ReconstructPath(Node start, Node current) //Recursive algorithm to rebuild a path
+        private static Queue<Node> ReconstructPath(Node start, Node current) //Recursive algorithm to rebuild a path
         {
             Console.WriteLine(current.ToString());
             if(current == start)

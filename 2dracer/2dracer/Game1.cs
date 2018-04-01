@@ -48,7 +48,6 @@ namespace _2dracer
         
         private float timeSinceLastReRoute = 0.0f;
 
-        public static AI ai;
         public static Map map;
         public static Camera camera;
         public static GameTime gameTime;
@@ -144,7 +143,6 @@ namespace _2dracer
 
                     if (timeSinceLastReRoute > 10)
                     {
-                        ai.AssignNewPathsToEnemies(ai.nodes[6]);
                         timeSinceLastReRoute = 0;
                     }
                     timeSinceLastReRoute += (float)gameTime.ElapsedGameTime.TotalSeconds;
