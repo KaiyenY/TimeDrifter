@@ -53,6 +53,9 @@ namespace _2dracer
         public static Camera camera;
         public static GameTime gameTime;
 
+        //3D
+        Model model;
+
         // Constructor
         public Game1()
         {
@@ -116,6 +119,9 @@ namespace _2dracer
                     element.Font = comicSans;
                 }
             }
+
+            //3D
+            model = Content.Load<Model>("3D/untitled");
         }
 
         protected override void UnloadContent()
@@ -164,6 +170,33 @@ namespace _2dracer
             base.Update(gameTime);
         }
 
+        //3D
+        public void Draw3D()
+        {
+            foreach (var mesh in model.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    float aspectRatio =
+                        graphics.PreferredBackBufferWidth / (float)graphics.PreferredBackBufferHeight;
+
+                    float fieldOfView = Microsoft.Xna.Framework.MathHelper.PiOver4;
+                    float nearClipPlane = 1;
+                    float farClipPlane = 200;
+
+                    effect.Projection = Matrix.CreatePerspectiveFieldOfView(
+                        fieldOfView, aspectRatio, nearClipPlane, farClipPlane);
+                    
+                    effect.View = Matrix.CreateTranslation(-1*camera.Position.X/25, camera.Position.Y/25, -10);
+
+                    effect.World = Matrix.Identity;
+                }
+
+                mesh.Draw();
+            }
+        }
+
+
         protected override void Draw(GameTime g)
         {
             gameTime = g;
@@ -173,11 +206,15 @@ namespace _2dracer
             switch (GameState)
             {
                 case GameState.Game:
+
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
                     map.Draw();
                     GameMaster.Draw();
                     spriteBatch.End();
-                    
+
+                    //3D
+                    Draw3D();
+
                     break;
 
                 case GameState.LevelEditor:
