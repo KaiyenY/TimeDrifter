@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using _2dracer.MapElements;
+
 
 namespace _2dracer.Managers
 {
@@ -22,7 +24,7 @@ namespace _2dracer.Managers
         public void Update()
         {
             Vector2 pos = GameMaster.GameObjects[0].Position;
-            Vector2 mapSize = Game1.map.Size;
+            Vector2 mapSize = Map.Size;
 
             // Through complicated stuff, these two checks will make sure the
             // camera doesn't go off the map

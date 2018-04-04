@@ -43,16 +43,18 @@ namespace _2dracer
         public static Texture2D square;
         public static List<Texture2D> tileSprites;
 
+        // Models
+        public static Model building;
+
         //GameState Enum
         public static GameState GameState;
         
         private float timeSinceLastReRoute = 0.0f;
-
-        public static Map map;
+        
         public static Camera camera;
         public static GameTime gameTime;
 
-        private ThreeD model3D;
+        private Building model3D;
 
         // Constructor
         public Game1()
@@ -119,14 +121,11 @@ namespace _2dracer
             }
 
             //3D
-            Model model = Content.Load<Model>("3D/untitled");
-            model3D = new ThreeD(model, new Vector2(2.7f, -1.2f));
+            building = Content.Load<Model>("3D/untitled");
+            model3D = new Building(building, new Vector2(2.7f, -1.2f));
         }
 
-        protected override void UnloadContent()
-        {
-            map = null;
-        }
+        protected override void UnloadContent() { }
 
         protected override void Update(GameTime g)
         {
@@ -179,7 +178,7 @@ namespace _2dracer
                 case GameState.Game:
 
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
-                    map.Draw();
+                    Map.Draw();
                     GameMaster.Draw();
                     spriteBatch.End();
 
@@ -194,7 +193,7 @@ namespace _2dracer
 
                 case GameState.Pause:
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
-                    map.Draw();
+                    Map.Draw();
                     GameMaster.Draw();
                     spriteBatch.End();
 

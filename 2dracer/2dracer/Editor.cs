@@ -20,7 +20,6 @@ namespace _2dracer
     {
         // Fields
         private ImageList images;           // Holds a list of textures
-        private Map map;                    // Holds the map in the editor
         private PictureBox[,] eTiles;       // List of PictureBoxes representing tiles
         private PictureBox selectedTile;    // The last clicked tile
         private StreamWriter sw;            // Writes information to Map.txt
@@ -38,8 +37,6 @@ namespace _2dracer
 
             TextureSetUp();                 // Organize textures into list
 
-            map = new Map();                // Load default map when starting editor
-
             EditorSetUp();                  // Setup all elements in the editor as need be
         }
 
@@ -50,8 +47,8 @@ namespace _2dracer
         private void EditorSetUp()
         {
             // Set the initial values for the size values
-            xValueBox.Value = map.Tiles.GetLength(0);
-            yValueBox.Value = map.Tiles.GetLength(1);
+            xValueBox.Value = Map.Tiles.GetLength(0);
+            yValueBox.Value = Map.Tiles.GetLength(1);
 
             // Set up the texture list with images
             textureBox.SmallImageList = images;
@@ -93,7 +90,7 @@ namespace _2dracer
         /// </summary>
         private void ETileSetUp()
         {
-            eTiles = new PictureBox[map.Tiles.GetLength(0), map.Tiles.GetLength(1)];
+            eTiles = new PictureBox[Map.Tiles.GetLength(0), Map.Tiles.GetLength(1)];
             for (int y = 0; y < eTiles.GetLength(1); y++)
             {
                 for (int x = 0; x < eTiles.GetLength(0); x++)
@@ -101,7 +98,7 @@ namespace _2dracer
                     // Create a PictureBox to represent a tile in the editor
                     eTiles[x, y] = new PictureBox()
                     {
-                        Image = Image.FromFile(imagePaths[(int)map.Tiles[x, y].Type]),
+                        Image = Image.FromFile(imagePaths[(int)Map.Tiles[x, y].Type]),
                         Location = new System.Drawing.Point(384 * x, 384 * y),
                         Tag = $"{x},{y}",
                         Size = new Size(384, 384)
@@ -170,7 +167,7 @@ namespace _2dracer
 
             int[] index = { int.Parse(eTileInfo[0]), int.Parse(eTileInfo[1]) };
 
-            return map.Tiles[index[0], index[1]];
+            return Map.Tiles[index[0], index[1]];
         }
         
         /// <summary>
@@ -217,7 +214,6 @@ namespace _2dracer
 
                     default:
                         int[] size = { (int)xValueBox.Value, (int)yValueBox.Value };
-                        map = new Map(size);
                         tilePanel.Controls.Clear();
                         ETileSetUp();
 
@@ -305,11 +301,11 @@ namespace _2dracer
             {
                 sw = new StreamWriter(@"..\..\..\..\Content\Map.txt");
 
-                sw.WriteLine($"{map.Tiles.GetLength(0)},{map.Tiles.GetLength(1)}");       // Write map array size
+                sw.WriteLine($"{Map.Tiles.GetLength(0)},{Map.Tiles.GetLength(1)}");       // Write map array size
 
-                for (int y = 0; y < map.Tiles.GetLength(1); y++)
+                for (int y = 0; y < Map.Tiles.GetLength(1); y++)
                 {
-                    for (int x = 0; x < map.Tiles.GetLength(0); x++)
+                    for (int x = 0; x < Map.Tiles.GetLength(0); x++)
                     {
                         Tile mTile = GetTile(eTiles[x, y].Tag.ToString());
 

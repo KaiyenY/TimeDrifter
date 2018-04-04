@@ -36,26 +36,10 @@ namespace _2dracer.UI
                 {
                     case "Game":
                         Game1.GameState = GameState.Game;
-
-                        // Should generate map and instantiate all objects using GameMaster
-                        if (Game1.map == null)
-                        {
-                            Game1.map = new MapElements.Map();
-
-                            //Game1.ai = new AI(GameMaster.Enemies);          // Add map nodes
-                        }
                         break;
 
                     case "Menu":
                         Game1.GameState = GameState.Menu;
-
-                        // Should clear map / all gameobjects
-                        if (Game1.map != null)
-                        {
-                            Game1.map = null;
-
-                            //Game1.ai = null;
-                        }
                         break;
 
                     case "Options":

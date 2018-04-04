@@ -68,7 +68,7 @@
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
-    <Compile Include="ThreeD.cs" />
+    <Compile Include="MapElements\Building.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\UIElement.cs" />
     <Compile Include="GameObjects\Mover.cs" />

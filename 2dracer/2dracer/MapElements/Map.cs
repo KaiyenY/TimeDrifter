@@ -7,21 +7,22 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _2dracer.MapElements
 {
-    public class Map
+    public static class Map
     {
         // Fields
-        private StreamReader sr;                // Reads the map files
+        private static StreamReader sr;                // Reads the map files
 
         // Properties
-        public List<Node> Nodes { get; }
-        public Tile[,] Tiles { get; }
-        public Vector2 Size { get; }
+        public static List<Building> Buildings { get; }
+        public static List<Node> Nodes { get; }
+        public static Tile[,] Tiles { get; }
+        public static Vector2 Size { get; }
 
         // Constructors
         /// <summary>
         /// Generates a map from file
         /// </summary>
-        public Map()
+        static Map()
         {
             int[] mapSize = new int[2];
             int[] tileInfo;
@@ -47,6 +48,7 @@ namespace _2dracer.MapElements
                 
                 Tiles = new Tile[mapSize[0], mapSize[1]];           // Set up tile array
                 Nodes = new List<Node>();                           // Set up nodes list
+                Buildings = new List<Building>();                   // Set up buildings list
 
                 // Create all tiles; set up nodes and collision stuff as need be
                 int j = 0;
@@ -66,12 +68,13 @@ namespace _2dracer.MapElements
                             // Not a building, has a node
                             Nodes.Add(new Node(new Point((x * 768), (y * 768))));
                         }
-                        /*
                         else
                         {
                             // Something about collisions
+
+                            // If it is a building, make one
+                            Buildings.Add(new Building(Game1.building, new Vector2(x, y)));
                         }
-                        */
 
                         j += 2;
                     }
@@ -92,27 +95,8 @@ namespace _2dracer.MapElements
             }
         }
 
-        /// <summary>
-        /// Generates a map in the editor
-        /// </summary>
-        /// <param name="size">Size of tile array</param>
-        public Map(int[] size)
-        {
-            Tiles = new Tile[size[0], size[1]];
-
-            for (int y = 0; y < size[1]; y++)
-            {
-                for (int x = 0; x < size[0]; x++)
-                {
-                    Vector2 tilePos = new Vector2(768 * x, 768 * y);
-
-                    Tiles[x, y] = new Tile(tilePos, TileType.Grass, 0);
-                }
-            }
-        }
-
         // Methods
-        public void Draw()
+        public static void Draw()
         {
             foreach (Tile tile in Tiles)
             {
