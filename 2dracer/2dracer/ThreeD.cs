@@ -14,31 +14,26 @@ namespace _2dracer
     {
         private Model model;
 
-        public ThreeD(Model m)
+        public Vector2 Position;
+
+        public ThreeD(Model m, Vector2 p)
         {
             model = m;
+            Position = p;
         }
 
         public void Draw()
         {
-            foreach (BasicEffect effect in model.Meshes[0].Effects)
-            {
-                float aspectRatio =
-                    Game1.graphics.PreferredBackBufferWidth / (float)Game1.graphics.PreferredBackBufferHeight;
+            BasicEffect effect = (BasicEffect)model.Meshes[0].Effects[0];
+            
+            float aspectRatio = Game1.graphics.PreferredBackBufferWidth / (float)Game1.graphics.PreferredBackBufferHeight;
+            float fieldOfView = Microsoft.Xna.Framework.MathHelper.PiOver4;
 
-                float fieldOfView = Microsoft.Xna.Framework.MathHelper.PiOver4;
-                float nearClipPlane = 1;
-                float farClipPlane = 200;
+            int z = 6;
 
-                effect.Projection = Matrix.CreatePerspectiveFieldOfView(
-                    fieldOfView, aspectRatio, nearClipPlane, farClipPlane);
-
-                int z = 5;
-
-                effect.View = Matrix.CreateTranslation(-1 * Game1.camera.Position.X / (59 * z), Game1.camera.Position.Y / (59*z), (float)-10/z);
-
-                effect.World = Matrix.CreateTranslation(3, -1.5f, 0);
-            }
+            effect.Projection = Matrix.CreatePerspectiveFieldOfView(fieldOfView, aspectRatio, 0.1f, 200);
+            effect.View = Matrix.CreateTranslation(-1 * Game1.camera.Position.X / (55 * z), Game1.camera.Position.Y / (55 * z), (float)-10 / z);
+            effect.World = Matrix.CreateTranslation(Position.X, Position.Y, 0);
 
             model.Meshes[0].Draw();
         }

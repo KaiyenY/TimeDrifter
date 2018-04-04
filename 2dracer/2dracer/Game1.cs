@@ -120,7 +120,7 @@ namespace _2dracer
 
             //3D
             Model model = Content.Load<Model>("3D/untitled");
-            model3D = new ThreeD(model);
+            model3D = new ThreeD(model, new Vector2(2.7f, -1.2f));
         }
 
         protected override void UnloadContent()
