@@ -81,9 +81,7 @@ namespace _2dracer
             angularVelocity += angularAccel * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds;
             angularAccel *= 0;
 
-            bool slowMotion = Player.slowMo; // slowMo is in Player.cs 
-
-            if (slowMotion)
+            if (Player.slowMo)
             {
                 position += velocity * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds / 2;
                 rotation += angularVelocity * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds / 2;

@@ -15,12 +15,16 @@ namespace _2dracer
         // Fields
         public Queue<Node> Route { get; set; } //The path the enemy will take
         private Node currentDestination; //The node within the path that the car will currently go towards
+        private Node mostRecent; //This node holds the center node of the tile the car just stepped on. Used for A* calculations
+        private float prevRotation;
+        private bool enableDurp;
 
         // Constructor
         public Enemy(string spritePath, Vector2 position) 
             : base(new GameObject(position, 0, spritePath, new Vector2(64, 128)), Vector2.Zero, 0)
         {
             currentDestination = new Node(base.position.ToPoint()); //initialize current destination to where it begins
+            prevRotation = rotation;
         }
 
         // Methods
@@ -37,6 +41,16 @@ namespace _2dracer
             UpdatePositionTowardsNextNode();
 
             base.Update();
+        }
+
+        /// <summary>
+        /// Finds route to the Node the Player just stepped on. 
+        /// </summary>
+        /// <param name="Destination">Pass in the target</param>
+        public void FindRoute(Node Destination)
+        {
+            //Use the AI class' A* logic
+            this.Route = AI.Pathfind(mostRecent, Destination);
         }
 
         public void UpdatePositionTowardsNextNode() //Moves the car a little along its current route
@@ -89,15 +103,36 @@ namespace _2dracer
 
                 velocity.X += (float)Math.Cos(rotation) * 3;
                 velocity.Y += (float)Math.Sin(rotation) * 3;
+
+                if (Input.KeyTap(Keys.I))
+                {
+                    enableDurp = !enableDurp;
+                }
+
+                if (!enableDurp)
+                {
+                    if (prevRotation != rotation)
+                    {
+                        float rotDiff = prevRotation - rotation;
+
+                        velocity = new Vector2(
+                            (float)(velocity.X * Math.Cos(-rotDiff) - velocity.Y * Math.Sin(-rotDiff)),
+                            (float)(velocity.X * Math.Sin(-rotDiff) + velocity.Y * Math.Cos(-rotDiff)));
+
+
+                        prevRotation = rotation;
+                    }
+                }
             }
         }
 
-        public bool WithinRange(int offset, Node origin) //Creates an acceptable area to check when to get the next target
+        public bool WithinRange(int offset, Node center) //Creates an acceptable area to check when to get the next target
         {
-            Rectangle acceptableArea = new Rectangle(origin.Location.X - offset, origin.Location.Y - offset, 2 * offset, 2 * offset);
-
+            Rectangle acceptableArea = new Rectangle(center.Location.X - offset, center.Location.Y - offset, 2 * offset, 2 * offset);
+            
             if (acceptableArea.Contains(this.Position))
             {
+                this.mostRecent = center; //Hold the fact that this node was just stepped on. 
                 return true;
             }
             else

@@ -47,6 +47,7 @@
     <Compile Include="Editor.Designer.cs">
       <DependentUpon>Editor.cs</DependentUpon>
     </Compile>
+    <Compile Include="GameObjects\Car.cs" />
     <Compile Include="Helpers\AABB.cs" />
     <Compile Include="Helpers\Circle.cs" />
     <Compile Include="Helpers\Collider.cs" />

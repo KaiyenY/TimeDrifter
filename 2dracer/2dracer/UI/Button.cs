@@ -42,7 +42,7 @@ namespace _2dracer.UI
                         {
                             Game1.map = new MapElements.Map();
 
-                            Game1.ai = new AI(GameMaster.Enemies);          // Add map nodes
+                            //Game1.ai = new AI(GameMaster.Enemies);          // Add map nodes
                         }
                         break;
 
@@ -54,7 +54,7 @@ namespace _2dracer.UI
                         {
                             Game1.map = null;
 
-                            Game1.ai = null;
+                            //Game1.ai = null;
                         }
                         break;
 

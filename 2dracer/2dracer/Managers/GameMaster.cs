@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using _2dracer.GameObjects;
+
 namespace _2dracer.Managers
 {
     static class GameMaster
@@ -108,6 +110,8 @@ namespace _2dracer.Managers
             movers.Clear();
             rigids.Clear();
         }
+
+        //TODO: Create a method/event that is triggered each time the player steps into a new tile (to calculate pathfinding based on that)
     }
 }
 
