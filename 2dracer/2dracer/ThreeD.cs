@@ -21,27 +21,26 @@ namespace _2dracer
 
         public void Draw()
         {
-            foreach (var mesh in model.Meshes)
+            foreach (BasicEffect effect in model.Meshes[0].Effects)
             {
-                foreach (BasicEffect effect in mesh.Effects)
-                {
-                    float aspectRatio =
-                        Game1.graphics.PreferredBackBufferWidth / (float)Game1.graphics.PreferredBackBufferHeight;
+                float aspectRatio =
+                    Game1.graphics.PreferredBackBufferWidth / (float)Game1.graphics.PreferredBackBufferHeight;
 
-                    float fieldOfView = Microsoft.Xna.Framework.MathHelper.PiOver4;
-                    float nearClipPlane = 1;
-                    float farClipPlane = 200;
+                float fieldOfView = Microsoft.Xna.Framework.MathHelper.PiOver4;
+                float nearClipPlane = 1;
+                float farClipPlane = 200;
 
-                    effect.Projection = Matrix.CreatePerspectiveFieldOfView(
-                        fieldOfView, aspectRatio, nearClipPlane, farClipPlane);
+                effect.Projection = Matrix.CreatePerspectiveFieldOfView(
+                    fieldOfView, aspectRatio, nearClipPlane, farClipPlane);
 
-                    effect.View = Matrix.CreateTranslation(-1 * Game1.camera.Position.X / 75, Game1.camera.Position.Y / 75, -10);
+                int z = 5;
 
-                    effect.World = Matrix.Identity;
-                }
+                effect.View = Matrix.CreateTranslation(-1 * Game1.camera.Position.X / (59 * z), Game1.camera.Position.Y / (59*z), (float)-10/z);
 
-                mesh.Draw();
+                effect.World = Matrix.CreateTranslation(3, -1.5f, 0);
             }
+
+            model.Meshes[0].Draw();
         }
     }
 }
