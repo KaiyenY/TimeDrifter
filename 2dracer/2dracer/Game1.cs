@@ -16,7 +16,6 @@ namespace _2dracer
     public enum GameState
     {
         Game,
-        LevelEditor,
         Menu,
         Options,
         Pause
@@ -154,13 +153,6 @@ namespace _2dracer
                     break;
 
                 case GameState.Menu:
-                    if (Input.KeyTap(Keys.U))
-                    {
-                        Editor editor = new Editor();
-                        editor.Show();
-
-                        GameState = GameState.LevelEditor;
-                    }
                     break;
             }
 
@@ -185,10 +177,6 @@ namespace _2dracer
                     //3D
                     model3D.Draw();
 
-                    break;
-
-                case GameState.LevelEditor:
-                    GraphicsDevice.Clear(Color.Black);
                     break;
 
                 case GameState.Pause:
