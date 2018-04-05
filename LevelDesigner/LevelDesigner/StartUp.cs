@@ -30,16 +30,23 @@ namespace LevelDesigner
                 {
                     // Create a new map for the editor
                     MapSize = new byte[2] { (byte)xValue.Value, (byte)yValue.Value };
+
+                    Hide();
+
+                    StartDesigner();
                 }
                 else
                 {
                     // Initialize the map from file
                     Data = FileManager.Load();
+
+                    if (Data.Count > 0)
+                    {
+                        Hide();
+
+                        StartDesigner();
+                    }
                 }
-
-                Hide();
-
-                StartDesigner();
             }
         }
 
@@ -53,3 +60,5 @@ namespace LevelDesigner
         }
     }
 }
+
+// -- Genoah Martinelli

@@ -46,6 +46,11 @@ namespace LevelDesigner
         private int[] index;
 
         /// <summary>
+        /// Holds indices of this tile's neighbors.
+        /// </summary>
+        private int[,] neighborIndices;
+
+        /// <summary>
         /// The current rotation of this tile in degrees.
         /// </summary>
         private int rotation;
@@ -65,12 +70,17 @@ namespace LevelDesigner
         /// <summary>
         /// Determines in which direction(s) this <see cref="Tile"/> has a neighbor.
         /// </summary>
-        public bool[] HasNeighbor { get { return hasNeighbor; } }
+        public bool[] HasNeighbor { get { return hasNeighbor; } set { hasNeighbor = value; } }
 
         /// <summary>
         /// The index of this <see cref="Tile"/>.
         /// </summary>
         public int[] Index { get { return index; } }
+
+        /// <summary>
+        /// Stores the indices of neighboring tiles
+        /// </summary>
+        public int[,] NeighborIndices { get { return neighborIndices; } set { neighborIndices = value; } }
 
         /// <summary>
         /// The rotation of this <see cref="Tile"/>.
@@ -82,6 +92,7 @@ namespace LevelDesigner
         public Tile(Point position, Texture2D sprite, TileType type, int rotation, int x, int y)
         {
             hasNeighbor = new bool[4];
+            neighborIndices = new int[4, 4];
 
             this.sprite = sprite;
             this.type = type;
@@ -116,3 +127,5 @@ namespace LevelDesigner
         #endregion
     }
 }
+
+// -- Genoah Martinelli

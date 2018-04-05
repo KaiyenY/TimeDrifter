@@ -36,15 +36,71 @@ namespace LevelDesigner
                 Tiles = new Tile[data[0], data[1]];
 
                 // Remove MapSize in data
-                data.RemoveAt(0);
-                data.RemoveAt(0);
+                data.RemoveRange(0, 2);
 
                 // Create tiles from file
                 for (int y = 0; y < Tiles.GetLength(1); y++)
                 {
                     for (int x = 0; x < Tiles.GetLength(0); x++)
                     {
+                        // Set up tile
+                        Tiles[x, y] = new Tile(
+                            new Point(x * 768, y * 768),
+                            Designer.TileSprites[data[0]],
+                            (TileType)data[0],
+                            data[1],
+                            x,
+                            y);
 
+                        // Determine the neighbors
+                        if (data[2] == 1)
+                        {
+                            Tiles[x, y].HasNeighbor[0] = true;
+                        }
+                        if (data[3] == 1)
+                        {
+                            Tiles[x, y].HasNeighbor[1] = true;
+                        }
+                        if (data[4] == 1)
+                        {
+                            Tiles[x, y].HasNeighbor[2] = true;
+                        }
+                        if (data[5] == 1)
+                        {
+                            Tiles[x, y].HasNeighbor[3] = true;
+                        }
+
+                        // Remove data already read
+                        data.RemoveRange(0, 6);
+                    }
+                }
+
+                // Get neighbor indices
+                foreach (Tile tile in Tiles)
+                {
+                    if (tile.HasNeighbor[0])
+                    {
+                        // Tile above
+                        tile.NeighborIndices[0, 0] = Tiles[tile.Index[0], tile.Index[1] + 1].Index[0];
+                        tile.NeighborIndices[0, 1] = Tiles[tile.Index[0], tile.Index[1] + 1].Index[1];
+                    }
+                    if (tile.HasNeighbor[1])
+                    {
+                        // Tile below
+                        tile.NeighborIndices[1, 0] = Tiles[tile.Index[0], tile.Index[1] - 1].Index[0];
+                        tile.NeighborIndices[1, 1] = Tiles[tile.Index[0], tile.Index[1] - 1].Index[1];
+                    }
+                    if (tile.HasNeighbor[2])
+                    {
+                        // Tile to right
+                        tile.NeighborIndices[2, 0] = Tiles[tile.Index[0], tile.Index[1]].Index[0];
+                        tile.NeighborIndices[2, 1] = Tiles[tile.Index[0], tile.Index[1]].Index[1];
+                    }
+                    if (tile.HasNeighbor[3])
+                    {
+                        // Tile to left
+                        tile.NeighborIndices[3, 0] = Tiles[tile.Index[0], tile.Index[1]].Index[0];
+                        tile.NeighborIndices[3, 1] = Tiles[tile.Index[0], tile.Index[1]].Index[1];
                     }
                 }
             }
@@ -97,3 +153,5 @@ namespace LevelDesigner
         }
     }
 }
+
+// -- Genoah Martinelli
