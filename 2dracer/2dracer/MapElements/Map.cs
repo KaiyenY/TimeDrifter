@@ -72,8 +72,8 @@ namespace _2dracer.MapElements
                         {
                             // Something about collisions
 
-                            // If it is a building, make one
-                            Buildings.Add(new Building(Game1.building, new Vector2(x, y)));
+                            // If it is a building, make one                                               // - 3.5f
+                            Buildings.Add(new Building(Game1.building, new Vector2(x*3.1f - 2.6f,   -3.1f*(y - 0.5f))));
                         }
 
                         j += 2;

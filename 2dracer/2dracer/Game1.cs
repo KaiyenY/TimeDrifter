@@ -53,8 +53,6 @@ namespace _2dracer
         public static Camera camera;
         public static GameTime gameTime;
 
-        private Building model3D;
-
         // Constructor
         public Game1()
         {
@@ -121,7 +119,6 @@ namespace _2dracer
 
             //3D
             building = Content.Load<Model>("3D/untitled");
-            model3D = new Building(building, new Vector2(2.7f, -1.2f));
         }
 
         protected override void UnloadContent() { }
@@ -164,28 +161,17 @@ namespace _2dracer
             gameTime = g;
 
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            
-            switch (GameState)
+
+
+            if (GameState != GameState.Menu)
             {
-                case GameState.Game:
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
+                Map.Draw();
+                GameMaster.Draw();
+                spriteBatch.End();
 
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
-                    Map.Draw();
-                    GameMaster.Draw();
-                    spriteBatch.End();
-
-                    //3D
-                    model3D.Draw();
-
-                    break;
-
-                case GameState.Pause:
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
-                    Map.Draw();
-                    GameMaster.Draw();
-                    spriteBatch.End();
-
-                    break;
+                foreach (Building b in Map.Buildings)
+                    b.Draw();
             }
 
             UIManager.Draw();           // UI always draws on top
