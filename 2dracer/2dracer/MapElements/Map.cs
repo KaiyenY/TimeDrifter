@@ -72,7 +72,7 @@ namespace _2dracer.MapElements
                         {
                             // Something about collisions
 
-                            // If it is a building, make one                                               // - 3.5f
+                            // If it is a building, make one
                             Buildings.Add(new Building(Game1.building, new Vector2(x*3.1f - 2.6f,   -3.1f*(y - 0.5f))));
                         }
 
@@ -96,7 +96,7 @@ namespace _2dracer.MapElements
         }
 
         // Methods
-        public static void Draw()
+        public static void DrawGround()
         {
             foreach (Tile tile in Tiles)
             {
@@ -106,6 +106,12 @@ namespace _2dracer.MapElements
             {
                 Game1.spriteBatch.Draw(Game1.square, new Rectangle(node.Location, new Point(25, 25)), Color.Red);
             }
+        }
+
+        public static void DrawBuildings()
+        {
+            foreach (Building b in Map.Buildings)
+                b.Draw();
         }
     }
 }

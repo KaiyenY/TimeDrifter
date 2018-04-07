@@ -27,7 +27,6 @@ namespace _2dracer
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
 
-
         #region Options
         public static bool fullscreen = false;
         public static int screenHeight = 720;
@@ -83,20 +82,13 @@ namespace _2dracer
             spriteBatch = new SpriteBatch(GraphicsDevice);
             square = Content.Load<Texture2D>("Textures/Square");
 
-
             // GameMaster Load
             foreach (GameObject obj in GameMaster.GameObjects)
-            {
                 obj.Sprite = Content.Load<Texture2D>(obj.SpritePath);
-            }
-
 
             // Map Load
             for (int i = 0; i < 6; i++)
-            {
                 tileSprites.Add(Content.Load<Texture2D>("Textures/Tiles/Tile" + i));
-            }
-
             
             // SpriteFonts
             comicSans = Content.Load<SpriteFont>("comic");
@@ -108,13 +100,10 @@ namespace _2dracer
             {
                 // Will make this better soonish
                 if (element.SpritePath != null)
-                {
                     element.Sprite = Content.Load<Texture2D>(element.SpritePath);
-                }
+
                 if (element.Font != comicSans64)
-                {
                     element.Font = comicSans;
-                }
             }
 
             //3D
@@ -159,23 +148,20 @@ namespace _2dracer
         protected override void Draw(GameTime g)
         {
             gameTime = g;
-
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-
+            
             if (GameState != GameState.Menu)
             {
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
-                Map.Draw();
-                GameMaster.Draw();
-                spriteBatch.End();
 
-                foreach (Building b in Map.Buildings)
-                    b.Draw();
+                Map.DrawGround();
+                GameMaster.Draw();
+                Map.DrawBuildings();
+
+                spriteBatch.End();
             }
 
             UIManager.Draw();           // UI always draws on top
-
             base.Draw(gameTime);
         }
     }
