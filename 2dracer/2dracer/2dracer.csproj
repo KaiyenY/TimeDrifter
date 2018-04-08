@@ -65,7 +65,7 @@
     <Compile Include="MapElements\Building.cs" />
     <Compile Include="GameObjects\Tank.cs" />
     <Compile Include="UI\Button.cs" />
-    <Compile Include="UI\UIElement.cs" />
+    <Compile Include="UI\Element.cs" />
     <Compile Include="GameObjects\Mover.cs" />
     <Compile Include="MapElements\Tile.cs" />
     <Compile Include="Program.cs" />

@@ -17,30 +17,13 @@ namespace _2dracer.Managers
     public static class UIManager
     {
         // Properties
-        public static List<UIElement> Elements { get; private set; }
+        private static List<Element> Elements { get; set; }
+        private static GameState prevState;
 
         // Constructor
         static UIManager()
         {
-            Elements = new List<UIElement>
-            {
-                // Menu Elements
-                new UIElement(new Point((Game1.screenWidth / 2), 100), Game1.comicSans64, GameState.Menu, "Project Apathy"),
-                new Button(new Point((Game1.screenWidth / 2) - 100, 250), GameState.Menu, "Game", "Play"),
-                new Button(new Point((Game1.screenWidth / 2) - 100, 350), GameState.Menu, "Options", "Options"),
-                new Button(new Point((Game1.screenWidth / 2) - 100, 450), GameState.Menu, "Exit", "Exit"),
-
-                // Pause Elements
-                new UIElement(new Point((Game1.screenWidth / 2), 100), Game1.comicSans64, GameState.Pause, "Pause"),
-                new Button(new Point((Game1.screenWidth / 2) - 100, 250), GameState.Pause, "Game", "Resume"),
-                new Button(new Point((Game1.screenWidth / 2) - 100, 350), GameState.Pause, "Menu", "Exit to Menu"),
-
-                // Option Elements
-                new UIElement(new Point((Game1.screenWidth / 2), 100), Game1.comicSans64, GameState.Options, "Options"),
-                new Button(new Point((Game1.screenWidth / 2) - 100, 450), GameState.Options, "Menu", "Exit to Menu"),
-
-                // Game Elements
-            };
+            ChangeList();
         }
 
         #region Methods
@@ -49,13 +32,17 @@ namespace _2dracer.Managers
         /// </summary>
         public static void Update()
         {
-            foreach (UIElement element in Elements)
+            for (int i = 0; i < Elements.Count; i++)
             {
-                if (element.State == Game1.GameState)
-                {
-                    element.Update();
-                }
+                Elements[i].Update();
             }
+
+            if (prevState != Game1.GameState)
+            {
+                ChangeList();
+            }
+
+            prevState = Game1.GameState;
         }
 
         /// <summary>
@@ -65,15 +52,128 @@ namespace _2dracer.Managers
         {
             Game1.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
 
-            foreach (UIElement element in Elements)
+            foreach (Element element in Elements)
             {
-                if (element.State == Game1.GameState)
-                {
-                    element.Draw();
-                }
+                element.Draw();
             }
 
             Game1.spriteBatch.End();
+        }
+
+        /// <summary>
+        /// Changes which UI <see cref="Element"/> instances load in which <see cref="GameState"/>.
+        /// </summary>
+        private static void ChangeList()
+        {
+            switch (Game1.GameState)
+            {
+                case GameState.Game:
+                    Elements = new List<Element>();
+
+                    Player.CreateHUD();
+                    break;
+
+                case GameState.Menu:
+                    Elements = new List<Element>
+                        {
+                            new Element(new Vector2(50, 50), 1f, "title", "Time Drifter"),
+                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 250, 400, 80), Game1.button, "playButton", "Play"),
+                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 350, 400, 80), Game1.button, "optionsButton", "Options"),
+                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 450, 400, 80), Game1.button, "exitButton", "Exit")
+                        };
+                    break;
+
+                case GameState.Options:
+                    Elements = new List<Element>
+                        {
+                            new Element(new Vector2(50, 50), 1f, "optionsTitle", "Options"),
+                            new Button(new Rectangle((Game1.screenWidth / 4) - 125, 250, 400, 80), Game1.button, "fullScreen", "FullScreen"),
+                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 550, 400, 80), Game1.button, "backButton", "Back")
+                        };
+                    break;
+
+                case GameState.Pause:
+                    Elements = new List<Element>
+                        {
+                            new Element(new Vector2(50, 50), 1f, "pauseTitle", "Pause"),
+                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 250, 400, 80), Game1.button, "playButton", "Resume"),
+                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 350, 400, 80), Game1.button, "menuButton", "Exit to Menu")
+                        };
+                    break;
+
+                default:
+                    throw new NotImplementedException("The current GameState is not supported by this method.");
+            }
+
+            if (Elements != null)
+            {
+                foreach (Element element in Elements)
+                {
+                    if (element is Button button)
+                    {
+                        button.Click += ButtonClick;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Determines what happens when a button is clicked.
+        /// </summary>
+        private static void ButtonClick(object sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                switch (button.Name)
+                {
+                    case "playButton":
+                        Elements.Clear();
+                        Game1.GameState = GameState.Game;
+                        ChangeList();
+                        break;
+
+                    case "menuButton":
+                        Elements.Clear();
+                        Game1.GameState = GameState.Menu;
+                        ChangeList();
+                        break;
+
+                    case "optionsButton":
+                        Elements.Clear();
+                        Game1.GameState = GameState.Options;
+                        ChangeList();
+                        break;
+
+                    case "backButton":
+                        Elements.Clear();
+                        Game1.GameState = GameState.Menu;
+                        ChangeList();
+                        break;
+
+                    case "exitButton":
+                        Program.game.Exit();
+                        break;
+
+                    case "fullScreen":
+                        Game1.graphics.ToggleFullScreen();
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds an <see cref="Element"/> instance into the list.
+        /// </summary>
+        public static void Add(Element element)
+        {
+            if (element != null)
+            {
+                Elements.Add(element);
+            }
+            else
+            {
+                throw new Exception("You cannot add a null element into the list.");
+            }
         }
         #endregion
     }

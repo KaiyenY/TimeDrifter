@@ -34,12 +34,13 @@ namespace _2dracer
         #endregion
 
         // SpriteFonts
-        public static SpriteFont comicSans;
-        public static SpriteFont comicSans64;
+        public static SpriteFont connection;
 
-        // Texture2Ds
+        #region Texture2D's
+        public static Texture2D button;
         public static Texture2D square;
         public static List<Texture2D> tileSprites;
+        #endregion
 
         // Models
         public static Model building;
@@ -80,6 +81,7 @@ namespace _2dracer
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            button = Content.Load<Texture2D>("Textures/UI/Button");
             square = Content.Load<Texture2D>("Textures/Square");
 
             // GameMaster Load
@@ -89,22 +91,9 @@ namespace _2dracer
             // Map Load
             for (int i = 0; i < 6; i++)
                 tileSprites.Add(Content.Load<Texture2D>("Textures/Tiles/Tile" + i));
-            
+
             // SpriteFonts
-            comicSans = Content.Load<SpriteFont>("comic");
-            comicSans64 = Content.Load<SpriteFont>("comic64");
-
-
-            // UI Load
-            foreach (UIElement element in UIManager.Elements)
-            {
-                // Will make this better soonish
-                if (element.SpritePath != null)
-                    element.Sprite = Content.Load<Texture2D>(element.SpritePath);
-
-                if (element.Font != comicSans64)
-                    element.Font = comicSans;
-            }
+            connection = Content.Load<SpriteFont>("Fonts/ConnectionSerif");
 
             //3D
             building = Content.Load<Model>("3D/untitled");
@@ -150,7 +139,7 @@ namespace _2dracer
             gameTime = g;
             GraphicsDevice.Clear(Color.CornflowerBlue);
             
-            if (GameState != GameState.Menu)
+            if (GameState != GameState.Menu && GameState != GameState.Options)
             {
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
 

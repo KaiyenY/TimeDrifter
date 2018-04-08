@@ -2,30 +2,37 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using _2dracer.Managers;
 using _2dracer.GameObjects;
+using _2dracer.Managers;
+using _2dracer.UI;
 
 namespace _2dracer
 {
     public class Player : Car
     {
-        // Fields
+        #region Fields
+        // Temporary elements, will be gauge needle soon
+        private static Element healthText;
+        private static Element timeText;
         public static bool slowMo = false;
+        #endregion
 
-        // Properties
+        #region Properties
         public Texture2D BulletSprite { get; set; }
-        public double TimeJuice { get; private set; }
-        public int Health { get; private set; }
+        public static double TimeJuice { get; private set; }
+        public static int Health { get; private set; }
         //public Node justSteppedOn { get; set; }
+        #endregion
 
 
-        // Constructor
+        #region Constructor
         public Player(Vector2 position) 
             : base (position, 0, "Textures/RedCar", new Vector2(128, 64), 400, 100, 250, 1000)
         {
             Health = 100;
             TimeJuice = 0;
         }
+        #endregion
 
         // Methods
         public override void Update()
@@ -60,24 +67,15 @@ namespace _2dracer
 
             Juice();
 
+            if (timeText != null && healthText != null)
+            {
+                timeText.Text = $"Time Juice : {TimeJuice:N0}";
+                healthText.Text = $"Health : {Health:N0}";
+            }
+
             base.Update();
         }
 
-        public override void Draw()
-        {
-            base.Draw();
-
-            #region Draw HUD
-            // This is temporary
-            Game1.spriteBatch.End();
-            Game1.spriteBatch.Begin();
-            Game1.spriteBatch.DrawString(Game1.comicSans, $"Heath : {Health}", new Vector2(100, 100), Color.White);
-            Game1.spriteBatch.DrawString(Game1.comicSans, $"Time Juice : {TimeJuice:N0}", new Vector2(100, 200), Color.White);
-            Game1.spriteBatch.End();
-            Game1.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Game1.camera.ViewMatrix);
-            #endregion
-        }
-        
         /// <summary>
         /// Controls the timejuice mechanic
         /// </summary>
@@ -97,6 +95,12 @@ namespace _2dracer
                 TimeJuice = 0;
                 slowMo = false;
             }
+        }
+
+        public static void CreateHUD()
+        {
+            UIManager.Add(healthText = new Element(new Vector2(50, 50), 0.25f, "playerHealth", "Health : " + Health));
+            UIManager.Add(timeText = new Element(new Vector2(50, 150), 0.25f, "playerJuice", "Time Juice : " + TimeJuice));
         }
     }
 }

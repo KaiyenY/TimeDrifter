@@ -32,7 +32,7 @@ namespace _2dracer
         {
             rotation += (float)Math.PI / 2;
             base.Draw();
-            Game1.spriteBatch.DrawString(Game1.comicSans, "GOING TO " + currentDestination.Location, new Vector2(this.Position.X + 10, this.Position.Y - 10), Color.Red);
+            Game1.spriteBatch.DrawString(Game1.connection, "GOING TO " + currentDestination.Location, new Vector2(this.Position.X + 10, this.Position.Y - 10), Color.Red);
             rotation -= (float)Math.PI / 2;
         }
 
