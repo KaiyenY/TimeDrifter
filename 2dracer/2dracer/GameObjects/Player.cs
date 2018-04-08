@@ -16,6 +16,8 @@ namespace _2dracer
         public Texture2D BulletSprite { get; set; }
         public double TimeJuice { get; private set; }
         public int Health { get; private set; }
+        //public Node justSteppedOn { get; set; }
+
 
         // Constructor
         public Player(Vector2 position) 

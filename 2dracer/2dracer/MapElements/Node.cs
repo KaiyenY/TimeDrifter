@@ -21,7 +21,7 @@ namespace _2dracer
         //Properties
         public Point Location { get; set; } //Location in space
 
-
+        #region Defining G and F Score Properties
         public int gScore {
             get
             {
@@ -44,6 +44,7 @@ namespace _2dracer
                 _fScore = value;
             }
         }
+        #endregion
 
         public Color Color { get; set; }//TODO: delete property, just used to visualize pathfinding
 

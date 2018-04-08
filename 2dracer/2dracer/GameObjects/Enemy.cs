@@ -13,9 +13,9 @@ namespace _2dracer
     public class Enemy : Mover
     {
         // Fields
-        public Queue<Node> Route { get; set; } //The path the enemy will take
-        private Node currentDestination; //The node within the path that the car will currently go towards
-        private Node mostRecent; //This node holds the center node of the tile the car just stepped on. Used for A* calculations
+        protected Queue<Node> Route { get; set; } //The path the enemy will take
+        protected Node currentDestination; //The node within the path that the car will currently go towards
+        protected Node mostRecent; //This node holds the center node of the tile the car just stepped on. Used for A* calculations
         private float prevRotation;
         private bool enableDurp;
 
