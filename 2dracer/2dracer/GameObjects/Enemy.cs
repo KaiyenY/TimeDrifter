@@ -53,6 +53,8 @@ namespace _2dracer
             this.Route = AI.Pathfind(mostRecent, Destination);
         }
 
+
+        //TODO: This class needs to be cleaned up ASAP
         public void UpdatePositionTowardsNextNode() //Moves the car a little along its current route
         {
             if(Route != null) //Don't do anything if there's no Route assigned

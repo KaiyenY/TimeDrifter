@@ -63,7 +63,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="MapElements\Building.cs" />
-    <Compile Include="Tank.cs" />
+    <Compile Include="GameObjects\Tank.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\UIElement.cs" />
     <Compile Include="GameObjects\Mover.cs" />
