@@ -110,7 +110,14 @@ namespace LevelDesigner
                 {
                     if (tileButtons[i].IsClicked())
                     {
-                        SelectedTexture = i;
+                        if (SelectedTexture != i)
+                        {
+                            SelectedTexture = i;
+                        }
+                        else
+                        {
+                            SelectedTexture = -1;
+                        }
                     }
                 }
             }

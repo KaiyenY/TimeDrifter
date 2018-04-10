@@ -129,11 +129,14 @@ namespace LevelDesigner.MapElements
 
             if (rect.Contains(Vector2.Add(Vector2.Add(Input.MousePos().ToVector2(), Camera.Position), new Vector2(384))))
             {
-                sprite = Designer.TileSprites[Designer.SelectedTexture];
-
-                if (Input.MouseReleased(MouseButton.Right))
+                if (Designer.SelectedTexture != -1)
                 {
-                    mainSprite = sprite;
+                    sprite = Designer.TileSprites[Designer.SelectedTexture];
+
+                    if (Input.MouseReleased(MouseButton.Right))
+                    {
+                        mainSprite = sprite;
+                    }
                 }
 
                 int direction = Input.MouseScroll();
