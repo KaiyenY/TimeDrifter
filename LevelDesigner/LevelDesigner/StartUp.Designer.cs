@@ -81,7 +81,7 @@
             this.widthValue.Size = new System.Drawing.Size(83, 20);
             this.widthValue.TabIndex = 4;
             this.widthValue.Value = new decimal(new int[] {
-            800,
+            1600,
             0,
             0,
             0});
@@ -103,7 +103,7 @@
             this.heightValue.Size = new System.Drawing.Size(84, 20);
             this.heightValue.TabIndex = 5;
             this.heightValue.Value = new decimal(new int[] {
-            600,
+            900,
             0,
             0,
             0});
@@ -145,7 +145,7 @@
             this.yValue.Size = new System.Drawing.Size(83, 20);
             this.yValue.TabIndex = 8;
             this.yValue.Value = new decimal(new int[] {
-            25,
+            5,
             0,
             0,
             0});
@@ -167,7 +167,7 @@
             this.xValue.Size = new System.Drawing.Size(83, 20);
             this.xValue.TabIndex = 9;
             this.xValue.Value = new decimal(new int[] {
-            25,
+            5,
             0,
             0,
             0});

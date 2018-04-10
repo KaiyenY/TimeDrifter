@@ -1,12 +1,13 @@
-﻿using Microsoft.Xna.Framework;
+﻿using LevelDesigner.MapElements;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace LevelDesigner
+namespace LevelDesigner.Managers
 {
     public static class Camera
     {
         #region Fields
-        private static int movespeed = 10;
+        private static int movespeed = 20;
         #endregion
 
         #region Properties
@@ -50,10 +51,28 @@ namespace LevelDesigner
                     Position.Y);
             }
 
+            if (Position.X < Map.Rect.Left - 384)
+            {
+                Position = new Vector2(Map.Rect.Left - 384, Position.Y);
+            }
+            else if (Position.X > Map.Rect.Right - Designer.screenWidth - 384)
+            {
+                Position = new Vector2(Map.Rect.Right - Designer.screenWidth - 384, Position.Y);
+            }
+
+            if (Position.Y < Map.Rect.Top - 384)
+            {
+                Position = new Vector2(Position.X, Map.Rect.Top - 384);
+            }
+            else if (Position.Y > Map.Rect.Bottom - Designer.screenHeight - 384)
+            {
+                Position = new Vector2(Position.X, Map.Rect.Bottom - Designer.screenHeight - 384);
+            }
+
             ViewMatrix = Matrix.CreateTranslation(new Vector3(-Position, 0));
         }
         #endregion
     }
 }
 
-// -- Genoah but Niko's Code
+// -- Genoah but some of Niko's Code

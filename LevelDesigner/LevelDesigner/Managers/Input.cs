@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace LevelDesigner
+namespace LevelDesigner.Managers
 {
     public enum MouseButton
     {
@@ -91,6 +91,26 @@ namespace LevelDesigner
         public static Point MousePos()
         {
             return ms.Position;
+        }
+
+        /// <summary>
+        /// Determines if the mouse was scrolled and if so, which direciton.
+        /// </summary>
+        /// <returns>Mouse wheel scroll direction.</returns>
+        public static int MouseScroll()
+        {
+            if (ms.ScrollWheelValue > prevMS.ScrollWheelValue)
+            {
+                return 1;
+            }
+            else if (ms.ScrollWheelValue < prevMS.ScrollWheelValue)
+            {
+                return -1;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         /// <summary>

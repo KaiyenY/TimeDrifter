@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using LevelDesigner.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
-namespace LevelDesigner
+namespace LevelDesigner.MapElements
 {
     /// <summary>
     /// Holds and controls all tiles
@@ -111,6 +111,11 @@ namespace LevelDesigner
 
                 // Initialize Tiles size
                 Tiles = new Tile[size[0], size[1]];
+
+                // Set up map rect
+                Rect = new Rectangle(
+                    Point.Zero,
+                    new Point(size[0] * 768, size[1] * 768));
 
                 // Create default tiles
                 for (int y = 0; y < size[1]; y++)

@@ -1,8 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using LevelDesigner.Managers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace LevelDesigner
+namespace LevelDesigner.MapElements
 {
     public enum TileType
     {
@@ -29,6 +30,13 @@ namespace LevelDesigner
         /// The <see cref="Texture2D"/> that corresponds to this tile.
         /// </summary>
         private Texture2D sprite;
+        
+        /// <summary>
+        /// The main sprite that corresponds to this tile.
+        /// </summary>
+        private Texture2D mainSprite;
+
+        private Vector2 origin;
 
         /// <summary>
         /// The <see cref="TileType"/> that corresponds to this tile.
@@ -94,6 +102,7 @@ namespace LevelDesigner
             hasNeighbor = new bool[4];
             neighborIndices = new int[4, 4];
 
+            mainSprite = sprite;
             this.sprite = sprite;
             this.type = type;
             this.rotation = rotation;
@@ -101,6 +110,8 @@ namespace LevelDesigner
             index = new int[2] { x, y };
 
             rect = new Rectangle(position, new Point(768));
+
+            origin = new Vector2(sprite.Width / 2);
         }
         #endregion
 
@@ -115,6 +126,30 @@ namespace LevelDesigner
             {
                 rotation = 90 * Math.Sign(rotation);
             }
+
+            if (rect.Contains(Vector2.Add(Vector2.Add(Input.MousePos().ToVector2(), Camera.Position), new Vector2(384))))
+            {
+                sprite = Designer.TileSprites[Designer.SelectedTexture];
+
+                if (Input.MouseReleased(MouseButton.Right))
+                {
+                    mainSprite = sprite;
+                }
+
+                int direction = Input.MouseScroll();
+
+                if (direction != 0)
+                {
+                    rotation += 90 * direction;
+                }
+            }
+            else
+            {
+                if (mainSprite != sprite)
+                {
+                    sprite = mainSprite;
+                }
+            }
         }
 
         /// <summary>
@@ -122,7 +157,7 @@ namespace LevelDesigner
         /// </summary>
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(sprite, rect, Color.White);
+            spriteBatch.Draw(sprite, rect, null, Color.White, MathHelper.ToRadians(rotation), origin, SpriteEffects.None, 0f);
         }
         #endregion
     }

@@ -1,9 +1,10 @@
-﻿using System;
+﻿using LevelDesigner.MapElements;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace LevelDesigner
+namespace LevelDesigner.Managers
 {
     /// <summary>
     /// Assists in loading and saving files for the <see cref="Map"/>.
