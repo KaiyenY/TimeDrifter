@@ -85,10 +85,6 @@ namespace _2dracer
             button = Content.Load<Texture2D>("Textures/UI/Button");
             square = Content.Load<Texture2D>("Textures/Square");
 
-            // GameMaster Load
-            foreach (GameObject obj in GameMaster.GameObjects)
-                obj.Sprite = Content.Load<Texture2D>(obj.SpritePath);
-
             // Map Load
             for (int i = 0; i < 6; i++)
                 tileSprites.Add(Content.Load<Texture2D>("Textures/Tiles/Tile" + i));
