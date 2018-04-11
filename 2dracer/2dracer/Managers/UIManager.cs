@@ -96,7 +96,7 @@ namespace _2dracer.Managers
                     Elements = new List<Element>
                         {
                             new Element(new Vector2(50, 50), 1f, "pauseTitle", "Pause"),
-                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 250, 400, 80), Game1.button, "playButton", "Resume"),
+                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 250, 400, 80), Game1.button, "resumeButton", "Resume"),
                             new Button(new Rectangle((Game1.screenWidth / 2) - 125, 350, 400, 80), Game1.button, "menuButton", "Exit to Menu")
                         };
                     break;
@@ -137,6 +137,12 @@ namespace _2dracer.Managers
                     case "playButton":
                         Elements.Clear();
                         GameMaster.Start();
+                        Game1.GameState = GameState.Game;
+                        ChangeList();
+                        break;
+
+                    case "resumeButton":
+                        Elements.Clear();
                         Game1.GameState = GameState.Game;
                         ChangeList();
                         break;
