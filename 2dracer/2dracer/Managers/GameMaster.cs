@@ -28,7 +28,7 @@ namespace _2dracer.Managers
         public static List<Bullet> Bullets { get { return bullets; } }
         public static List<Enemy> Enemies { get { return enemies; } }
 
-        static GameMaster()
+        public static void Start()
         {
             gameObjects = new List<GameObject>();
             movers = new List<Mover>();
