@@ -101,6 +101,14 @@ namespace _2dracer.Managers
                         };
                     break;
 
+                case GameState.Death:
+                    Elements = new List<Element>
+                        {
+                            new Element(new Vector2(50, 50), 1f, "deathTitle", "Death"),
+                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 550, 400, 80), Game1.button, "backButton", "Back")
+                        };
+                    break;
+
                 default:
                     throw new NotImplementedException("The current GameState is not supported by this method.");
             }

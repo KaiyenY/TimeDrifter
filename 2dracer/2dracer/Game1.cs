@@ -18,7 +18,8 @@ namespace _2dracer
         Game,
         Menu,
         Options,
-        Pause
+        Pause,
+        Death
     }
 
 
@@ -117,6 +118,11 @@ namespace _2dracer
                         GameState = GameState.Pause;
                     }
 
+                    if (Input.KeyTap(Keys.M))
+                    {
+                        GameState = GameState.Death;
+                    }
+
                     camera.Update();
                     GameMaster.Update();
 
@@ -125,9 +131,6 @@ namespace _2dracer
                         timeSinceLastReRoute = 0;
                     }
                     timeSinceLastReRoute += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    break;
-
-                case GameState.Menu:
                     break;
             }
 
@@ -139,7 +142,7 @@ namespace _2dracer
             gameTime = g;
             GraphicsDevice.Clear(Color.CornflowerBlue);
             
-            if (GameState != GameState.Menu && GameState != GameState.Options)
+            if (GameState != GameState.Menu && GameState != GameState.Options && GameState != GameState.Death)
             {
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
 
