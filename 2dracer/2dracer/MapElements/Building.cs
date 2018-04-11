@@ -42,10 +42,10 @@ namespace _2dracer.MapElements
             float aspectRatio = Game1.graphics.PreferredBackBufferWidth / (float)Game1.graphics.PreferredBackBufferHeight;
             float fieldOfView = MathHelper.PiOver4;
 
-            int z = 4;
+            int z = 5;
 
             effect.Projection = Matrix.CreatePerspectiveFieldOfView(fieldOfView, aspectRatio, 0.1f, 200);
-            effect.View = Matrix.CreateTranslation(-1 * Game1.camera.Position.X / (62 * z), Game1.camera.Position.Y / (62 * z), (float)-10 / z);
+            effect.View = Matrix.CreateTranslation(-1 * Game1.camera.Position.X / (58 * z), Game1.camera.Position.Y / (58 * z), (float)-10 / z);
             effect.World = Matrix.CreateTranslation(Position.X, Position.Y, 0);
             
             model.Meshes[0].Draw();
