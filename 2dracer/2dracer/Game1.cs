@@ -145,9 +145,9 @@ namespace _2dracer
 
                 Map.DrawGround();
                 GameMaster.Draw();
-                Map.DrawBuildings();
-
                 spriteBatch.End();
+
+                Map.DrawBuildings();
             }
 
             UIManager.Draw();           // UI always draws on top
