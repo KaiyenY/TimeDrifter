@@ -1,9 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using _2dracer.Managers;
+using Microsoft.Xna.Framework;
 
 namespace _2dracer
 {
@@ -12,7 +8,7 @@ namespace _2dracer
 
         //Constructor
         public Tank(Vector2 Position)
-            : base("", Position) //TODO: Get a sprite for the Tank
+            : base(LoadManager.Sprites["Tank"], Position) //TODO: Get a sprite for the Tank
         {
             
         }

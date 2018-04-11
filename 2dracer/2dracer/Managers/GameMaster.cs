@@ -47,7 +47,7 @@ namespace _2dracer.Managers
 
             for (int i = 0; i < 5; i++)
             {
-                Instantiate(new Enemy("Textures/Cop", new Vector2(200, 200 * i)));
+                Instantiate(new Enemy(LoadManager.Sprites["Cop"], new Vector2(200, 200 * i)));
             }
         }
 

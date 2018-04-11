@@ -1,8 +1,7 @@
-﻿using System;
+﻿using _2dracer.Managers;
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,8 +19,8 @@ namespace _2dracer
         private bool enableDurp;
 
         // Constructor
-        public Enemy(string spritePath, Vector2 position) 
-            : base(new GameObject(position, 0, spritePath, new Vector2(64, 128)), Vector2.Zero, 0)
+        public Enemy(Texture2D sprite, Vector2 position) 
+            : base(new GameObject(position, 0, sprite, new Vector2(64, 128)), Vector2.Zero, 0)
         {
             currentDestination = new Node(base.position.ToPoint()); //initialize current destination to where it begins
             prevRotation = rotation;
@@ -32,7 +31,7 @@ namespace _2dracer
         {
             rotation += (float)Math.PI / 2;
             base.Draw();
-            Game1.spriteBatch.DrawString(Game1.connection, "GOING TO " + currentDestination.Location, new Vector2(this.Position.X + 10, this.Position.Y - 10), Color.Red, 0f, Vector2.Zero, 0.25f, SpriteEffects.None, 1.0f);
+            Game1.spriteBatch.DrawString(LoadManager.Fonts["Connection"], "GOING TO " + currentDestination.Location, new Vector2(this.Position.X + 10, this.Position.Y - 10), Color.Red, 0f, Vector2.Zero, 0.25f, SpriteEffects.None, 1.0f);
             rotation -= (float)Math.PI / 2;
         }
 

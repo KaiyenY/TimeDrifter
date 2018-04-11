@@ -18,7 +18,7 @@ namespace _2dracer
 
         // Constructor
         public Turret() : 
-            base(new Vector2(0,0), 0, "Textures/Turret", new Vector2(25, 50))
+            base(new Vector2(0,0), 0, LoadManager.Sprites["Turret"], new Vector2(25, 50))
         {
             timer = 0;
             bulletIndex = 0;

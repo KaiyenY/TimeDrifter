@@ -20,7 +20,7 @@ namespace _2dracer
 
         // Constructor
         public Bullet(Vector2 position, float angle)
-            : base(new GameObject(position, angle, "Textures/Bullet", new Vector2(20)), Vector2.Zero, 0)
+            : base(new GameObject(position, angle, LoadManager.Sprites["Bullet"], new Vector2(20)), Vector2.Zero, 0)
         {
             //bullet position = gun position
             //we want bullet to start at tip of gun

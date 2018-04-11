@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using _2dracer.Managers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace _2dracer.UI
@@ -40,7 +41,7 @@ namespace _2dracer.UI
             this.name = name;
             this.text = text;
 
-            font = Game1.connection;
+            font = LoadManager.Fonts["Connection"];
 
             textScale = (rect.Height - 30) / font.MeasureString(text).Y;
 
@@ -82,7 +83,7 @@ namespace _2dracer.UI
             this.name = name;
             this.text = text;
 
-            font = Game1.connection;
+            font = LoadManager.Fonts["Connection"];
         
             rect = Rectangle.Empty;
             sprite = null;
