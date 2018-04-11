@@ -17,14 +17,7 @@ namespace _2dracer.Managers
     public static class UIManager
     {
         // Properties
-        /// <summary>
-        /// Holds a list of elements.
-        /// </summary>
         private static List<Element> Elements { get; set; }
-
-        /// <summary>
-        /// Holds the previous GameState.
-        /// </summary>
         private static GameState prevState;
 
         // Constructor
@@ -83,7 +76,7 @@ namespace _2dracer.Managers
                 case GameState.Menu:
                     Elements = new List<Element>
                         {
-                            new Element(new Vector2(50, 50), 1f, "title", "Time Drifter"),
+                            new Element(new Vector2(50, 50), 1f, "title", "Time Drifter Deluxe"),
                             new Button(new Rectangle((Game1.screenWidth / 2) - 125, 250, 400, 80), LoadManager.Sprites["Button"], "playButton", "Play"),
                             new Button(new Rectangle((Game1.screenWidth / 2) - 125, 350, 400, 80), LoadManager.Sprites["Button"], "optionsButton", "Options"),
                             new Button(new Rectangle((Game1.screenWidth / 2) - 125, 450, 400, 80), LoadManager.Sprites["Button"], "exitButton", "Exit")
@@ -103,7 +96,7 @@ namespace _2dracer.Managers
                     Elements = new List<Element>
                         {
                             new Element(new Vector2(50, 50), 1f, "pauseTitle", "Pause"),
-                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 250, 400, 80), LoadManager.Sprites["Button"], "playButton", "Resume"),
+                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 250, 400, 80), LoadManager.Sprites["Button"], "resumeButton", "Resume"),
                             new Button(new Rectangle((Game1.screenWidth / 2) - 125, 350, 400, 80), LoadManager.Sprites["Button"], "menuButton", "Exit to Menu")
                         };
                     break;
@@ -111,7 +104,7 @@ namespace _2dracer.Managers
                 case GameState.GameOver:
                     Elements = new List<Element>
                         {
-                            new Element(new Vector2(50, 50), 1f, "gameOverTitle", "Game Over"),
+                            new Element(new Vector2(50, 50), 1f, "deathTitle", "Death"),
                             new Button(new Rectangle((Game1.screenWidth / 2) - 125, 550, 400, 80), LoadManager.Sprites["Button"], "backButton", "Back")
                         };
                     break;
@@ -143,6 +136,13 @@ namespace _2dracer.Managers
                 {
                     case "playButton":
                         Elements.Clear();
+                        GameMaster.Start();
+                        Game1.GameState = GameState.Game;
+                        ChangeList();
+                        break;
+
+                    case "resumeButton":
+                        Elements.Clear();
                         Game1.GameState = GameState.Game;
                         ChangeList();
                         break;
@@ -161,6 +161,7 @@ namespace _2dracer.Managers
 
                     case "backButton":
                         Elements.Clear();
+                        GameMaster.ClearAll();
                         Game1.GameState = GameState.Menu;
                         ChangeList();
                         break;

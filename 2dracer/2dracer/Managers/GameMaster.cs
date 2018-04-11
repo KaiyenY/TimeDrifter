@@ -28,7 +28,7 @@ namespace _2dracer.Managers
         public static List<Bullet> Bullets { get { return bullets; } }
         public static List<Enemy> Enemies { get { return enemies; } }
 
-        static GameMaster()
+        public static void Start()
         {
             gameObjects = new List<GameObject>();
             movers = new List<Mover>();
@@ -49,6 +49,11 @@ namespace _2dracer.Managers
             {
                 Instantiate(new Enemy(LoadManager.Sprites["Cop"], new Vector2(200, 200 * i)));
             }
+
+
+            // GameMaster Load
+            foreach (GameObject obj in GameObjects)
+                obj.Sprite = Program.game.Content.Load<Texture2D>(obj.SpritePath);
         }
 
         // Methods
