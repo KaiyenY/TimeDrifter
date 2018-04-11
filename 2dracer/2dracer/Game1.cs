@@ -118,7 +118,7 @@ namespace _2dracer
 
             if (GameState != GameState.Menu && GameState != GameState.Options && GameState != GameState.GameOver)
             {
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
+                spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
 
                 Map.DrawGround();
                 GameMaster.Draw();

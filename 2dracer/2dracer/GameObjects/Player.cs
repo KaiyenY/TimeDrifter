@@ -14,14 +14,21 @@ namespace _2dracer
         // Temporary elements, will be gauge needle soon
         private static Element healthText;
         private static Element timeText;
+
+        /// <summary>
+        /// The turret attached to this <see cref="Player"/> instance.
+        /// </summary>
+        private Turret turret;
+
+        /// <summary>
+        /// Determines if the game is in slow-motion or not.
+        /// </summary>
         public static bool slowMo = false;
         #endregion
 
         #region Properties
-        public Texture2D BulletSprite { get; set; }
         public static double TimeJuice { get; private set; }
         public static int Health { get; private set; }
-        //public Node justSteppedOn { get; set; }
         #endregion
 
 
@@ -31,6 +38,7 @@ namespace _2dracer
         {
             Health = 100;
             TimeJuice = 0;
+            GameMaster.Instantiate(turret = new Turret());
         }
         #endregion
 
@@ -74,6 +82,8 @@ namespace _2dracer
             }
 
             base.Update();
+
+            turret.MoveTurret(position);
         }
 
         /// <summary>
@@ -97,6 +107,9 @@ namespace _2dracer
             }
         }
 
+        /// <summary>
+        /// Creates the HUD of the player.
+        /// </summary>
         public static void CreateHUD()
         {
             UIManager.Add(healthText = new Element(new Vector2(50, 50), 0.25f, "playerHealth", "Health : " + Health));

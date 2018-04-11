@@ -39,7 +39,7 @@ namespace _2dracer.MapElements
 
         #region Constructors
         public Tile(Vector2 position, TileType type, float rotation)
-            : base(position, rotation, new Vector2(768))
+            : base(position, rotation, new Vector2(768), 0.1f)
         {
             Type = type;
 

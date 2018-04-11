@@ -26,7 +26,7 @@ namespace _2dracer.GameObjects
 
         #region Constructors
         public Car(Vector2 position, float rotation, Texture2D sprite, Vector2 size, float bFriction, float friction, float horsePower, float topSpeed)
-            : base(new GameObject(position, rotation, sprite, size))
+            : base(new GameObject(position, rotation, sprite, size, 0.15f))
         {
             this.bFriction = bFriction;
             this.friction = friction;

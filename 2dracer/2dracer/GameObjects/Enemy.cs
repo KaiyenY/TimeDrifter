@@ -20,7 +20,7 @@ namespace _2dracer
 
         // Constructor
         public Enemy(Texture2D sprite, Vector2 position) 
-            : base(new GameObject(position, 0, sprite, new Vector2(64, 128)), Vector2.Zero, 0)
+            : base(new GameObject(position, 0, sprite, new Vector2(64, 128), 0.15f), Vector2.Zero, 0)
         {
             currentDestination = new Node(base.position.ToPoint()); //initialize current destination to where it begins
             prevRotation = rotation;
