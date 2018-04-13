@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using _2dracer.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace _2dracer.MapElements
 {
@@ -20,35 +20,68 @@ namespace _2dracer.MapElements
     /// </summary>
     public class Tile : GameObject
     {
-        // Fields
-        private TileType type;
+        #region Properties
+        /// <summary>
+        /// The node that resides within this <see cref="Tile"/>.
+        /// </summary>
+        public Node node;
 
-        // Properties
-        public new float Rotation
-        {
-            get { return rotation; }
-            set { rotation = value; }
-        }
-        public TileType Type
-        {
-            get { return type; }
-            set { type = value; }
-        }
+        /// <summary>
+        /// Gives the rectangle of this <see cref="Tile"/> for the player to look for.
+        /// </summary>
+        public Rectangle Rect { get; private set; }
 
-        // Constructors
+        /// <summary>
+        /// Grabs the <see cref="TileType"/> of this <see cref="Tile"/>.
+        /// </summary>
+        public TileType Type { get; private set; }
+        #endregion
+
+        #region Constructors
         public Tile(Vector2 position, TileType type, float rotation)
-            : base(position, rotation, new Vector2(768))
+            : base(position, rotation, new Vector2(768), 0.1f)
         {
-            sprite = Game1.tileSprites[(int)type];
-            this.type = type;
-        }
+            Type = type;
 
-        // Methods
-        public override void Draw()
-        {
-            base.Draw();
+            sprite = SetSprite();
+
+            Rect = new Rectangle(position.ToPoint(), new Point(768));
         }
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Sets the sprite of the tile.
+        /// </summary>
+        /// <returns>The sprite according to the tile.</returns>
+        private Texture2D SetSprite()
+        {
+            switch (Type)
+            {
+                case TileType.Building:
+                    return LoadManager.Sprites["Roof"];
+
+                case TileType.CRoad:
+                    return LoadManager.Sprites["CornerRoad"];
+
+                case TileType.FRoad:
+                    return LoadManager.Sprites["FIntersection"];
+
+                case TileType.Grass:
+                    return LoadManager.Sprites["Grass"];
+
+                case TileType.SRoad:
+                    return LoadManager.Sprites["StraightRoad"];
+
+                case TileType.TRoad:
+                    return LoadManager.Sprites["TIntersection"];
+
+                default:
+                    throw new NotImplementedException("The TileType you put in is not implemented in the SetSprite() method.");
+            }
+        }
+        #endregion
     }
 }
 
-// Genoah
+// -- Genoah Martinelli

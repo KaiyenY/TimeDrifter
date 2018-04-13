@@ -1,9 +1,8 @@
-﻿using System;
+﻿using _2dracer.Managers;
+using System;
 using System.Collections.Generic;
 using System.IO;
-
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace _2dracer.MapElements
 {
@@ -62,7 +61,7 @@ namespace _2dracer.MapElements
                             tilePos, 
                             (TileType)tileInfo[j],
                             MathHelper.ToRadians(tileInfo[j + 1]));
-                        
+
                         if ((TileType)tileInfo[j] != TileType.Building)
                         {
                             // Not a building, has a node
@@ -73,7 +72,7 @@ namespace _2dracer.MapElements
                             // Something about collisions
 
                             // If it is a building, make one
-                            Buildings.Add(new Building(Game1.building, new Vector2(x*2.65f - 2.2f,   -2.65f*(y - 0.47f))));
+                            Buildings.Add(new Building(LoadManager.Models["BuildingModel"], new Vector2(x*2.65f - 2.2f,   -2.65f*(y - 0.47f))));
                         }
 
                         j += 2;
@@ -104,7 +103,7 @@ namespace _2dracer.MapElements
             }
             foreach (Node node in Nodes)
             {
-                Game1.spriteBatch.Draw(Game1.square, new Rectangle(node.Location, new Point(25, 25)), Color.Red);
+                Game1.spriteBatch.Draw(LoadManager.Sprites["Square"], new Rectangle(node.Location, new Point(25, 25)), Color.Red);
             }
         }
 

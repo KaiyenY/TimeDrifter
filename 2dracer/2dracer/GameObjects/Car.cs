@@ -25,8 +25,8 @@ namespace _2dracer.GameObjects
         #endregion
 
         #region Constructors
-        public Car(Vector2 position, float rotation, string spritePath, Vector2 size, float bFriction, float friction, float horsePower, float topSpeed)
-            : base(new GameObject(position, rotation, spritePath, size))
+        public Car(Vector2 position, float rotation, Texture2D sprite, Vector2 size, float bFriction, float friction, float horsePower, float topSpeed)
+            : base(new GameObject(position, rotation, sprite, size, 0.15f))
         {
             this.bFriction = bFriction;
             this.friction = friction;
@@ -36,8 +36,8 @@ namespace _2dracer.GameObjects
             prevDir = 0;
         }
 
-        public Car(Vector2 position, string spritePath, Vector2 size)
-            : this(position, 0, spritePath, size, 250, 100, 250, 500) { }
+        public Car(Vector2 position, Texture2D sprite, Vector2 size)
+            : this(position, 0, sprite, size, 250, 100, 250, 500) { }
         #endregion
 
         #region Methods

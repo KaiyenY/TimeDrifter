@@ -1,10 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using System;
-using System.Collections.Generic;
 using _2dracer.MapElements;
 using _2dracer.Managers;
 
@@ -19,12 +15,13 @@ namespace _2dracer
         Menu,
         Options,
         Pause,
-        Death
+        GameOver
     }
 
 
     public class Game1 : Game
     {
+        #region Fields
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
 
@@ -34,18 +31,6 @@ namespace _2dracer
         public static int screenWidth = 1280;
         #endregion
 
-        // SpriteFonts
-        public static SpriteFont connection;
-
-        #region Texture2D's
-        public static Texture2D button;
-        public static Texture2D square;
-        public static List<Texture2D> tileSprites;
-        #endregion
-
-        // Models
-        public static Model building;
-
         //GameState Enum
         public static GameState GameState;
         
@@ -53,8 +38,9 @@ namespace _2dracer
         
         public static Camera camera;
         public static GameTime gameTime;
+        #endregion
 
-        // Constructor
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -68,13 +54,14 @@ namespace _2dracer
             gameTime = new GameTime();
         }
 
+
+        #region Methods
         protected override void Initialize()
         {
             IsMouseVisible = true;                  // Make mouse visible
 
             GameState = GameState.Menu;             // Default GameState    
             camera = new Camera();                  // Camera thing
-            tileSprites = new List<Texture2D>();    // List of tile sprites
 
             base.Initialize();
         }
@@ -82,18 +69,9 @@ namespace _2dracer
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            button = Content.Load<Texture2D>("Textures/UI/Button");
-            square = Content.Load<Texture2D>("Textures/Square");
 
-            // Map Load
-            for (int i = 0; i < 6; i++)
-                tileSprites.Add(Content.Load<Texture2D>("Textures/Tiles/Tile" + i));
-
-            // SpriteFonts
-            connection = Content.Load<SpriteFont>("Fonts/ConnectionSerif");
-
-            //3D
-            building = Content.Load<Model>("3D/untitled");
+            // Handles all of the loading
+            LoadManager.LoadContent(Content);
         }
 
         protected override void UnloadContent() { }
@@ -116,7 +94,7 @@ namespace _2dracer
 
                     if (Input.KeyTap(Keys.M))
                     {
-                        GameState = GameState.Death;
+                        GameState = GameState.GameOver;
                     }
 
                     camera.Update();
@@ -137,10 +115,10 @@ namespace _2dracer
         {
             gameTime = g;
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            
-            if (GameState != GameState.Menu && GameState != GameState.Options && GameState != GameState.Death)
+
+            if (GameState != GameState.Menu && GameState != GameState.Options && GameState != GameState.GameOver)
             {
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
+                spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
 
                 Map.DrawGround();
                 GameMaster.Draw();
@@ -152,5 +130,6 @@ namespace _2dracer
             UIManager.Draw();           // UI always draws on top
             base.Draw(gameTime);
         }
+        #endregion
     }
 }

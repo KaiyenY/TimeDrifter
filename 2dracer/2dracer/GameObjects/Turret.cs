@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using _2dracer.Managers;
@@ -12,27 +12,74 @@ namespace _2dracer
     {
         // Fields
         private float timer;            // Fire rate
-        private int bulletIndex;        // Next bullet to fire
+        private List<Bullet> bullets;
 
         // Properties
 
         // Constructor
         public Turret() : 
-            base(new Vector2(0,0), 0, "Textures/Turret", new Vector2(25, 50))
+            base(new Vector2(0,0), 0, LoadManager.Sprites["Turret"], new Vector2(25, 50), 0.5f)
         {
             timer = 0;
-            bulletIndex = 0;
+            bullets = new List<Bullet>(50);
         }
         
         public override void Update()
         {
-            // update timer
+            FireBullet();
+
+            RotateTurret();
+
+            foreach (Bullet bullet in bullets)
+            {
+                bullet.Update();
+            }
+
+            for (int i = 0; i < bullets.Count; i++)
+            {
+                if (bullets[i].Delete)
+                {
+                    bullets.Remove(bullets[i]);
+                }
+            }
+        }
+
+        public override void Draw()
+        {
+            rotation += (float)Math.PI / 2;
+            base.Draw();
+            rotation -= (float)Math.PI / 2;
+
+            foreach (Bullet bullet in bullets)
+            {
+                bullet.Draw();
+            }
+        }
+
+        /// <summary>
+        /// Fires a <see cref="Bullet"/>.
+        /// </summary>
+        private void FireBullet()
+        {
+            // Update the timer
             timer += (float)Game1.gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            // change position of turret, depending on where car is
-            position = GameMaster.GameObjects[0].Position;
+            // a bullet fires every 0.15 seconds
+            if ((Input.MouseHold(MouseButton.Left) || Input.ControlHold(Buttons.LeftShoulder)) && timer >= 150)
+            {
+                // Reset timer
+                timer = 0;
 
-            // get angle that the turret should be facing
+                bullets.Add(new Bullet(position, rotation));
+            }
+        }
+
+        /// <summary>
+        /// Rotates the <see cref="Turret"/>.
+        /// </summary>
+        private void RotateTurret()
+        {
+            // Get the angle that the turret should be facing.
             if (Input.ControlConnected())
             {
                 // Use controller input (should add setting for this later)
@@ -43,34 +90,14 @@ namespace _2dracer
                 // Use mouse input
                 rotation = Input.MouseAngle(this);
             }
-
-            // Call method Bullet.Fire instead of making the turret do it
-            // a bullet fires every 0.15 seconds
-            if ((Input.MouseHold(MouseButton.Left) || Input.ControlHold(Buttons.LeftShoulder)) && timer >= 150)
-            {
-                // Reset timer
-                timer = 0;
-
-                // Set bullet position
-                GameMaster.Bullets[bulletIndex].SetPosition(position);
-
-                // Set bullet rotation
-                GameMaster.Bullets[bulletIndex].SetRotation(rotation);
-                
-                // Increment bullet index
-                bulletIndex++;
-                if (bulletIndex >= GameMaster.Bullets.Count)
-                {
-                    bulletIndex = 0;
-                }
-            }
         }
 
-        public override void Draw()
+        /// <summary>
+        /// Moves the <see cref="Turret"/> with the <see cref="Player"/>.
+        /// </summary>
+        public void MoveTurret(Vector2 position)
         {
-            rotation += (float)Math.PI / 2;
-            base.Draw();
-            rotation -= (float)Math.PI / 2;
+            this.position = position;
         }
     }
 }

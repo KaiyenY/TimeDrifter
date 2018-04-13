@@ -14,29 +14,25 @@ namespace _2dracer
 {
     public class Bullet : Mover
     {
-        // Fields
-
         // Properties
+        public bool Delete { get; private set; }
 
         // Constructor
         public Bullet(Vector2 position, float angle)
-            : base(new GameObject(position, angle, "Textures/Bullet", new Vector2(20)), Vector2.Zero, 0)
+            : base(new GameObject(position, angle, LoadManager.Sprites["Bullet"], new Vector2(20), 0.25f), Vector2.Zero, 0)
         {
-            //bullet position = gun position
-            //we want bullet to start at tip of gun
-            //move bullet to tip of gun
-
-            //advance bullet by 4 frames
-            for (int i = 0; i < 4; i++)
-                Update();
+            Delete = false;
         }
 
         public override void Update()
         {
-            // only move bullet if it is close enough to matter
-            if (Math.Abs(position.X) < 100000 || Math.Abs(position.Y) < 100000)
+            // Only move bullets on screen, else, mark them for deletion
+            if (position.X > -384 || 
+                position.X < -384 + MapElements.Map.Size.X ||
+                position.Y > -384 ||
+                position.Y < -384 + MapElements.Map.Size.Y)
             {
-                Player player = (Player)GameMaster.GameObjects[0];
+                Player player = (Player)GameMaster.GameObjects[1];
 
                 float speed = player.TopSpeed * 1.5f;
 
@@ -44,6 +40,10 @@ namespace _2dracer
                 velocity.Y = (float)Math.Sin(rotation) * speed;
 
                 base.Update();
+            }
+            else
+            {
+                Delete = true;
             }
         }
 

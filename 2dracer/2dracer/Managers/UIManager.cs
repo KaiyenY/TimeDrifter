@@ -77,9 +77,9 @@ namespace _2dracer.Managers
                     Elements = new List<Element>
                         {
                             new Element(new Vector2(50, 50), 1f, "title", "Time Drifter Deluxe"),
-                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 250, 400, 80), Game1.button, "playButton", "Play"),
-                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 350, 400, 80), Game1.button, "optionsButton", "Options"),
-                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 450, 400, 80), Game1.button, "exitButton", "Exit")
+                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 250, 400, 80), LoadManager.Sprites["Button"], "playButton", "Play"),
+                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 350, 400, 80), LoadManager.Sprites["Button"], "optionsButton", "Options"),
+                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 450, 400, 80), LoadManager.Sprites["Button"], "exitButton", "Exit")
                         };
                     break;
 
@@ -87,8 +87,8 @@ namespace _2dracer.Managers
                     Elements = new List<Element>
                         {
                             new Element(new Vector2(50, 50), 1f, "optionsTitle", "Options"),
-                            new Button(new Rectangle((Game1.screenWidth / 4) - 125, 250, 400, 80), Game1.button, "fullScreen", "FullScreen"),
-                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 550, 400, 80), Game1.button, "backButton", "Back")
+                            new Button(new Rectangle((Game1.screenWidth / 4) - 125, 250, 400, 80), LoadManager.Sprites["Button"], "fullScreen", "FullScreen"),
+                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 550, 400, 80), LoadManager.Sprites["Button"], "backButton", "Back")
                         };
                     break;
 
@@ -96,16 +96,16 @@ namespace _2dracer.Managers
                     Elements = new List<Element>
                         {
                             new Element(new Vector2(50, 50), 1f, "pauseTitle", "Pause"),
-                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 250, 400, 80), Game1.button, "resumeButton", "Resume"),
-                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 350, 400, 80), Game1.button, "menuButton", "Exit to Menu")
+                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 250, 400, 80), LoadManager.Sprites["Button"], "resumeButton", "Resume"),
+                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 350, 400, 80), LoadManager.Sprites["Button"], "menuButton", "Exit to Menu")
                         };
                     break;
 
-                case GameState.Death:
+                case GameState.GameOver:
                     Elements = new List<Element>
                         {
                             new Element(new Vector2(50, 50), 1f, "deathTitle", "Death"),
-                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 550, 400, 80), Game1.button, "backButton", "Back")
+                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 550, 400, 80), LoadManager.Sprites["Button"], "backButton", "Back")
                         };
                     break;
 
