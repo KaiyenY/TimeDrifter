@@ -72,7 +72,9 @@ namespace _2dracer.MapElements
                             // Something about collisions
 
                             // If it is a building, make one
-                            Buildings.Add(new Building(LoadManager.Models["BuildingModel"], new Vector2(x*2.65f - 2.2f,   -2.65f*(y - 0.47f))));
+                            Buildings.Add(new Building(LoadManager.Models["BuildingModel"], "Models/cube", new Vector2(x*2.65f - 2.2f,   -2.65f*(y - 0.47f))));
+                            //Buildings.Add(new Building(LoadManager.Models["BuildingModel"], "Textures/Cop", new Vector2(x * 2.65f - 2.2f, -2.65f * (y - 0.47f))));
+
                         }
 
                         j += 2;
