@@ -190,6 +190,18 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Tiles/Roof.png
 
+#begin Models/cube.bmp
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Models/cube.bmp
+
 #begin Models/untitled.dae
 /importer:OpenAssetImporter
 /processor:ModelProcessor
