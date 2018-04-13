@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using _2dracer.Managers;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.Xna.Framework;
 
 using _2dracer.UI;
 
@@ -105,8 +110,29 @@ namespace _2dracer.Managers
                     Elements = new List<Element>
                         {
                             new Element(new Vector2(50, 50), 1f, "deathTitle", "Death"),
+                            new Element(new Vector2(400, 200), 0.25f, "playerScore", "Score: "),
+                            new Element(new Vector2(400, 300), 0.25f, "playerScore", "High Scores:"),
                             new Button(new Rectangle((Game1.screenWidth / 2) - 125, 550, 400, 80), LoadManager.Sprites["Button"], "backButton", "Back")
                         };
+
+                    StreamReader sr;
+                    sr = new StreamReader(@"..\..\..\..\Content\Leaderboard.txt");
+
+                    for (int i = 1; i < 6; i++)
+                    {
+                        Elements.Add(new Element(new Vector2(400, 300 + 30*i), 0.25f, "playerScore", "#" + i + ": " + sr.ReadLine()));
+                    }
+
+                    // Open Leaderboard txt for reading
+                    // Make String array
+                    // Close leaderboard
+
+                    // if(score is better than top 5)
+                    // Update leaderboard string array
+                    // Open Leaderboard for writing 
+                    // save leaderboard
+                    // Close leaderboard
+
                     break;
 
                 default:
