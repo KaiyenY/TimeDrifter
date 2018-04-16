@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 
 namespace LevelDesigner.MapElements
 {
@@ -21,6 +22,11 @@ namespace LevelDesigner.MapElements
     public class Tile
     {
         #region Fields
+        /// <summary>
+        /// Keeps track of any neighbors around this tile.
+        /// </summary>
+        private List<int[]> neighborIndices;
+
         /// <summary>
         /// The <see cref="Rectangle"/> that corresponds to this tile.
         /// </summary>
@@ -44,19 +50,9 @@ namespace LevelDesigner.MapElements
         private TileType type;
 
         /// <summary>
-        /// Determines in which direction(s) this <see cref="Tile"/> has a neighbor.
-        /// </summary>
-        private bool[] hasNeighbor;
-
-        /// <summary>
         /// Holds the index from the <see cref="Map"/>.
         /// </summary>
         private int[] index;
-
-        /// <summary>
-        /// Holds indices of this tile's neighbors.
-        /// </summary>
-        private int[,] neighborIndices;
 
         /// <summary>
         /// The current rotation of this tile in degrees.
@@ -65,6 +61,11 @@ namespace LevelDesigner.MapElements
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Keeps track of any neighbors around this tile.
+        /// </summary>
+        public List<int[]> NeighborIndices { get { return neighborIndices; } set { neighborIndices = value; } }
+
         /// <summary>
         /// The <see cref="Point"/> this tile is located at.
         /// </summary>
@@ -76,32 +77,19 @@ namespace LevelDesigner.MapElements
         public TileType Type { get { return type; } }
 
         /// <summary>
-        /// Determines in which direction(s) this <see cref="Tile"/> has a neighbor.
-        /// </summary>
-        public bool[] HasNeighbor { get { return hasNeighbor; } set { hasNeighbor = value; } }
-
-        /// <summary>
         /// The index of this <see cref="Tile"/>.
         /// </summary>
         public int[] Index { get { return index; } }
 
         /// <summary>
-        /// Stores the indices of neighboring tiles
-        /// </summary>
-        public int[,] NeighborIndices { get { return neighborIndices; } set { neighborIndices = value; } }
-
-        /// <summary>
         /// The rotation of this <see cref="Tile"/>.
         /// </summary>
-        private int Rotation { get { return rotation; } }
+        public int Rotation { get { return rotation; } }
         #endregion
 
         #region Constructor
-        public Tile(Point position, Texture2D sprite, TileType type, int rotation, int x, int y)
+        public Tile(Point position, Texture2D sprite, TileType type, int neighborCount, int rotation, int x, int y)
         {
-            hasNeighbor = new bool[4];
-            neighborIndices = new int[4, 4];
-
             mainSprite = sprite;
             this.sprite = sprite;
             this.type = type;
@@ -112,10 +100,66 @@ namespace LevelDesigner.MapElements
             rect = new Rectangle(position, new Point(768));
 
             origin = new Vector2(sprite.Width / 2);
+
+            neighborIndices = new List<int[]>(neighborCount);
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Determines where and how many neighbors this tile has.
+        /// </summary>
+        public void GrabNeighbors()
+        {
+            if (neighborIndices.Count > 0)
+            {
+                if (index[0] > 0)
+                {
+                    if (Map.Tiles[index[0] + 1, index[1]].Type != TileType.Building)
+                    {
+                        neighborIndices.Add(new int[2]
+                        {
+                            index[0] + 1,
+                            index[1]
+                        });
+                    }
+                }
+                if (index[0] < Map.Tiles.GetLength(0) - 1)
+                {
+                    if (Map.Tiles[index[0] - 1, index[1]].Type != TileType.Building)
+                    {
+                        neighborIndices.Add(new int[2]
+                        {
+                            index[0] - 1,
+                            index[1]
+                        });
+                    }
+                }
+                if (index[1] > 0)
+                {
+                    if (Map.Tiles[index[0], index[1] + 1].Type != TileType.Building)
+                    {
+                        neighborIndices.Add(new int[2]
+                        {
+                            index[0],
+                            index[1] + 1
+                        });
+                    }
+                }
+                if (index[1] < Map.Tiles.GetLength(1) - 1)
+                {
+                    if (Map.Tiles[index[0], index[1] - 1].Type != TileType.Building)
+                    {
+                        neighborIndices.Add(new int[2]
+                        {
+                            index[0],
+                            index[1] - 1
+                        });
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Updates tile's logic.
         /// </summary>
@@ -136,6 +180,17 @@ namespace LevelDesigner.MapElements
                     if (Input.MouseReleased(MouseButton.Right))
                     {
                         mainSprite = sprite;
+                        type = (TileType)Designer.SelectedTexture;
+
+                        GrabNeighbors();
+
+                        if (neighborIndices.Count > 0)
+                        {
+                            foreach(int[] index in neighborIndices)
+                            {
+                                Map.Tiles[index[0], index[1]].GrabNeighbors();
+                            }
+                        }
                     }
                 }
 

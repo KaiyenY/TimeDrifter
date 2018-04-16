@@ -10,7 +10,7 @@ namespace LevelDesigner
     public partial class StartUp : Form
     {
         // Fields
-        public static List<byte> Data;
+        public static Queue<string> Data;
         public static byte[] MapSize;
 
         // Constructor
@@ -56,7 +56,7 @@ namespace LevelDesigner
         /// </summary>
         private void StartDesigner()
         {
-            using (Designer designer = new Designer((int)heightValue.Value, (int)widthValue.Value, this))
+            using (Designer designer = new Designer(this))
                 designer.Run();
         }
     }

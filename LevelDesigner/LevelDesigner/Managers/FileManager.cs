@@ -15,12 +15,12 @@ namespace LevelDesigner.Managers
         /// <summary>
         /// Reads information coming in from a binary file.
         /// </summary>
-        private static BinaryReader br;
+        private static StreamReader sr;
 
         /// <summary>
         /// Writes information out to a binary file.
         /// </summary>
-        private static BinaryWriter bw;
+        private static StreamWriter sw;
 
         /// <summary>
         /// The <see cref="OpenFileDialog"/> opens File Explorer to open designated file.
@@ -44,7 +44,7 @@ namespace LevelDesigner.Managers
             openDialog = new OpenFileDialog
             {
                 InitialDirectory = "c:\\",
-                Filter = "Map Files (*.map)|*.map|All files (*.*)|*.*",
+                Filter = "Text Files (*.txt)|*.txt|All files (*.*)|*.*",
                 FilterIndex = 0,
                 RestoreDirectory = true
             };
@@ -52,7 +52,7 @@ namespace LevelDesigner.Managers
             saveDialog = new SaveFileDialog
             {
                 InitialDirectory = "c:\\",
-                Filter = "Map Files (*.map)|*.map|All files (*.*)|*.*",
+                Filter = "Text Files (*.txt)|*.txt|All files (*.*)|*.*",
                 FilterIndex = 0,
                 RestoreDirectory = true
             };
@@ -64,10 +64,10 @@ namespace LevelDesigner.Managers
         /// Loads in <see cref="Map"/> information from the binary file at the specified path.
         /// </summary>
         /// <returns>A list of byte data from the specified file.</returns>
-        public static List<byte> Load()
+        public static Queue<string> Load()
         {
             // Instantiate new list to read data
-            List<byte> data = new List<byte>();
+            Queue<string> data = new Queue<string>();
 
             // Open the file dialog
             if (openDialog.ShowDialog() == DialogResult.OK)
@@ -77,13 +77,14 @@ namespace LevelDesigner.Managers
                     if ((stream = openDialog.OpenFile()) != null)
                     {
                         // Initialize the reader
-                        br = new BinaryReader(stream);
+                        sr = new StreamReader(stream);
 
-                        // Read the first two bytes to get the map size
-                        data.AddRange(br.ReadBytes(2));
-
-                        // Read the rest of the file and store it all in data
-                        data.AddRange(ReadAllBytes(stream));
+                        // Read all of the data from the stream
+                        string line = null;
+                        while ((line = sr.ReadLine()) != null)
+                        {
+                            data.Enqueue(line);
+                        }
                     }
                 }
                 catch (Exception e)
@@ -93,25 +94,11 @@ namespace LevelDesigner.Managers
                 finally
                 {
                     stream.Close();
-                    br.Close();
+                    sr.Close();
                 }
             }
 
             return data;
-        }
-
-        /// <summary>
-        /// Allows the <see cref="BinaryReader"/> to read all bytes in a binary file.
-        /// </summary>
-        /// <param name="stream"><see cref="Stream"/> that contains the binary file.</param>
-        /// <returns>All bytes in this array.</returns>
-        public static byte[] ReadAllBytes(Stream stream)
-        {
-            using (var memStream = new MemoryStream())
-            {
-                stream.CopyTo(memStream);
-                return memStream.ToArray();
-            }
         }
 
         /// <summary>
@@ -120,25 +107,33 @@ namespace LevelDesigner.Managers
         public static void Write()
         {
             // Initialize a data array with the map size
-            List<byte> data = new List<byte>
+            List<string> data = new List<string>
             {
-                (byte)Map.Tiles.GetLength(0),
-                (byte)Map.Tiles.GetLength(1)
+                $"{Map.Tiles.GetLength(0)},{Map.Tiles.GetLength(1)}"
             };
 
             // Read all information from each tile into the byte array
-            for (int y = 0; y < data[0]; y++)
+            for (int y = 0; y < Map.Tiles.GetLength(1); y++)
             {
-                for (int x = 0; x < data[1]; x++)
+                for (int x = 0; x < Map.Tiles.GetLength(0); x++)
                 {
                     Tile current = Map.Tiles[x, y];
 
-                    // Add the type of tile
-                    data.Add((byte)current.Type);
+                    data.Add($"{(int)current.Type}," +
+                        $"{current.Rotation}," +
+                        $"{current.Index[0]}," +
+                        $"{current.Index[1]}," +
+                        $"{current.NeighborIndices.Count}");
 
-                    // Add the index of the tile
-                    data.Add((byte)current.Index[0]);
-                    data.Add((byte)current.Index[1]);
+                    // If neighbor count > 0, then the next few lines will have a list
+                    // of this tile's neighbor's indices
+                    if (current.NeighborIndices.Count > 0)
+                    {
+                        for (int i = 0; i < current.NeighborIndices.Count; i++)
+                        {
+                            data.Add($"{current.NeighborIndices[0]},{current.NeighborIndices[1]}");
+                        }
+                    }
                 }
             }
 
@@ -147,10 +142,16 @@ namespace LevelDesigner.Managers
             {
                 try
                 {
-                    if ((stream == saveDialog.OpenFile()))
+                    if ((stream = saveDialog.OpenFile()) != null)
                     {
                         // Initialize the writer
-                        bw = new BinaryWriter(stream);
+                        sw = new StreamWriter(stream);
+
+                        // Write all of the data into the text file
+                        foreach (string input in data)
+                        {
+                            sw.WriteLine(input);
+                        }
                     }
                 }
                 catch (Exception e)
@@ -159,7 +160,7 @@ namespace LevelDesigner.Managers
                 }
                 finally
                 {
-
+                    sw.Close();
                 }
             }
         }

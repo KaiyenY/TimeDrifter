@@ -17,6 +17,8 @@ namespace LevelDesigner.UI
         #endregion
 
         #region Properties
+        public Rectangle Rect { get { return rect; } }
+
         public bool Enabled { get; set; }
         #endregion
 
