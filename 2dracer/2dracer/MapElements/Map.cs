@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace _2dracer.MapElements
 {
@@ -10,6 +11,9 @@ namespace _2dracer.MapElements
     {
         // Fields
         private static StreamReader sr;                // Reads the map files
+        private static Texture2D tex1;
+        private static Texture2D tex2;
+
 
         // Properties
         public static List<Building> Buildings { get; }
@@ -69,14 +73,10 @@ namespace _2dracer.MapElements
                         }
                         else
                         {
-                            // Something about collisions
+                            tex1 = Program.game.Content.Load<Texture2D>("Models/cube");
+                            tex2 = Program.game.Content.Load<Texture2D>("Models/cube2");
 
-                            // If it is a building, make one
-                            Console.WriteLine(Buildings.Count + " " + Buildings.Count % 2);
-                            if (Buildings.Count % 2 == 0) Buildings.Add(new Building("Models/cube", new Vector2(x*2.65f - 2.2f,   -2.65f*(y - 0.47f))));
-                            if (Buildings.Count % 2 == 1) Buildings.Add(new Building("Models/cube2", new Vector2(x * 2.65f - 2.2f, -2.65f * (y - 0.47f))));
-                            
-
+                            Buildings.Add(new Building(new Vector2(x*2.65f - 2.2f,   -2.65f*(y - 0.47f))));
                         }
 
                         j += 2;
@@ -113,8 +113,11 @@ namespace _2dracer.MapElements
 
         public static void DrawBuildings()
         {
-            foreach (Building b in Map.Buildings)
-                b.Draw();
+            for (int i = 0; i < Buildings.Count; i++)
+            {
+                if(i % 2 == 1) Buildings[i].Draw(tex1);
+                else Buildings[i].Draw(tex2);
+            }
         }
     }
 }

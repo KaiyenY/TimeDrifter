@@ -12,22 +12,18 @@ namespace _2dracer.MapElements
     public class Building
     {
         private Model model;
-        private Texture2D tex;
-
         public Vector2 Position;
 
-        public Building(String x, Vector2 p)
+        public Building(Vector2 p)
         {
             model = Program.game.Content.Load<Model>("Models/untitled");
             Position = p;
-            
-            BasicEffect effect = (BasicEffect)model.Meshes[0].Effects[0];
-            effect.Texture = Program.game.Content.Load<Texture2D>(x);
         }
 
-        public void Draw()
+        public void Draw(Texture2D img)
         {
             BasicEffect effect = (BasicEffect)model.Meshes[0].Effects[0];
+            effect.Texture = img;
             
             float aspectRatio = Game1.graphics.PreferredBackBufferWidth / (float)Game1.graphics.PreferredBackBufferHeight;
             float fieldOfView = MathHelper.PiOver4;
