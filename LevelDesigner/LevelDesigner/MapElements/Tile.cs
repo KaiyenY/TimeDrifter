@@ -101,7 +101,7 @@ namespace LevelDesigner.MapElements
 
             origin = new Vector2(sprite.Width / 2);
 
-            neighborIndices = new List<int[]>(neighborCount);
+            neighborIndices = new List<int[]>();
         }
         #endregion
 
@@ -111,51 +111,48 @@ namespace LevelDesigner.MapElements
         /// </summary>
         public void GrabNeighbors()
         {
-            if (neighborIndices.Count > 0)
+            if (index[0] > 0)
             {
-                if (index[0] > 0)
+                if (Map.Tiles[index[0] - 1, index[1]].Type != TileType.Building)
                 {
-                    if (Map.Tiles[index[0] + 1, index[1]].Type != TileType.Building)
+                    neighborIndices.Add(new int[2]
                     {
-                        neighborIndices.Add(new int[2]
-                        {
-                            index[0] + 1,
-                            index[1]
-                        });
-                    }
+                        index[0] - 1,
+                        index[1]
+                    });
                 }
-                if (index[0] < Map.Tiles.GetLength(0) - 1)
+            }
+            if (index[0] < Map.Tiles.GetLength(0) - 1)
+            {
+                if (Map.Tiles[index[0] + 1, index[1]].Type != TileType.Building)
                 {
-                    if (Map.Tiles[index[0] - 1, index[1]].Type != TileType.Building)
+                    neighborIndices.Add(new int[2]
                     {
-                        neighborIndices.Add(new int[2]
-                        {
-                            index[0] - 1,
-                            index[1]
-                        });
-                    }
+                        index[0] + 1,
+                        index[1]
+                    });
                 }
-                if (index[1] > 0)
+            }
+            if (index[1] > 0)
+            {
+                if (Map.Tiles[index[0], index[1] - 1].Type != TileType.Building)
                 {
-                    if (Map.Tiles[index[0], index[1] + 1].Type != TileType.Building)
+                    neighborIndices.Add(new int[2]
                     {
-                        neighborIndices.Add(new int[2]
-                        {
-                            index[0],
-                            index[1] + 1
-                        });
-                    }
+                        index[0],
+                        index[1] - 1
+                    });
                 }
-                if (index[1] < Map.Tiles.GetLength(1) - 1)
+            }
+            if (index[1] < Map.Tiles.GetLength(1) - 1)
+            {
+                if (Map.Tiles[index[0], index[1] + 1].Type != TileType.Building)
                 {
-                    if (Map.Tiles[index[0], index[1] - 1].Type != TileType.Building)
+                    neighborIndices.Add(new int[2]
                     {
-                        neighborIndices.Add(new int[2]
-                        {
-                            index[0],
-                            index[1] - 1
-                        });
-                    }
+                        index[0],
+                        index[1] + 1
+                    });
                 }
             }
         }
