@@ -39,7 +39,7 @@ namespace LevelDesigner.MapElements
                 // Set up the map rectangle
                 Rect = new Rectangle(
                     Point.Zero,
-                    new Point(Tiles.GetLength(0) * 768, Tiles.GetLength(1) * 768));
+                    new Point(Tiles.GetLength(0) * 384, Tiles.GetLength(1) * 384));
 
                 // Create tiles from file
                 for (int y = 0; y < Tiles.GetLength(1); y++)
@@ -51,13 +51,19 @@ namespace LevelDesigner.MapElements
 
                         // Set up tile
                         Tile current = Tiles[x, y] = new Tile(
-                            new Point(x * 768, y * 768),
+                            new Point(x * 384, y * 384),
                             Designer.TileSprites[int.Parse(input[0])],
                             (TileType)int.Parse(input[0]),
                             int.Parse(input[4]),
                             int.Parse(input[1]),
                             int.Parse(input[2]),
                             int.Parse(input[3]));
+
+                        // Throw away neighboring indices, don't need them for the editor
+                        for (int i = 0; i < current.NeighborIndices.Capacity; i++)
+                        {
+                            data.Dequeue();
+                        }
                     }
                 }
 
@@ -77,7 +83,7 @@ namespace LevelDesigner.MapElements
                 // Set up map rect
                 Rect = new Rectangle(
                     Point.Zero,
-                    new Point(size[0] * 768, size[1] * 768));
+                    new Point(size[0] * 384, size[1] * 384));
 
                 // Create default tiles
                 for (int y = 0; y < size[1]; y++)
@@ -85,7 +91,7 @@ namespace LevelDesigner.MapElements
                     for (int x = 0; x < size[0]; x++)
                     {
                         Tiles[x, y] = new Tile(
-                            new Point(x * 768, y * 768),
+                            new Point(x * 384, y * 384),
                             Designer.TileSprites[5],
                             TileType.Grass,
                             0,

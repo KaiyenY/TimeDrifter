@@ -97,11 +97,11 @@ namespace LevelDesigner.MapElements
 
             index = new int[2] { x, y };
 
-            rect = new Rectangle(position, new Point(768));
+            rect = new Rectangle(position, new Point(384));
 
             origin = new Vector2(sprite.Width / 2);
 
-            neighborIndices = new List<int[]>();
+            neighborIndices = new List<int[]>(neighborCount);
         }
         #endregion
 
@@ -111,6 +111,8 @@ namespace LevelDesigner.MapElements
         /// </summary>
         public void GrabNeighbors()
         {
+            neighborIndices.Clear();
+
             if (index[0] > 0)
             {
                 if (Map.Tiles[index[0] - 1, index[1]].Type != TileType.Building)
@@ -168,7 +170,7 @@ namespace LevelDesigner.MapElements
                 rotation = 90 * Math.Sign(rotation);
             }
 
-            if (rect.Contains(Vector2.Add(Vector2.Add(Input.MousePos().ToVector2(), Camera.Position), new Vector2(384))))
+            if (rect.Contains(Vector2.Add(Vector2.Add(Input.MousePos().ToVector2(), Camera.Position), new Vector2(192))))
             {
                 if (Designer.SelectedTexture != -1)
                 {

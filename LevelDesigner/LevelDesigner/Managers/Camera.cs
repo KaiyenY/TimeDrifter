@@ -51,22 +51,22 @@ namespace LevelDesigner.Managers
                     Position.Y);
             }
 
-            if (Position.X < Map.Rect.Left - 384)
+            if (Position.X < Map.Rect.Left - 192)
             {
-                Position = new Vector2(Map.Rect.Left - 384, Position.Y);
+                Position = new Vector2(Map.Rect.Left - 192, Position.Y);
             }
-            else if (Position.X > Map.Rect.Right - Designer.screenWidth - 384)
+            else if (Position.X > Map.Rect.Right - Designer.screenWidth - 192)
             {
-                Position = new Vector2(Map.Rect.Right - Designer.screenWidth - 384, Position.Y);
+                Position = new Vector2(Map.Rect.Right - Designer.screenWidth - 192, Position.Y);
             }
 
-            if (Position.Y < Map.Rect.Top - 384)
+            if (Position.Y < Map.Rect.Top - 192)
             {
-                Position = new Vector2(Position.X, Map.Rect.Top - 384);
+                Position = new Vector2(Position.X, Map.Rect.Top - 192);
             }
-            else if (Position.Y > Map.Rect.Bottom - Designer.screenHeight - 384)
+            else if (Position.Y > Map.Rect.Bottom - Designer.screenHeight - 192)
             {
-                Position = new Vector2(Position.X, Map.Rect.Bottom - Designer.screenHeight - 384);
+                Position = new Vector2(Position.X, Map.Rect.Bottom - Designer.screenHeight - 192);
             }
 
             ViewMatrix = Matrix.CreateTranslation(new Vector3(-Position, 0));

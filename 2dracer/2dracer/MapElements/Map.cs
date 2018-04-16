@@ -28,7 +28,7 @@ namespace _2dracer.MapElements
             
             try
             {
-                sr = new StreamReader(@"..\..\..\..\Content\Map.txt");
+                sr = new StreamReader(@"..\..\..\..\Content\Main.txt");
                 
                 string[] mapInfo = sr.ReadLine().Split(',');        // Split info from file into two
                 mapSize[0] = int.Parse(mapInfo[0]);                 // Set map horizontal size

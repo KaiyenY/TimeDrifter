@@ -131,7 +131,7 @@ namespace LevelDesigner.Managers
                     {
                         for (int i = 0; i < current.NeighborIndices.Count; i++)
                         {
-                            data.Add($"{current.NeighborIndices[0]},{current.NeighborIndices[1]}");
+                            data.Add($"{current.NeighborIndices[0][0]},{current.NeighborIndices[0][1]}");
                         }
                     }
                 }
