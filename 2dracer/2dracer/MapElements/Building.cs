@@ -16,9 +16,9 @@ namespace _2dracer.MapElements
 
         public Vector2 Position;
 
-        public Building(Model m, String x, Vector2 p)
+        public Building(String x, Vector2 p)
         {
-            model = m;
+            model = Program.game.Content.Load<Model>("Models/untitled");
             Position = p;
             
             BasicEffect effect = (BasicEffect)model.Meshes[0].Effects[0];
