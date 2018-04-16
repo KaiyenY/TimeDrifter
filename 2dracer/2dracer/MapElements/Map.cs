@@ -13,6 +13,7 @@ namespace _2dracer.MapElements
         private static StreamReader sr;                // Reads the map files
         private static Texture2D tex1;
         private static Texture2D tex2;
+        private static Texture2D tex3;
 
 
         // Properties
@@ -75,6 +76,7 @@ namespace _2dracer.MapElements
                         {
                             tex1 = Program.game.Content.Load<Texture2D>("Models/cube");
                             tex2 = Program.game.Content.Load<Texture2D>("Models/cube2");
+                            tex3 = Program.game.Content.Load<Texture2D>("Models/cube3");
 
                             Buildings.Add(new Building(new Vector2(x*2.65f - 2.2f,   -2.65f*(y - 0.47f))));
                         }
@@ -115,8 +117,8 @@ namespace _2dracer.MapElements
         {
             for (int i = 0; i < Buildings.Count; i++)
             {
-                if(i % 2 == 1) Buildings[i].Draw(tex1);
-                else Buildings[i].Draw(tex2);
+                if(i % 2 == 1) Buildings[i].Draw(tex2);
+                else Buildings[i].Draw(tex3);
             }
         }
     }
