@@ -14,12 +14,14 @@ namespace LevelDesigner
 
         #region Texture2D's
         public static Texture2D square;
+        public static Texture2D buttonSprite;
         public static Texture2D menuButtonSprite;
         public static Texture2D[] TileSprites = new Texture2D[6];
         #endregion
 
         #region UI
         private Button menuButton;
+        private Button saveButton;
         private Button[] tileButtons;
         private Container textures;
         private Container tileInfo;
@@ -34,13 +36,13 @@ namespace LevelDesigner
         public static int screenHeight;
         public static int screenWidth;
 
-        public Designer(int screenHeight, int screenWidth, StartUp form)
+        public Designer(StartUp form)
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            graphics.PreferredBackBufferHeight = screenHeight;
-            graphics.PreferredBackBufferWidth = screenWidth;
+            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 3 / 4;
+            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 3 / 4;
 
             this.form = form;
 
@@ -61,6 +63,8 @@ namespace LevelDesigner
 
             menuButtonSprite = Content.Load<Texture2D>("Menu Button");
 
+            buttonSprite = Content.Load<Texture2D>("Button");
+
             square = Content.Load<Texture2D>("Square");
 
             arial = Content.Load<SpriteFont>("Arial");
@@ -78,6 +82,10 @@ namespace LevelDesigner
                 graphics.PreferredBackBufferWidth - (graphics.PreferredBackBufferWidth / 5), 64, 
                 graphics.PreferredBackBufferWidth / 5, graphics.PreferredBackBufferHeight / 2),
                 false);
+            
+            // Create save button
+            saveButton = new Button(new Rectangle(graphics.PreferredBackBufferWidth - (graphics.PreferredBackBufferWidth / 5), textures.Position.Y + textures.Size.Y,
+                graphics.PreferredBackBufferWidth / 5, 64), buttonSprite, true);
 
             // Create tile buttons
             tileButtons = new Button[6]
@@ -106,6 +114,11 @@ namespace LevelDesigner
             
             if (textures.Enabled)
             {
+                if (saveButton.IsClicked())
+                {
+                    FileManager.Write();
+                }
+
                 for (int i = 0; i < tileButtons.Length; i++)
                 {
                     if (tileButtons[i].IsClicked())
@@ -156,6 +169,16 @@ namespace LevelDesigner
 
             if (textures.Enabled)
             {
+                // Draw save button
+                saveButton.Draw(spriteBatch);
+
+                // Draw text over save button
+                spriteBatch.DrawString(
+                    arial, 
+                    "Save", 
+                    new Vector2(saveButton.Rect.Center.X - arial.MeasureString("Save").X / 2, saveButton.Rect.Center.Y - arial.MeasureString("Save").Y / 2), 
+                    Color.Black);
+
                 // Draw elements in textures container here
                 foreach(Button butt in tileButtons)
                 {

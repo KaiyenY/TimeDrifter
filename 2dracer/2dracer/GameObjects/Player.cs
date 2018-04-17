@@ -14,6 +14,7 @@ namespace _2dracer
         // Temporary elements, will be gauge needle soon
         private static Element healthText;
         private static Element timeText;
+        private static Element scoreText;
 
         /// <summary>
         /// The turret attached to this <see cref="Player"/> instance.
@@ -29,6 +30,7 @@ namespace _2dracer
         #region Properties
         public static double TimeJuice { get; private set; }
         public static int Health { get; private set; }
+        public static double Score { get; private set; }
         #endregion
 
 
@@ -38,6 +40,7 @@ namespace _2dracer
         {
             Health = 100;
             TimeJuice = 0;
+            Score = 0;
             GameMaster.Instantiate(turret = new Turret());
         }
         #endregion
@@ -79,6 +82,7 @@ namespace _2dracer
             {
                 timeText.Text = $"Time Juice : {TimeJuice:N0}";
                 healthText.Text = $"Health : {Health:N0}";
+                scoreText.Text = $"Score : {Score:N0}";
             }
 
             base.Update();
@@ -93,6 +97,8 @@ namespace _2dracer
         {
             if (Input.KeyTap(Keys.P))
                 slowMo = !slowMo;
+
+            Score += Game1.gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
 
             if (!slowMo && TimeJuice < 10)
                 TimeJuice += Game1.gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
@@ -114,6 +120,7 @@ namespace _2dracer
         {
             UIManager.Add(healthText = new Element(new Vector2(50, 50), 0.25f, "playerHealth", "Health : " + Health));
             UIManager.Add(timeText = new Element(new Vector2(50, 150), 0.25f, "playerJuice", "Time Juice : " + TimeJuice));
+            UIManager.Add(scoreText = new Element(new Vector2(50, 250), 0.25f, "playerScore", "Score : " + Score));
         }
     }
 }

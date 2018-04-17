@@ -48,7 +48,6 @@ namespace _2dracer.Managers
         {
             LoadManager.content = content;
             LoadFonts();
-            LoadModels();
             LoadSprites();
         }
 
@@ -60,17 +59,6 @@ namespace _2dracer.Managers
             Fonts = new Dictionary<string, SpriteFont>
             {
                 { "Connection", Load<SpriteFont>("Fonts/ConnectionSerif") }
-            };
-        }
-
-        /// <summary>
-        /// Loads all of the models that will be used in the game.
-        /// </summary>
-        private static void LoadModels()
-        {
-            Models = new Dictionary<string, Model>
-            {
-                { "BuildingModel", Load<Model>("Models/untitled") }
             };
         }
 
