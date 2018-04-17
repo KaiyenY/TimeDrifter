@@ -108,6 +108,13 @@ namespace _2dracer.MapElements
                     sr.Close();
                 }
             }
+
+            // Pass this list into the AI
+            List<Node> nodeList = new List<Node>();
+            foreach (Node node in Nodes)
+            {
+                nodeList.Add(node);
+            }
         }
         #endregion
 
