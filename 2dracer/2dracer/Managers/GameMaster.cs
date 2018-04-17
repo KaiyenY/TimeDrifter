@@ -82,9 +82,14 @@ namespace _2dracer.Managers
         /// </summary>
         public static void ClearAll()
         {
-            GameObjects.Clear();
-            Movers.Clear();
-            Rigids.Clear();
+            if(GameObjects != null)
+                GameObjects.Clear();
+
+            if (Movers != null)
+                Movers.Clear();
+
+            if (Rigids != null)
+                Rigids.Clear();
         }
         #endregion
 
