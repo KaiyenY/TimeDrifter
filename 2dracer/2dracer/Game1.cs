@@ -34,8 +34,6 @@ namespace _2dracer
         //GameState Enum
         public static GameState GameState;
         
-        private float timeSinceLastReRoute = 0.0f;
-        
         public static Camera camera;
         public static GameTime gameTime;
         #endregion
@@ -62,7 +60,7 @@ namespace _2dracer
 
             GameState = GameState.Menu;             // Default GameState    
             camera = new Camera();                  // Camera thing
-
+            //Map.AssignNeighbors();                  // Assign Neighbors to each node (for pathfinding)
             base.Initialize();
         }
 
@@ -100,11 +98,6 @@ namespace _2dracer
                     camera.Update();
                     GameMaster.Update();
 
-                    if (timeSinceLastReRoute > 10)
-                    {
-                        timeSinceLastReRoute = 0;
-                    }
-                    timeSinceLastReRoute += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     break;
             }
 
