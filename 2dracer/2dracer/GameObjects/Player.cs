@@ -15,7 +15,7 @@ namespace _2dracer
         private static Element healthText;
         private static Element timeText;
         private static Element scoreText;
-
+        
         /// <summary>
         /// The turret attached to this <see cref="Player"/> instance.
         /// </summary>
@@ -25,6 +25,8 @@ namespace _2dracer
         /// Determines if the game is in slow-motion or not.
         /// </summary>
         public static bool slowMo = false;
+
+        public static Vector2 PlayerPos;
         #endregion
 
         #region Properties
@@ -42,6 +44,7 @@ namespace _2dracer
             TimeJuice = 0;
             Score = 0;
             GameMaster.Instantiate(turret = new Turret());
+            PlayerPos = position;
         }
         #endregion
 
@@ -86,7 +89,7 @@ namespace _2dracer
             }
 
             base.Update();
-
+            PlayerPos = position;
             turret.MoveTurret(position);
         }
 

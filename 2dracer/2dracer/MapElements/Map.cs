@@ -67,11 +67,11 @@ namespace _2dracer.MapElements
                             (TileType)tileInfo[j],
                             MathHelper.ToRadians(tileInfo[j + 1]));
 
-                        if ((TileType)tileInfo[j] != TileType.Building)
+                        if ((TileType)tileInfo[j] != TileType.Building) // Not a building, has a node
                         {
-                            
-                            // Not a building, has a node
-                            Nodes.Add(new Node(new Point((x * 768), (y * 768))));
+                            Node nodeAtTile = new Node(new Point((x * 768), (y * 768)));
+                            Tiles[x, y].Node = nodeAtTile; //Set this tile's Node field to this new node
+                            Nodes.Add(nodeAtTile); //Add the node to the list of all nodes
                         }
                         else
                         {
@@ -124,7 +124,7 @@ namespace _2dracer.MapElements
         }
 
         /// <summary>
-        /// Method to assign neighbors to each node in the map.
+        /// (dirty) Method to assign neighbors to each node in the map.
         /// </summary>
         public static void AssignNeighbors()
         {
@@ -133,7 +133,7 @@ namespace _2dracer.MapElements
                 for (int y = 0; y < Tiles.GetLength(1); y++) //Loops through the vertical direction
                 {
                     #region checking adjacencies
-                    Node current = Tiles[x, y].node;
+                    Node current = Tiles[x, y].Node;
                     if(x == 0)
                     {
                         if(y == 0)
@@ -141,11 +141,11 @@ namespace _2dracer.MapElements
                             //If at corner of the array, check only the two tiles it has adjacency to
                             if(Tiles[x+1, y].Type != TileType.Building) //If it's not a building, it must have a node (right?)
                             {
-                                current.Neighbors.Add(Tiles[x + 1, y].node);
+                                current.Neighbors.Add(Tiles[x + 1, y].Node);
                             }
                             if(Tiles[x, y+1].Type != TileType.Building)
                             {
-                                current.Neighbors.Add(Tiles[x, y + 1].node);
+                                current.Neighbors.Add(Tiles[x, y + 1].Node);
                             }
                         }
                         else //Not at the corner of the array, but at the edge of it
@@ -153,15 +153,15 @@ namespace _2dracer.MapElements
                             //In that case, check the three adjacent tiles
                             if (Tiles[x + 1, y].Type != TileType.Building)
                             {
-                                current.Neighbors.Add(Tiles[x + 1, y].node);
+                                current.Neighbors.Add(Tiles[x + 1, y].Node);
                             }
                             if (Tiles[x, y + 1].Type != TileType.Building)
                             {
-                                current.Neighbors.Add(Tiles[x, y + 1].node);
+                                current.Neighbors.Add(Tiles[x, y + 1].Node);
                             }
                             if (Tiles[x, y - 1].Type != TileType.Building)
                             {
-                                current.Neighbors.Add(Tiles[x, y - 1].node);
+                                current.Neighbors.Add(Tiles[x, y - 1].Node);
                             }
                         }
                     }
@@ -170,15 +170,15 @@ namespace _2dracer.MapElements
                         //At the edge of the array, but not at the corner, check the 3 again
                         if (Tiles[x + 1, y].Type != TileType.Building)
                         {
-                            current.Neighbors.Add(Tiles[x + 1, y].node);
+                            current.Neighbors.Add(Tiles[x + 1, y].Node);
                         }
                         if (Tiles[x, y + 1].Type != TileType.Building)
                         {
-                            current.Neighbors.Add(Tiles[x, y + 1].node);
+                            current.Neighbors.Add(Tiles[x, y + 1].Node);
                         }
                         if (Tiles[x - 1, y].Type != TileType.Building)
                         {
-                            current.Neighbors.Add(Tiles[x - 1, y].node);
+                            current.Neighbors.Add(Tiles[x - 1, y].Node);
                         }
                     }
                     else
@@ -186,19 +186,19 @@ namespace _2dracer.MapElements
                         //Tile is in the middle of the array, check all 4 adjacencies
                         if (Tiles[x + 1, y].Type != TileType.Building)
                         {
-                            current.Neighbors.Add(Tiles[x + 1, y].node);
+                            current.Neighbors.Add(Tiles[x + 1, y].Node);
                         }
                         if (Tiles[x, y + 1].Type != TileType.Building)
                         {
-                            current.Neighbors.Add(Tiles[x, y + 1].node);
+                            current.Neighbors.Add(Tiles[x, y + 1].Node);
                         }
                         if (Tiles[x - 1, y].Type != TileType.Building)
                         {
-                            current.Neighbors.Add(Tiles[x - 1, y].node);
+                            current.Neighbors.Add(Tiles[x - 1, y].Node);
                         }
                         if (Tiles[x, y - 1].Type != TileType.Building)
                         {
-                            current.Neighbors.Add(Tiles[x, y - 1].node);
+                            current.Neighbors.Add(Tiles[x, y - 1].Node);
                         }
                     }
                     #endregion

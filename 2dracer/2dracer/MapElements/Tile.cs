@@ -24,7 +24,7 @@ namespace _2dracer.MapElements
         /// <summary>
         /// The node that resides within this <see cref="Tile"/>.
         /// </summary>
-        public Node node;
+        public Node Node;
 
         /// <summary>
         /// Gives the rectangle of this <see cref="Tile"/> for the player to look for.
