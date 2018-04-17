@@ -22,11 +22,6 @@ namespace _2dracer.MapElements
     {
         #region Properties
         /// <summary>
-        /// The node that resides within this <see cref="Tile"/>.
-        /// </summary>
-        public Node Node;
-
-        /// <summary>
         /// Gives the rectangle of this <see cref="Tile"/> for the player to look for.
         /// </summary>
         public Rectangle Rect { get; private set; }
@@ -38,11 +33,10 @@ namespace _2dracer.MapElements
         #endregion
 
         #region Constructors
-        public Tile(Vector2 position, TileType type, float rotation)
-            : base(position, rotation, new Vector2(768), 0.1f)
+        public Tile(TileType type, float rotation, int xIndex, int yIndex)
+            : base(new Vector2(xIndex * 768, yIndex * 768), rotation, new Vector2(768), 0.1f)
         {
             Type = type;
-
             sprite = SetSprite();
 
             Rect = new Rectangle(position.ToPoint(), new Point(768));

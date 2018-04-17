@@ -69,6 +69,8 @@ namespace _2dracer.Managers
         {
             Sprites = new Dictionary<string, Texture2D>
             {
+                { "Building1", Load<Texture2D>("Textures/Buildings/Building0") },
+                { "Building2", Load<Texture2D>("Textures/Buildings/Building1") },
                 { "Bullet", Load<Texture2D>("Textures/Bullet") },
                 { "Button", Load<Texture2D>("Textures/UI/Button") },
                 { "Cop", Load<Texture2D>("Textures/Cop") },
