@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using _2dracer.MapElements;
 
 namespace _2dracer
 {
@@ -20,6 +18,8 @@ namespace _2dracer
 
         //Properties
         public Point Location { get; set; } //Location in space
+
+        public int[] Index { get; set; }    // Index on map
 
         #region Defining G and F Score Properties
         public int gScore {
@@ -57,7 +57,7 @@ namespace _2dracer
 
         public Node(Point location)
         {
-            Location = location; 
+            Location = location;
         }
 
 
@@ -75,6 +75,26 @@ namespace _2dracer
         #endregion
 
         #region Methods
+        public void PopulateNeighborsList()     // Populates list of neighbors using indices
+        {
+            if (Map.Nodes[Index[0] + 1, Index[1]] != null)
+            {
+                Neighbors.Add(Map.Nodes[Index[0] + 1, Index[1]]);
+            }
+            if (Map.Nodes[Index[0] - 1, Index[1]] != null)
+            {
+                Neighbors.Add(Map.Nodes[Index[0] - 1, Index[1]]);
+            }
+            if (Map.Nodes[Index[0], Index[1] + 1] != null)
+            {
+                Neighbors.Add(Map.Nodes[Index[0], Index[1] + 1]);
+            }
+            if (Map.Nodes[Index[0], Index[1] - 1] != null)
+            {
+                Neighbors.Add(Map.Nodes[Index[0], Index[1] - 1]);
+            }
+        }
+
         public void PopulateNeighborsList(params Node[] neighbors) //Fills the list of neighbors
         {
             foreach(Node n in neighbors)

@@ -9,27 +9,25 @@ namespace _2dracer.MapElements
 {
     public static class Map
     {
-        // Fields
+        #region Fields
         private static StreamReader sr;                // Reads the map files
-        private static Texture2D tex1;
-        private static Texture2D tex2;
-        private static Texture2D tex3;
+        #endregion
 
-
-        // Properties
+        #region Properties
         public static List<Building> Buildings { get; }
-        public static List<Node> Nodes { get; }
+        public static Node[,] Nodes { get; }
         public static Tile[,] Tiles { get; }
         public static Vector2 Size { get; }
+        #endregion
 
-        // Constructors
+        #region Constructor
         /// <summary>
         /// Generates a map from file
         /// </summary>
         static Map()
         {
             int[] mapSize = new int[2];
-            int[] tileInfo;
+            Queue<string> tileInfo;
             
             try
             {
@@ -37,52 +35,64 @@ namespace _2dracer.MapElements
                 
                 string[] mapInfo = sr.ReadLine().Split(',');        // Split info from file into two
                 mapSize[0] = int.Parse(mapInfo[0]);                 // Set map horizontal size
-                mapSize[1] = int.Parse(mapInfo[1]);                 // SEt map vertical size
+                mapSize[1] = int.Parse(mapInfo[1]);                 // Set map vertical size
+                tileInfo = new Queue<string>();                     // Store all tile data from the file
 
-                tileInfo = new int[mapSize[0] * mapSize[1] * 2];    // Sets up array to hold tile information
+                Size = new Vector2(mapSize[0] * 768, mapSize[1] * 768);
 
-                // Read all information
-                for (int i = 0; i < tileInfo.Length; i += 2)
+                string line = null;
+                while((line = sr.ReadLine()) != null)
                 {
-                    string[] info = sr.ReadLine().Split(',');       // Split info from file
-
-                    tileInfo[i] = int.Parse(info[0]);               // Tile type
-                    tileInfo[i + 1] = int.Parse(info[1]);           // Tile rotation
+                    tileInfo.Enqueue(line);
                 }
                 
                 Tiles = new Tile[mapSize[0], mapSize[1]];           // Set up tile array
-                Nodes = new List<Node>();                           // Set up nodes list
+                Nodes = new Node[mapSize[0], mapSize[1]];                     // Set up nodes list
                 Buildings = new List<Building>();                   // Set up buildings list
 
                 // Create all tiles; set up nodes and collision stuff as need be
-                int j = 0;
                 for (int y = 0; y < mapSize[1]; y++)
                 {
                     for (int x = 0; x < mapSize[0]; x++)
                     {
-                        Vector2 tilePos = new Vector2(x * 768, y * 768);
+                        string[] info = tileInfo.Dequeue().Split(',');
+                        
+                        Tile current = Tiles[x, y] = new Tile(
+                            (TileType)int.Parse(info[0]),
+                            MathHelper.ToRadians(int.Parse(info[1])),
+                            int.Parse(info[2]),
+                            int.Parse(info[3]));
 
-                        Tiles[x, y] = new Tile(
-                            tilePos, 
-                            (TileType)tileInfo[j],
-                            MathHelper.ToRadians(tileInfo[j + 1]));
-
-                        if ((TileType)tileInfo[j] != TileType.Building)
+                        // If the last bit of data is > 0, this tile has neighbors
+                        if (current.Type != TileType.Building)
                         {
-                            // Not a building, has a node
-                            Nodes.Add(new Node(new Point((x * 768), (y * 768))));
+                            List<string[]> neighborInfo = new List<string[]>();
+
+                            // There are nodes attached to this tile, so grab the positions
+                            // of where the nodes are and use them to populate it's list of neighbors
+                            for (int i = 0; i < int.Parse(info[4]); i++)
+                            {
+                                // Loops through the amount of neighbors this tile has, and
+                                // stores them into this list to create the node
+                                neighborInfo.Add(tileInfo.Dequeue().Split(','));
+                            }
+
+                            // Add the node to the list
+                            Nodes[x, y] = new Node(current.Position.ToPoint());
                         }
                         else
                         {
-                            tex1 = Program.game.Content.Load<Texture2D>("Models/cube");
-                            tex2 = Program.game.Content.Load<Texture2D>("Models/cube2");
-                            tex3 = Program.game.Content.Load<Texture2D>("Models/cube3");
-
-                            Buildings.Add(new Building(new Vector2(x*2.65f - 2.2f,   -2.65f*(y - 0.47f))));
+                            // There are no neighbors for this node so it is a building
+                            Buildings.Add(new Building(new Vector2(x * 2.65f - 2.2f, -2.65f * (y - 0.47f))));
+                            Nodes[x, y] = null;
                         }
-
-                        j += 2;
                     }
+                }
+
+                // Populate the each node's list
+                foreach(Node node in Nodes)
+                {
+                    node.PopulateNeighborsList();
                 }
 
                 Size = new Vector2(768 * Tiles.GetLength(0), 768 * Tiles.GetLength(1));
@@ -99,8 +109,9 @@ namespace _2dracer.MapElements
                 }
             }
         }
+        #endregion
 
-        // Methods
+        #region Methods
         public static void DrawGround()
         {
             foreach (Tile tile in Tiles)
@@ -109,7 +120,10 @@ namespace _2dracer.MapElements
             }
             foreach (Node node in Nodes)
             {
-                Game1.spriteBatch.Draw(LoadManager.Sprites["Square"], new Rectangle(node.Location, new Point(25, 25)), Color.Red);
+                if (node != null)
+                {
+                    Game1.spriteBatch.Draw(LoadManager.Sprites["Square"], new Rectangle(node.Location, new Point(25, 25)), Color.Red);
+                }
             }
         }
 
@@ -117,11 +131,12 @@ namespace _2dracer.MapElements
         {
             for (int i = 0; i < Buildings.Count; i++)
             {
-                if(i % 2 == 1) Buildings[i].Draw(tex2);
-                else Buildings[i].Draw(tex3);
+                if(i % 2 == 1) Buildings[i].Draw(LoadManager.Sprites["Building1"]);
+                else Buildings[i].Draw(LoadManager.Sprites["Building2"]);
             }
         }
+        #endregion
     }
 }
 
-// Genoah
+// -- Genoah Martinelli

@@ -221,7 +221,7 @@
 /processorParam:TextureFormat=Compressed
 /build:Models/untitled.dae
 
-#begin Models/cube2.png
+#begin Textures/Buildings/Building0.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -231,9 +231,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Models/cube2.png
+/build:Textures/Buildings/Building0.png
 
-#begin Models/cube3.png
+#begin Textures/Buildings/Building1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -243,5 +243,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Models/cube3.png
+/build:Textures/Buildings/Building1.png
 
