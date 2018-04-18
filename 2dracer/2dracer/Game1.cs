@@ -32,7 +32,6 @@ namespace _2dracer
         public static GameTime gameTime;
         #endregion
 
-
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -88,7 +87,8 @@ namespace _2dracer
 
                     camera.Update();
                     GameMaster.Update();
-
+                    if(Map.Tiles[(int)(Player.PlayerPos.X / 768), (int)(Player.PlayerPos.Y / 768)].Node != null)
+                    System.Console.WriteLine(Map.Tiles[(int)(Player.PlayerPos.X/768), (int)(Player.PlayerPos.Y/768)].Node.ToString());
                     break;
             }
 
