@@ -20,6 +20,13 @@ namespace _2dracer.MapElements
     /// </summary>
     public class Tile : GameObject
     {
+        #region Events
+        /// <summary>
+        /// Is invoked when the player enters this tile.
+        /// </summary>
+        public event EventHandler<EventArgs> Enter;
+        #endregion
+
         #region Properties
         /// <summary>
         /// The node that resides within this <see cref="Tile"/>.
@@ -35,6 +42,11 @@ namespace _2dracer.MapElements
         /// Grabs the <see cref="TileType"/> of this <see cref="Tile"/>.
         /// </summary>
         public TileType Type { get; private set; }
+
+        /// <summary>
+        /// Determines whether this tile has the player
+        /// </summary>
+        public bool ContainsPlayer { get; private set; }
         #endregion
 
         #region Constructors
@@ -49,6 +61,30 @@ namespace _2dracer.MapElements
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Updates this tile to check for player
+        /// </summary>
+        public override void Update()
+        {
+            Vector2 playerPos = Vector2.Add(
+                GameMaster.GameObjects[1].Position,
+                new Vector2(sprite.Width));
+
+            if (!ContainsPlayer && Rect.Contains(playerPos))
+            {
+                if (Enter != null)
+                Enter.Invoke(this, new EventArgs());
+
+                ContainsPlayer = true;
+                color = Color.Red;
+            }
+            else if (!Rect.Contains(playerPos))
+            {
+                ContainsPlayer = false;
+                color = Color.White;
+            }
+        }
+
         /// <summary>
         /// Sets the sprite of the tile.
         /// </summary>

@@ -142,6 +142,11 @@ namespace _2dracer.MapElements
             {
                 building.Update();
             }
+
+            foreach(Tile tile in Tiles)
+            {
+                tile.Update();
+            }
         }
 
         /// <summary>
