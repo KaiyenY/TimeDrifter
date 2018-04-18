@@ -34,8 +34,7 @@ namespace _2dracer
         public static int Health { get; private set; }
         public static double Score { get; private set; }
         #endregion
-
-
+        
         #region Constructor
         public Player(Vector2 position) 
             : base (position, 0, LoadManager.Sprites["RedCar"], new Vector2(128, 64), 400, 100, 250, 1000)

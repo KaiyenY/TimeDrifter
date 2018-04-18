@@ -10,23 +10,124 @@ namespace _2dracer.Managers
     /// <summary>
     /// Contains all sounds and 
     /// </summary>
-    public class AudioManager
+    public static class AudioManager
     {
-        // Fields
+        #region Fields
+        /// <summary>
+        /// Holds a reference to the sound effects in <see cref="LoadManager"/>.
+        /// </summary>
+        public static Dictionary<string, SoundEffect> Sounds;
 
-        // Properties
-        public static Dictionary<string, SoundEffect> SoundEffects;         // Stores all SoundEffects by name
-        public static List<Song> Music;                                         // Stores all Song tracks by index
-        public static string[] SEPaths;                                     // Stores all SoundEffect file paths
-        public static string[] MPaths;                                      // Stores all Song track paths
+        /// <summary>
+        /// Holds a reference to the music in <see cref="LoadManager"/>.
+        /// </summary>
+        public static Dictionary<string, Song> Music;
+        
+        /// <summary>
+        /// Determines what track is currently playing.
+        /// </summary>
+        public static string CurrentTrack;
 
-        // Constructor
+        /// <summary>
+        /// Controls the overall volume of the game.
+        /// </summary>
+        public static float MasterVolume;
+        #endregion
+
+        #region Properties
+        /// <summary>
+        /// The current state of the <see cref="MediaPlayer"/>.
+        /// </summary>
+        public static MediaState State { get { return MediaPlayer.State; } }
+        #endregion
+
+        #region Constructor
         static AudioManager()
         {
+            Sounds = LoadManager.Sounds;
+            Music = LoadManager.Music;
+            MasterVolume = 0f;
+        }
+        #endregion
 
+        #region Methods
+        /// <summary>
+        /// Updates all of the songs during each state
+        /// </summary>
+        public static void Update()
+        {
+            switch (Game1.GameState)
+            {
+                case GameState.Game:
+                    if (CurrentTrack != "ExtremeAction")
+                    {
+                        StopMusic();
+                        PlayMusic("ExtremeAction", 0.25f);
+                    }
+
+                    if (State == MediaState.Paused)
+                    {
+                        ResumeMusic();
+                    }
+                    break;
+
+                case GameState.GameOver:
+                    // Some sad game over music?
+                    break;
+
+                case GameState.Menu:
+                    if (CurrentTrack != "HappyRock")
+                    {
+                        StopMusic();
+                        PlayMusic("HappyRock", 0.25f);
+                    }
+
+                    if (State == MediaState.Paused)
+                    {
+                        ResumeMusic();
+                    }
+                    break;
+
+                case GameState.Options:
+                    PauseMusic();
+                    break;
+
+                case GameState.Pause:
+                    PauseMusic();
+                    break;
+
+                default:
+                    throw new NotImplementedException("The current GameState is not supported by the AudioManagers Update method.");
+            }
         }
 
-        // Methods
+        public static void ToggleMute()
+        {
+            if (MasterVolume == 0f)
+            {
+                MasterVolume = 1f;
+            }
+            else
+            {
+                MasterVolume = 0f;
+
+                // Resumes then stops the music
+                if (State == MediaState.Paused)
+                {
+                    ResumeMusic();
+                    StopMusic();
+                }
+
+                // Stops music
+                if (State == MediaState.Playing)
+                {
+                    StopMusic();
+                }
+
+                CurrentTrack = null;
+            }
+        }
+
         /// <summary>
         /// Plays a sound effect
         /// </summary>
@@ -34,27 +135,35 @@ namespace _2dracer.Managers
         /// <param name="volume">How loud the sound will play</param>
         /// <param name="pitch">The pitch (high / low) of the sound</param>
         /// <param name="pan">Determines volume per audio channel (left / right)</param>
-        public static void PlaySound(string soundEffect, float volume = 0.5f, float pitch = 0f, float pan = 0f)
+        public static void PlaySound(string soundEffect, float volume = 1f, float pitch = 0f, float pan = 0f)
         {
-            if (SoundEffects.ContainsKey(soundEffect))
+            if (Sounds.ContainsKey(soundEffect))
             {
-                SoundEffects[soundEffect].Play(volume, pitch, pan);
+                Sounds[soundEffect].Play(volume * MasterVolume, pitch, pan);
             }
             else
             {
-                throw new Exception("Error : " + soundEffect + " does not exist!");
+                throw new Exception($"The sound effect {soundEffect} does not exist.");
             }
         }
 
         /// <summary>
         /// Plays a song
         /// </summary>
-        /// <param name="trackNumber">The track index to play</param>
+        /// <param name="trackName">The track name to play</param>
         /// <param name="volume">Volume the song should play at</param>
-        public static void PlayMusic(int trackNumber, float volume = 1.0f)
+        public static void PlayMusic(string trackName, float volume = 1.0f)
         {
-            MediaPlayer.Volume = volume;
-            MediaPlayer.Play(Music[trackNumber]);
+            if (Music.ContainsKey(trackName))
+            {
+                MediaPlayer.Volume = volume * MasterVolume;
+                MediaPlayer.Play(Music[trackName]);
+                CurrentTrack = trackName;
+            }
+            else
+            {
+                throw new Exception($"The track {trackName} does not exist.");
+            }
         }
 
         /// <summary>
@@ -78,5 +187,18 @@ namespace _2dracer.Managers
                 MediaPlayer.Resume();
             }
         }
+
+        /// <summary>
+        /// Switches the current song track that is playing.
+        /// </summary>
+        public static void StopMusic()
+        {
+            if (MediaPlayer.State == MediaState.Playing)
+            {
+                MediaPlayer.Stop();
+                CurrentTrack = null;
+            }
+        }
+        #endregion
     }
 }

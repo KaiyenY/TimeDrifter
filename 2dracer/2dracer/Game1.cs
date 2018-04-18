@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using _2dracer.MapElements;
 using _2dracer.Managers;
 
@@ -68,10 +69,16 @@ namespace _2dracer
         {
             gameTime = g;
 
-            Input.Update();     // Should be the FIRST thing that updates
+            // Updates all input states (should update first)
+            Input.Update();
 
+            // Handles all of the music c:
+            AudioManager.Update();
+
+            // Handles drawing the UI
             UIManager.Update();
             
+
             switch (GameState)
             {
                 case GameState.Game:

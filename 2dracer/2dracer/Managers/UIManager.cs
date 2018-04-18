@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using _2dracer.Managers;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using Microsoft.Xna.Framework;
 
 using _2dracer.UI;
 
@@ -110,12 +103,20 @@ namespace _2dracer.Managers
                     Elements = new List<Element>
                         {
                             new Element(new Vector2(50, 50), 1f, "optionsTitle", "Options"),
+
                             new Button(new Rectangle(
                                 (Options.ScreenWidth / 4) - (Options.ScreenWidth / 8),
-                                (Options.ScreenHeight / 3), 
-                                (Options.ScreenWidth / 4), 
-                                (Options.ScreenHeight / 10)), 
+                                (Options.ScreenHeight / 3),
+                                (Options.ScreenWidth / 4),
+                                (Options.ScreenHeight / 10)),
                                 LoadManager.Sprites["Button"], "fullScreen", "FullScreen"),
+
+                            new Button(new Rectangle(
+                                (Options.ScreenWidth * 3 / 4) - (Options.ScreenWidth / 8),
+                                (Options.ScreenHeight / 3),
+                                (Options.ScreenWidth / 4),
+                                (Options.ScreenHeight / 10)),
+                                LoadManager.Sprites["Button"], "muteButton", "Mute"),
 
                             new Button(new Rectangle(
                                 (Options.ScreenWidth / 2) - (Options.ScreenWidth / 8), 
@@ -218,6 +219,10 @@ namespace _2dracer.Managers
                         Elements.Clear();
                         Game1.GameState = GameState.Menu;
                         RefreshList();
+                        break;
+
+                    case "muteButton":
+                        AudioManager.ToggleMute();
                         break;
 
                     case "optionsButton":

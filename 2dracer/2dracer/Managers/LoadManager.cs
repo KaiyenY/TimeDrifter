@@ -61,6 +61,8 @@ namespace _2dracer.Managers
             LoadManager.content = content;
             LoadFonts();
             LoadModels();
+            LoadMusic();
+            LoadSounds();
             LoadSprites();
         }
 
@@ -75,11 +77,38 @@ namespace _2dracer.Managers
             };
         }
 
+        /// <summary>
+        /// Loads all models that will be used in the game.
+        /// </summary>
         private static void LoadModels()
         {
             Models = new Dictionary<string, Model>
             {
                 { "Cube", Load<Model>("Models/Cube") }      // Default cubic building
+            };
+        }
+
+        /// <summary>
+        /// Loads all music that will be used in the game.
+        /// </summary>
+        private static void LoadMusic()
+        {
+            Music = new Dictionary<string, Song>
+            {
+                { "ExtremeAction", Load<Song>("Audio/Tracks/ExtremeAction") },
+                { "HappyRock", Load<Song>("Audio/Tracks/HappyRock") }
+            };
+        }
+
+        /// <summary>
+        /// Loads all sounds that will be used in the game.
+        /// </summary>
+        private static void LoadSounds()
+        {
+            Sounds = new Dictionary<string, SoundEffect>
+            {
+                { "Gunshot", Load<SoundEffect>("Audio/Sound Effects/GunFire") },
+                { "Click", Load<SoundEffect>("Audio/Sound Effects/ButtonClick") }
             };
         }
 
