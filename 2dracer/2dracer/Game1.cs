@@ -97,8 +97,13 @@ namespace _2dracer
 
         protected override void Draw(GameTime g)
         {
+            // Depth Buffer for Buildings
+            var state = new DepthStencilState();
+            state.DepthBufferEnable = true;
+
             gameTime = g;
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            
 
             if (GameState != GameState.Menu && GameState != GameState.Options && GameState != GameState.GameOver)
             {
@@ -108,6 +113,8 @@ namespace _2dracer
                 GameMaster.Draw();
                 spriteBatch.End();
 
+                // Apply Depth Buffer
+                GraphicsDevice.DepthStencilState = state;   
                 Map.DrawBuildings();
             }
 
