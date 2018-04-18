@@ -25,12 +25,6 @@ namespace _2dracer
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
 
-        #region Options
-        public static bool fullscreen = false;
-        public static int screenHeight = 720;
-        public static int screenWidth = 1280;
-        #endregion
-
         //GameState Enum
         public static GameState GameState;
         
@@ -44,10 +38,7 @@ namespace _2dracer
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            // Window properties
-            graphics.IsFullScreen = fullscreen;                     // Fullscreen or not
-            graphics.PreferredBackBufferHeight = screenHeight;      // Window height
-            graphics.PreferredBackBufferWidth = screenWidth;        // Window width
+            Options.InitializeSettings(graphics, Window);
 
             gameTime = new GameTime();
         }

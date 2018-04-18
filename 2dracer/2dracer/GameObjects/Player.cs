@@ -45,7 +45,7 @@ namespace _2dracer
         }
         #endregion
 
-        // Methods
+        #region Methods
         public override void Update()
         {
             float xAxis = Input.GetAxisRaw(Axis.X);
@@ -90,6 +90,8 @@ namespace _2dracer
             turret.MoveTurret(position);
         }
 
+
+
         /// <summary>
         /// Controls the timejuice mechanic
         /// </summary>
@@ -122,6 +124,7 @@ namespace _2dracer
             UIManager.Add(timeText = new Element(new Vector2(50, 150), 0.25f, "playerJuice", "Time Juice : " + TimeJuice));
             UIManager.Add(scoreText = new Element(new Vector2(50, 250), 0.25f, "playerScore", "Score : " + Score));
         }
+        #endregion
     }
 }
 

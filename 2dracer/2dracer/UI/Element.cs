@@ -43,7 +43,7 @@ namespace _2dracer.UI
 
             font = LoadManager.Fonts["Connection"];
 
-            textScale = (rect.Height - 30) / font.MeasureString(text).Y;
+            textScale = (rect.Height - Options.ScreenHeight / 24) / font.MeasureString(text).Y;
 
             textPosition = new Vector2(rect.X + (rect.Width - (font.MeasureString(text).X * textScale)) / 2,
                 rect.Y + (rect.Height - (font.MeasureString(text).Y * textScale)) / 2);

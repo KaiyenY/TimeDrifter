@@ -28,15 +28,15 @@ namespace _2dracer.Managers
 
             // Through complicated stuff, these two checks will make sure the
             // camera doesn't go off the map
-            if (pos.X >= (Game1.screenWidth / 2) - 384 &&
-                pos.X <= -(Game1.screenWidth / 2) + mapSize.X - 384)
+            if (pos.X >= (Options.ScreenWidth / 2) - 384 &&
+                pos.X <= -(Options.ScreenWidth / 2) + mapSize.X - 384)
             {
-                position.X = pos.X - (Game1.screenWidth / 2);
+                position.X = pos.X - (Options.ScreenWidth / 2);
             }
-            if (pos.Y >= (Game1.screenHeight / 2) - 384 &&
-                pos.Y <= -(Game1.screenHeight / 2) + mapSize.Y - 384)
+            if (pos.Y >= (Options.ScreenHeight / 2) - 384 &&
+                pos.Y <= -(Options.ScreenHeight / 2) + mapSize.Y - 384)
             {
-                position.Y = pos.Y - (Game1.screenHeight / 2);
+                position.Y = pos.Y - (Options.ScreenHeight / 2);
             }
             
             ViewMatrix = Matrix.CreateTranslation(new Vector3(-position, 0));

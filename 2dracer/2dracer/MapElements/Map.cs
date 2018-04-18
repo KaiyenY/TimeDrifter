@@ -83,7 +83,8 @@ namespace _2dracer.MapElements
                         else
                         {
                             // There are no neighbors for this node so it is a building
-                            Buildings.Add(new Building(new Vector2(x * 2.65f - 2.2f, -2.65f * (y - 0.47f))));
+                            // Buildings.Add(new Building(new Vector2(x * 2.65f - 2.2f, -2.65f * (y - 0.47f))));
+                            Buildings.Add(new Building(new Vector2(x * 768, y * 768)));
                             Nodes[x, y] = null;
                         }
                     }
