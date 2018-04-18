@@ -9,38 +9,69 @@ using _2dracer.Managers;
 
 namespace _2dracer.MapElements
 {
+    /// <summary>
+    /// Holds everything necessary to render buildings/
+    /// </summary>
     public class Building
     {
+        #region Fields
+        private BasicEffect effect;
         private Model model;
-        public Vector2 Position;
+        private Vector2 localPos;
+        private Vector3 worldPos;
+        #endregion
 
-        public Building(Vector2 position)
+        #region Properties
+        #endregion
+
+        #region Constructor
+        public Building(Texture2D texture, Vector2 localPos)
         {
-            model = Program.game.Content.Load<Model>("Models/untitled");
-            Position = position;
-        }
+            // Grabs the building model (can be added as parameter if we add more)
+            model = Program.game.Content.Load<Model>("Models/Cube");
 
-        public void Draw(Texture2D img)
-        {
-            BasicEffect effect = (BasicEffect)model.Meshes[0].Effects[0];
-            effect.Texture = img;
-            
-            double fieldOfView = (3.14159 / 4) * Options.Graphics.GraphicsDevice.Viewport.Width/1500;
+            // Set up the model to be drawn
+            effect = (BasicEffect)model.Meshes[0].Effects[0];
+            effect.Texture = texture;
 
-            // This transfers 2d coordinates to 3d world space coordinates
-            Vector3 modelPos = Options.Graphics.GraphicsDevice.Viewport.Unproject(
-                new Vector3(Vector2.Subtract(Position, Game1.camera.Position), 0.97f),      // 97% between near and far planes
+            // Set up the model's position relative to the camera
+            worldPos = Options.Graphics.GraphicsDevice.Viewport.Unproject(
+                new Vector3(Vector2.Subtract(localPos, Game1.camera.Position), 0.97f),
                 effect.Projection,
                 effect.View,
                 Matrix.Identity);
 
-            int z = 5;
+            // Makes sure we always have the local position of this model
+            this.localPos = localPos;
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Updates the position of this building in world space.
+        /// </summary>
+        public void Update()
+        {
+            worldPos = Options.Graphics.GraphicsDevice.Viewport.Unproject(
+                new Vector3(Vector2.Subtract(localPos, Game1.camera.Position), 0.97f),
+                effect.Projection,
+                effect.View,
+                Matrix.Identity);
+        }
+
+        /// <summary>
+        /// Draws this building onto the screen.
+        /// </summary>
+        public void Draw()
+        {
+            double fieldOfView = (3.14159 / 4) * Options.Graphics.GraphicsDevice.Viewport.Width/1500;
 
             effect.Projection = Matrix.CreatePerspectiveFieldOfView((float)fieldOfView, Options.Graphics.GraphicsDevice.Viewport.AspectRatio, 0.1f, 200f);
             effect.View = Matrix.CreateLookAt(new Vector3(Vector2.Zero, 2.3f), Vector3.Zero, Vector3.Up);
-            effect.World = Matrix.CreateTranslation(modelPos.X, modelPos.Y, 0f);
+            effect.World = Matrix.CreateTranslation(worldPos.X, worldPos.Y, 0f);
 
             model.Meshes[0].Draw();
         }
+        #endregion
     }
 }

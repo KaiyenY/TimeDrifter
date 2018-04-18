@@ -1,16 +1,16 @@
 ﻿using _2dracer.Managers;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace _2dracer.MapElements
 {
     public static class Map
     {
         #region Fields
-        private static StreamReader sr;                // Reads the map files
+        private static StreamReader sr;
         #endregion
 
         #region Properties
@@ -82,9 +82,22 @@ namespace _2dracer.MapElements
                         }
                         else
                         {
-                            // There are no neighbors for this node so it is a building
-                            // Buildings.Add(new Building(new Vector2(x * 2.65f - 2.2f, -2.65f * (y - 0.47f))));
-                            Buildings.Add(new Building(new Vector2(x * 768, y * 768)));
+                            // Randomize this building's texture
+                            Random rng = new Random();
+                            Texture2D buildingTex;
+                            if (rng.Next(0, 1) >= 0.5f)
+                            {
+                                buildingTex = LoadManager.Sprites["Building0"];
+                            }
+                            else
+                            {
+                                buildingTex = LoadManager.Sprites["Building1"];
+                            }
+
+                            // Add building to the list of buildings
+                            Buildings.Add(new Building(buildingTex, new Vector2(x * 768, y * 768)));
+
+                            // Make sure there is no node in this position
                             Nodes[x, y] = null;
                         }
                     }
@@ -120,7 +133,21 @@ namespace _2dracer.MapElements
         #endregion
 
         #region Methods
-        public static void DrawGround()
+        /// <summary>
+        /// Updates any necessary information about the map.
+        /// </summary>
+        public static void Update()
+        {
+            foreach(Building building in Buildings)
+            {
+                building.Update();
+            }
+        }
+
+        /// <summary>
+        /// Draws tiles and nodes into the game.
+        /// </summary>
+        public static void Draw()
         {
             foreach (Tile tile in Tiles)
             {
@@ -130,17 +157,19 @@ namespace _2dracer.MapElements
             {
                 if (node != null)
                 {
-                    Game1.spriteBatch.Draw(LoadManager.Sprites["Square"], new Rectangle(node.Location, new Point(25, 25)), Color.Red);
+                    Game1.spriteBatch.Draw(LoadManager.Sprites["Square"], new Rectangle(node.Location, new Point(25, 25)), null, Color.Red, 0f, Vector2.Zero, SpriteEffects.None, 0.2f);
                 }
             }
         }
 
+        /// <summary>
+        /// Draws buildings into the game.
+        /// </summary>
         public static void DrawBuildings()
         {
-            for (int i = 0; i < Buildings.Count; i++)
+            foreach (Building building in Buildings)
             {
-                if(i % 2 == 1) Buildings[i].Draw(LoadManager.Sprites["Building1"]);
-                else Buildings[i].Draw(LoadManager.Sprites["Building2"]);
+                building.Draw();
             }
         }
 
@@ -226,7 +255,6 @@ namespace _2dracer.MapElements
                 }
             }
         }
-
         #endregion
     }
 }

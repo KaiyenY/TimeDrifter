@@ -23,11 +23,7 @@ namespace _2dracer.Managers
         // Constructor
         static AudioManager()
         {
-            MPaths = Directory.GetFiles(@"..\..\..\..\Content\Audio\Tracks");           // Grab paths to all songs
-            SEPaths = Directory.GetFiles(@"..\..\..\..\Content\Audio\Sound Effects");   // Grab paths to all sound effects
 
-            SoundEffects = new Dictionary<string, SoundEffect>();
-            Music = new List<Song>();
         }
 
         // Methods

@@ -1,5 +1,7 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 
 namespace _2dracer.Managers
@@ -21,6 +23,16 @@ namespace _2dracer.Managers
         /// Stores all models in the game.
         /// </summary>
         public static Dictionary<string, Model> Models;
+
+        /// <summary>
+        /// Stores all music in the game.
+        /// </summary>
+        public static Dictionary<string, Song> Music;
+
+        /// <summary>
+        /// Stores all the sounds in the game.
+        /// </summary>
+        public static Dictionary<string, SoundEffect> Sounds;
 
         /// <summary>
         /// Stores all sprites in the game.
@@ -48,6 +60,7 @@ namespace _2dracer.Managers
         {
             LoadManager.content = content;
             LoadFonts();
+            LoadModels();
             LoadSprites();
         }
 
@@ -59,6 +72,14 @@ namespace _2dracer.Managers
             Fonts = new Dictionary<string, SpriteFont>
             {
                 { "Connection", Load<SpriteFont>("Fonts/ConnectionSerif") }
+            };
+        }
+
+        private static void LoadModels()
+        {
+            Models = new Dictionary<string, Model>
+            {
+                { "Cube", Load<Model>("Models/Cube") }      // Default cubic building
             };
         }
 

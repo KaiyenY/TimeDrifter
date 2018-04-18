@@ -87,6 +87,7 @@ namespace _2dracer
 
                     camera.Update();
                     GameMaster.Update();
+                    Map.Update();
                     if(Map.Tiles[(int)(Player.PlayerPos.X / 768), (int)(Player.PlayerPos.Y / 768)].Node != null)
                     System.Console.WriteLine(Map.Tiles[(int)(Player.PlayerPos.X/768), (int)(Player.PlayerPos.Y/768)].Node.ToString());
                     break;
@@ -98,8 +99,10 @@ namespace _2dracer
         protected override void Draw(GameTime g)
         {
             // Depth Buffer for Buildings
-            var state = new DepthStencilState();
-            state.DepthBufferEnable = true;
+            var state = new DepthStencilState
+            {
+                DepthBufferEnable = true
+            };
 
             gameTime = g;
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -109,7 +112,7 @@ namespace _2dracer
             {
                 spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
 
-                Map.DrawGround();
+                Map.Draw();
                 GameMaster.Draw();
                 spriteBatch.End();
 
