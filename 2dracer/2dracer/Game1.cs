@@ -128,7 +128,7 @@ namespace _2dracer
                 Map.DrawBuildings();
 
 
-                Player.Draw3D(LoadManager.Sprites["CarYellow"]);
+                Player.Draw3D(LoadManager.Sprites["CarYellow"], -GameMaster.GameObjects[1].Rotation);
             }
 
             UIManager.Draw();           // UI always draws on top

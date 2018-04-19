@@ -98,7 +98,7 @@ namespace _2dracer
                 Matrix.Identity);
         }
 
-        public static void Draw3D(Texture2D texture)
+        public static void Draw3D(Texture2D texture, float rotation)
         {
             double fieldOfView = (3.14159 / 4) * Options.Graphics.GraphicsDevice.Viewport.Width / 1500;
 
@@ -110,7 +110,7 @@ namespace _2dracer
             effect.World =
                 Matrix.CreateScale(0.1f, 0.1f, 0.1f) *
                 Matrix.CreateRotationX(3.14159f/2) * 
-                Matrix.CreateRotationZ(-3.14159f / 2 /* + rotation */) *                  // Change this one to equal rotation of 2D car
+                Matrix.CreateRotationZ(-3.14159f / 2 + rotation) *                  // Change this one to equal rotation of 2D car
                 Matrix.CreateTranslation(worldPos.X, worldPos.Y, 0f);
 
             effect.Texture = LoadManager.Sprites["Wheels"];
