@@ -56,10 +56,8 @@ namespace _2dracer.Managers
             Window = window;
 
             Graphics.IsFullScreen = Fullscreen;
-            // Graphics.PreferredBackBufferHeight = ScreenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 3 / 4;
-            // Graphics.PreferredBackBufferWidth = ScreenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 3 / 4;
-            Graphics.PreferredBackBufferHeight = ScreenHeight = 720;
-            Graphics.PreferredBackBufferWidth = ScreenWidth = 1280;
+            Graphics.PreferredBackBufferHeight = ScreenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 3 / 4;
+            Graphics.PreferredBackBufferWidth = ScreenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 3 / 4;
 
             Window.Title = "Time Drifter Deluxe";
         }
@@ -68,10 +66,9 @@ namespace _2dracer.Managers
         {
             if (Fullscreen)
             {
-                // Graphics.PreferredBackBufferHeight = ScreenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 3 / 4;
-                // Graphics.PreferredBackBufferWidth = ScreenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 3 / 4;
-                Graphics.PreferredBackBufferHeight = ScreenHeight = 720;
-                Graphics.PreferredBackBufferWidth = ScreenWidth = 1280;
+                Graphics.PreferredBackBufferHeight = ScreenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 3 / 4;
+                Graphics.PreferredBackBufferWidth = ScreenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 3 / 4;
+                Window.IsBorderless = false;
             }
             else
             {

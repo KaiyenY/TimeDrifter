@@ -82,20 +82,8 @@ namespace _2dracer.MapElements
                         }
                         else
                         {
-                            // Randomize this building's texture
-                            Random rng = new Random();
-                            Texture2D buildingTex;
-                            if (rng.Next(0, 1) >= 0.5f)
-                            {
-                                buildingTex = LoadManager.Sprites["Building0"];
-                            }
-                            else
-                            {
-                                buildingTex = LoadManager.Sprites["Building1"];
-                            }
-
                             // Add building to the list of buildings
-                            Buildings.Add(new Building(buildingTex, new Vector2(x * 768, y * 768)));
+                            Buildings.Add(new Building(new Vector2(x * 768, y * 768)));
 
                             // Make sure there is no node in this position
                             Nodes[x, y] = null;
@@ -172,9 +160,10 @@ namespace _2dracer.MapElements
         /// </summary>
         public static void DrawBuildings()
         {
-            foreach (Building building in Buildings)
+            for (int i = 0; i < Buildings.Count; i++)
             {
-                building.Draw();
+                if (i % 2 == 1) Buildings[i].Draw(LoadManager.Sprites["Building1"]);
+                else Buildings[i].Draw(LoadManager.Sprites["Building2"]);
             }
         }
 

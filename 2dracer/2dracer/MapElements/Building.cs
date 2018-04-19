@@ -25,21 +25,13 @@ namespace _2dracer.MapElements
         #endregion
 
         #region Constructor
-        public Building(Texture2D texture, Vector2 localPos)
+        public Building(Vector2 localPos)
         {
             // Grabs the building model (can be added as parameter if we add more)
             model = Program.game.Content.Load<Model>("Models/Cube");
 
-            // Set up the model to be drawn
-            effect = (BasicEffect)model.Meshes[0].Effects[0];
-            effect.Texture = texture;
 
-            // Set up the model's position relative to the camera
-            worldPos = Options.Graphics.GraphicsDevice.Viewport.Unproject(
-                new Vector3(Vector2.Subtract(localPos, Game1.camera.Position), 0.97f),
-                effect.Projection,
-                effect.View,
-                Matrix.Identity);
+            effect = (BasicEffect)model.Meshes[0].Effects[0];
 
             // Makes sure we always have the local position of this model
             this.localPos = localPos;
@@ -62,8 +54,10 @@ namespace _2dracer.MapElements
         /// <summary>
         /// Draws this building onto the screen.
         /// </summary>
-        public void Draw()
+        public void Draw(Texture2D texture)
         {
+            effect.Texture = texture;
+
             double fieldOfView = (3.14159 / 4) * Options.Graphics.GraphicsDevice.Viewport.Width/1500;
 
             effect.Projection = Matrix.CreatePerspectiveFieldOfView((float)fieldOfView, Options.Graphics.GraphicsDevice.Viewport.AspectRatio, 0.1f, 200f);
