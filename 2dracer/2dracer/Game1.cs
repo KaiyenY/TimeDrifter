@@ -126,6 +126,9 @@ namespace _2dracer
                 // Apply Depth Buffer
                 GraphicsDevice.DepthStencilState = state;   
                 Map.DrawBuildings();
+
+
+                Player.Draw3D(LoadManager.Sprites["CarYellow"]);
             }
 
             UIManager.Draw();           // UI always draws on top

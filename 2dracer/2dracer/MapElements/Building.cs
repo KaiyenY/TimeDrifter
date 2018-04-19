@@ -21,9 +21,6 @@ namespace _2dracer.MapElements
         private Vector3 worldPos;
         #endregion
 
-        #region Properties
-        #endregion
-
         #region Constructor
         public Building(Vector2 localPos)
         {
@@ -56,14 +53,13 @@ namespace _2dracer.MapElements
         /// </summary>
         public void Draw(Texture2D texture)
         {
-            effect.Texture = texture;
-
             double fieldOfView = (3.14159 / 4) * Options.Graphics.GraphicsDevice.Viewport.Width/1500;
 
             effect.Projection = Matrix.CreatePerspectiveFieldOfView((float)fieldOfView, Options.Graphics.GraphicsDevice.Viewport.AspectRatio, 0.1f, 200f);
             effect.View = Matrix.CreateLookAt(new Vector3(Vector2.Zero, 2.3f), Vector3.Zero, Vector3.Up);
             effect.World = Matrix.CreateTranslation(worldPos.X, worldPos.Y, 0f);
-
+            
+            effect.Texture = texture;
             model.Meshes[0].Draw();
         }
         #endregion
