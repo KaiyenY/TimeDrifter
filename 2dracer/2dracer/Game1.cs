@@ -121,8 +121,7 @@ namespace _2dracer
                 Map.Draw();
                 GameMaster.Draw();
                 spriteBatch.End();
-
-
+                
 
 
                 // Apply Depth Buffer for 3D
