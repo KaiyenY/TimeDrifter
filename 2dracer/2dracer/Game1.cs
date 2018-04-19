@@ -118,16 +118,16 @@ namespace _2dracer
             if (GameState != GameState.Menu && GameState != GameState.Options && GameState != GameState.GameOver)
             {
                 spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
-
                 Map.Draw();
                 GameMaster.Draw();
                 spriteBatch.End();
 
-                // Apply Depth Buffer
-                GraphicsDevice.DepthStencilState = state;   
+
+
+
+                // Apply Depth Buffer for 3D
+                GraphicsDevice.DepthStencilState = state;
                 Map.DrawBuildings();
-
-
                 Player.Draw3D(LoadManager.Sprites["CarYellow"], -GameMaster.GameObjects[1].Rotation);
             }
 

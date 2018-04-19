@@ -108,7 +108,7 @@ namespace _2dracer
 
             //scale * rotation * position
             effect.World =
-                Matrix.CreateScale(0.1f, 0.1f, 0.1f) *
+                Matrix.CreateScale(0.1f, 0.1f, 0.09f) *
                 Matrix.CreateRotationX(3.14159f/2) * 
                 Matrix.CreateRotationZ(-3.14159f / 2 + rotation) *                  // Change this one to equal rotation of 2D car
                 Matrix.CreateTranslation(worldPos.X, worldPos.Y, 0f);
