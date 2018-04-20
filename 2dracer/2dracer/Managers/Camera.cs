@@ -38,7 +38,19 @@ namespace _2dracer.Managers
             {
                 position.Y = pos.Y - (Options.ScreenHeight / 2) + Player.playerVelocity.Y / 5;
             }
-            
+
+            if (position.X < (Options.ScreenWidth / 2) - 384 - (Options.ScreenWidth / 2) + Player.playerVelocity.X / 5)
+                position.X = (Options.ScreenWidth / 2) - 384 - (Options.ScreenWidth / 2) + Player.playerVelocity.X / 5;
+
+            if (position.X > (Options.ScreenWidth / 2) + mapSize.X - 384 - (Options.ScreenWidth / 2) + Player.playerVelocity.X / 5)
+                position.X = (Options.ScreenWidth / 2) + mapSize.X - 384 - (Options.ScreenWidth / 2) + Player.playerVelocity.X / 5;
+
+            if (position.Y < (Options.ScreenHeight / 2) - 384 - (Options.ScreenHeight / 2) + Player.playerVelocity.Y / 5)
+                position.Y = (Options.ScreenHeight / 2) - 384 - (Options.ScreenHeight / 2) + Player.playerVelocity.Y / 5;
+
+            if (position.Y > (Options.ScreenHeight / 2) + mapSize.Y - 384 - (Options.ScreenHeight / 2) + Player.playerVelocity.Y / 5)
+                position.Y = (Options.ScreenHeight / 2) + mapSize.Y - 384 - (Options.ScreenHeight / 2) + Player.playerVelocity.Y / 5;
+
             ViewMatrix = Matrix.CreateTranslation(new Vector3(-position, 0));
         }
     }
