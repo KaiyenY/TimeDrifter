@@ -30,8 +30,9 @@ namespace _2dracer
         public static double TimeJuice { get; private set; }
         public static int Health { get; private set; }
         public static double Score { get; private set; }
+        public static Vector2 playerVelocity;
         #endregion
-        
+
         #region Constructor
         public Player(Vector2 position) 
             : base (position, 0, LoadManager.Sprites["RedCar"], new Vector2(128, 64), 400, 100, 250, 750)
@@ -96,6 +97,8 @@ namespace _2dracer
                 effect.Projection,
                 effect.View,
                 Matrix.Identity);
+
+            playerVelocity = velocity;
         }
 
         public static void Draw3D(Texture2D texture, float rotation)
