@@ -95,8 +95,16 @@ namespace _2dracer
                     camera.Update();
                     GameMaster.Update();
                     Map.Update();
-                    if(Map.Tiles[(int)(Player.PlayerPos.X / 768), (int)(Player.PlayerPos.Y / 768)].Node != null)
-                    System.Console.WriteLine(Map.Tiles[(int)(Player.PlayerPos.X/768), (int)(Player.PlayerPos.Y/768)].Node.ToString());
+
+
+                    int x = (int)(Player.PlayerPos.X / 768);
+                    int y = (int)(Player.PlayerPos.Y / 768);
+
+                    if (x >= 0 && y >= 0)
+                        if (x < Map.Tiles.GetLength(0))
+                            if(y < Map.Tiles.GetLength(1))
+                                if (Map.Tiles[x, y].Node != null)
+                                    System.Console.WriteLine(Map.Tiles[x, y].Node.ToString());
                     break;
             }
 
