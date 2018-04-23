@@ -6,17 +6,18 @@ using _2dracer.MapElements;
 namespace _2dracer
 {
     public class Node
-    { 
-        //Fields
+    {
+        #region Fields
         public List<Node> Neighbors = new List<Node>(); //Nodes that can be travelled to from this node
 
         private int _fScore = int.MaxValue; //default value is infinity
 
         private int _gScore = int.MaxValue; //default value is infinity
+        #endregion
 
+        #region Properties
         public Node Parent { get; set; } //Which node to come from in the most efficient route
-
-        //Properties
+        
         public Point Location { get; set; } //Location in space
 
         public int[] Index { get; set; }    // Index on map
@@ -47,6 +48,7 @@ namespace _2dracer
         #endregion
 
         public Color Color { get; set; }//TODO: delete property, just used to visualize pathfinding
+        #endregion
 
         #region Constructors
         public Node(Point location, List<Node> neighbors)
@@ -71,30 +73,10 @@ namespace _2dracer
             this.Color = n.Color;
         }
 
-        public Node() { } //Empty Constructor for an empty soul
+        public Node() { } //Empty Constructor for an empty soul -- me too
         #endregion
 
         #region Methods
-        public void PopulateNeighborsList()     // Populates list of neighbors using indices
-        {
-            if (Map.Nodes[Index[0] + 1, Index[1]] != null)
-            {
-                Neighbors.Add(Map.Nodes[Index[0] + 1, Index[1]]);
-            }
-            if (Map.Nodes[Index[0] - 1, Index[1]] != null)
-            {
-                Neighbors.Add(Map.Nodes[Index[0] - 1, Index[1]]);
-            }
-            if (Map.Nodes[Index[0], Index[1] + 1] != null)
-            {
-                Neighbors.Add(Map.Nodes[Index[0], Index[1] + 1]);
-            }
-            if (Map.Nodes[Index[0], Index[1] - 1] != null)
-            {
-                Neighbors.Add(Map.Nodes[Index[0], Index[1] - 1]);
-            }
-        }
-
         public void PopulateNeighborsList(params Node[] neighbors) //Fills the list of neighbors
         {
             foreach(Node n in neighbors)

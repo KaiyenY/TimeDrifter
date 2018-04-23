@@ -61,6 +61,7 @@ namespace _2dracer
 
             // Handles all of the loading
             LoadManager.LoadContent(Content);
+            Map.LoadMap();
         }
 
         protected override void UnloadContent() { }

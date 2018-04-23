@@ -13,7 +13,7 @@ namespace _2dracer
     public static class AI
     {
         // Fields
-
+        
         public static List<Node> nodes = new List<Node>(); //List of nodes to test A* algorithm
 
         private static Queue<Node> testQueue = new Queue<Node>(); //TEMPORARY queue to test giving instructions to enemies
@@ -78,19 +78,13 @@ namespace _2dracer
             testQueue.Enqueue(node10);
             #endregion
 
+            // USE MapElements.Map.GetNodes() TO POPULATE (i hope it works)
+
             foreach (Node colornode in nodes)
             {
                 colornode.Color = Color.Red;
             }
         }
-
-        // This uses the nodes generated from the map, have fun
-        //public AI(List<Enemy> enemies, List<Node> nodes)
-        //{
-        //    this.nodes = nodes;
-
-        //    this.enemies = enemies;
-        //}
 
 
         public static Queue<Node> Pathfind(Node start, Node target) //Implementation of A* fingers crossed
