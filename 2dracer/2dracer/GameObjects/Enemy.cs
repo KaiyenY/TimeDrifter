@@ -22,8 +22,13 @@ namespace _2dracer
         public Enemy(Texture2D sprite, Vector2 position) 
             : base(new GameObject(position, 0, sprite, new Vector2(64, 128), 0.15f), Vector2.Zero, 0)
         {
-            currentDestination = new Node(base.position.ToPoint()); //initialize current destination to where it begins
             prevRotation = rotation;
+            currentDestination = Player.playerNode;
+            if (MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768] != null)
+            {
+                //Console.WriteLine("NODE MOSTRECENT: " + MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768].ToString());
+                mostRecent = MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768];
+            }
         }
 
         // Methods
@@ -39,30 +44,49 @@ namespace _2dracer
         {
             UpdatePositionTowardsNextNode();
 
+            if(MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768] != null)
+            {
+                //Console.WriteLine("NODE MOSTRECENT: " + MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768].ToString());
+                mostRecent = MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768];
+            }
+            
+            if(Game1.gameTime.TotalGameTime.Seconds % 10 == 0)
+            {
+                
+                Console.WriteLine("PATHFINDING");
+                FindRoute();
+            }
+
             base.Update();
         }
 
         /// <summary>
         /// Finds route to the Node the Player just stepped on. 
         /// </summary>
-        /// <param name="Destination">Pass in the target</param>
-        public void FindRoute(Node Destination)
+        private void FindRoute()
         {
+            Console.WriteLine("NEIGHBORS");
+            foreach(Node n in mostRecent.Neighbors)
+            {
+                Console.WriteLine(n.ToString());
+            }
+
             //Use the AI class' A* logic
-            this.Route = AI.Pathfind(mostRecent, Destination);
+            this.Route = AI.Pathfind(mostRecent, Player.playerNode);
         }
 
 
-        //TODO: This class needs to be cleaned up ASAP
-        public void UpdatePositionTowardsNextNode() //Moves the car a little along its current route
+        //TODO: This method needs to be cleaned up ASAP
+        private void UpdatePositionTowardsNextNode() //Moves the car a little along its current route
         {
             if(Route != null) //Don't do anything if there's no Route assigned
             {
                 // set range to 100
                 // cop should not touch the point before going to the next
-                if (WithinRange(100, currentDestination) && Route.Count != 0)
+                if (WithinRange(10, currentDestination) && Route.Count != 0)
                 {
-                    currentDestination = new Node(this.Route.Dequeue()); //If reached current target node, fetch next one from the Queue
+                    if(this.Route.Peek() != null)
+                    currentDestination = this.Route.Dequeue(); //If reached current target node, fetch next one from the Queue
                 }
 
                 Vector2 toNode = new Vector2(currentDestination.Location.X - this.Position.X, currentDestination.Location.Y - this.Position.Y); //Vector to the target 
@@ -127,13 +151,12 @@ namespace _2dracer
             }
         }
 
-        public bool WithinRange(int offset, Node center) //Creates an acceptable area to check when to get the next target
+        private bool WithinRange(int offset, Node center) //Creates an acceptable area to check when to get the next target
         {
             Rectangle acceptableArea = new Rectangle(center.Location.X - offset, center.Location.Y - offset, 2 * offset, 2 * offset);
             
             if (acceptableArea.Contains(this.Position))
-            {
-                this.mostRecent = center; //Hold the fact that this node was just stepped on. 
+            { 
                 return true;
             }
             else

@@ -26,13 +26,17 @@ namespace _2dracer
         /// </summary>
         public static bool slowMo = false;
 
-        public static Vector2 PlayerPos;
+        /// <summary>
+        /// The node of the tile the player just stepped on
+        /// </summary>
+        public static Node playerNode;
         #endregion
 
         #region Properties
         public static double TimeJuice { get; private set; }
         public static int Health { get; private set; }
         public static double Score { get; private set; }
+
         #endregion
 
 
@@ -44,7 +48,23 @@ namespace _2dracer
             TimeJuice = 0;
             Score = 0;
             GameMaster.Instantiate(turret = new Turret());
-            PlayerPos = position;
+
+            if(MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.X / 768] != null)
+            {
+                playerNode = MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.X / 768];
+                Console.WriteLine("PLAYERNODE: " + playerNode.ToString());
+            }
+            else
+            {
+                foreach(Node n in MapElements.Map.Nodes)
+                {
+                    if(n != null)
+                    {
+                        playerNode = n;
+                        return;
+                    }
+                }
+            }
         }
         #endregion
 
@@ -89,7 +109,20 @@ namespace _2dracer
             }
 
             base.Update();
-            PlayerPos = position;
+
+            int thisX = ((int)this.Position.X / 768);
+            int thisY = ((int)this.Position.Y / 768);
+
+            //Console.WriteLine("XINDEX: " + thisX + "|YINDEX: " + thisY);
+            if (MapElements.Map.Nodes[thisX, thisY] != null)
+            {
+                playerNode = MapElements.Map.Nodes[thisX, thisY];
+                //Console.WriteLine("PLAYERNODE: " + playerNode.ToString());
+            }
+            else
+            {
+                //Console.WriteLine("Nodes[" + thisX + "," + thisY+ "] is null!");
+            }
             turret.MoveTurret(position);
         }
 

@@ -20,7 +20,7 @@ namespace _2dracer.Managers
         public static List<Rigid> Rigids { get; private set; }
         #endregion
 
-        #region Methodss
+        #region Methods
         public static void Start()
         {
             GameObjects = new List<GameObject>();
@@ -30,11 +30,10 @@ namespace _2dracer.Managers
             // Instantiate GameObjects here please
             Instantiate(new Player(new Vector2(Game1.screenWidth / 2, Game1.screenHeight / 2)));
 
-            for (int i = 0; i < 5; i++)
-            {
-                Instantiate(new Enemy(LoadManager.Sprites["Cop"], new Vector2(200, 200 * i)));
-            }
+            Instantiate(new Enemy(LoadManager.Sprites["Cop"], new Vector2(768, 768)));
+              
         }
+
 
         /// <summary>
         /// Updates all game objects
@@ -45,6 +44,7 @@ namespace _2dracer.Managers
             {
                 g.Update();
             }
+            
         }
         
         /// <summary>

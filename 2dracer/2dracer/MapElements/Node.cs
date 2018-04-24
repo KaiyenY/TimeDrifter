@@ -80,6 +80,7 @@ namespace _2dracer
             if (Map.Nodes[Index[0] + 1, Index[1]] != null)
             {
                 Neighbors.Add(Map.Nodes[Index[0] + 1, Index[1]]);
+                Console.WriteLine("Added " + Map.Nodes[Index[0] + 1, Index[1]] + " to the neighbors list of " + this.ToString());
             }
             if (Map.Nodes[Index[0] - 1, Index[1]] != null)
             {
@@ -123,6 +124,13 @@ namespace _2dracer
             {
                 return false;
             }
+        }
+
+        public void Reset() //resets the values of this node to make it ripe for searching again
+        {
+            this.fScore = int.MaxValue;
+            this.gScore = int.MaxValue;
+            this.Parent = null;
         }
         #endregion
     }

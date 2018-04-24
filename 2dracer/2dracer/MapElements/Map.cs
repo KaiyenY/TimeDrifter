@@ -79,6 +79,7 @@ namespace _2dracer.MapElements
 
                             // Add the node to the list
                             Nodes[x, y] = new Node(current.Position.ToPoint());
+                            Nodes[x, y].PopulateNeighborsList();
                         }
                         else
                         {
@@ -115,12 +116,14 @@ namespace _2dracer.MapElements
             {
                 nodeList.Add(node);
             }
+            AI.nodes = nodeList;
         }
         #endregion
 
         #region Methods
         public static void DrawGround()
         {
+            
             foreach (Tile tile in Tiles)
             {
                 tile.Draw();
@@ -143,88 +146,8 @@ namespace _2dracer.MapElements
             }
         }
 
-        /// <summary>
-        /// (dirty) Method to assign neighbors to each node in the map.
-        /// </summary>
-        public static void AssignNeighbors()
-        {
-            for (int x = 0; x < Tiles.GetLength(0); x++) //Loops through the horizontal direction
-            {
-                for (int y = 0; y < Tiles.GetLength(1); y++) //Loops through the vertical direction
-                {
-                    #region checking adjacencies
-                    Node current = Tiles[x, y].Node;
-                    if(x == 0)
-                    {
-                        if(y == 0)
-                        {
-                            //If at corner of the array, check only the two tiles it has adjacency to
-                            if(Tiles[x+1, y].Type != TileType.Building) //If it's not a building, it must have a node (right?)
-                            {
-                                current.Neighbors.Add(Tiles[x + 1, y].Node);
-                            }
-                            if(Tiles[x, y+1].Type != TileType.Building)
-                            {
-                                current.Neighbors.Add(Tiles[x, y + 1].Node);
-                            }
-                        }
-                        else //Not at the corner of the array, but at the edge of it
-                        {
-                            //In that case, check the three adjacent tiles
-                            if (Tiles[x + 1, y].Type != TileType.Building)
-                            {
-                                current.Neighbors.Add(Tiles[x + 1, y].Node);
-                            }
-                            if (Tiles[x, y + 1].Type != TileType.Building)
-                            {
-                                current.Neighbors.Add(Tiles[x, y + 1].Node);
-                            }
-                            if (Tiles[x, y - 1].Type != TileType.Building)
-                            {
-                                current.Neighbors.Add(Tiles[x, y - 1].Node);
-                            }
-                        }
-                    }
-                    else if(y == 0)
-                    {
-                        //At the edge of the array, but not at the corner, check the 3 again
-                        if (Tiles[x + 1, y].Type != TileType.Building)
-                        {
-                            current.Neighbors.Add(Tiles[x + 1, y].Node);
-                        }
-                        if (Tiles[x, y + 1].Type != TileType.Building)
-                        {
-                            current.Neighbors.Add(Tiles[x, y + 1].Node);
-                        }
-                        if (Tiles[x - 1, y].Type != TileType.Building)
-                        {
-                            current.Neighbors.Add(Tiles[x - 1, y].Node);
-                        }
-                    }
-                    else
-                    {
-                        //Tile is in the middle of the array, check all 4 adjacencies
-                        if (Tiles[x + 1, y].Type != TileType.Building)
-                        {
-                            current.Neighbors.Add(Tiles[x + 1, y].Node);
-                        }
-                        if (Tiles[x, y + 1].Type != TileType.Building)
-                        {
-                            current.Neighbors.Add(Tiles[x, y + 1].Node);
-                        }
-                        if (Tiles[x - 1, y].Type != TileType.Building)
-                        {
-                            current.Neighbors.Add(Tiles[x - 1, y].Node);
-                        }
-                        if (Tiles[x, y - 1].Type != TileType.Building)
-                        {
-                            current.Neighbors.Add(Tiles[x, y - 1].Node);
-                        }
-                    }
-                    #endregion
-                }
-            }
-        }
+        
+        #endregion
     }
 }
 

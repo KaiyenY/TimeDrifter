@@ -16,90 +16,18 @@ namespace _2dracer
 
         public static List<Node> nodes = new List<Node>(); //List of nodes to test A* algorithm
 
-        private static Queue<Node> testQueue = new Queue<Node>(); //TEMPORARY queue to test giving instructions to enemies
-
-        private static Queue<Node> pathToGive = new Queue<Node>();
-
-        // Constructors
-        static AI()
-        {
-            #region node populating
-            //Create nodes
-            Node nodeStart = new Node(new Point(400, 200));
-            Node node1 = new Node(new Point(600, 200));
-            Node node2 = new Node(new Point(600, 400));
-            Node node3 = new Node(new Point(800, 200));
-            Node node4 = new Node(new Point(1000, 200));
-            Node node5 = new Node(new Point(600, 600));
-            Node node6 = new Node(new Point(800, 400));
-            Node node7 = new Node(new Point(1000, 400));
-            Node node8 = new Node(new Point(800, 600));
-            Node node9 = new Node(new Point(1000, 600));
-            Node node10 = new Node(new Point(600, 700));
-
-            //Populate each node's list of neighbors
-            nodeStart.PopulateNeighborsList(node1);
-            node1.PopulateNeighborsList(nodeStart, node3, node2);
-            node2.PopulateNeighborsList(node1, node6, node5);
-            node3.PopulateNeighborsList(node1, node6, node4);
-            node4.PopulateNeighborsList(node3, node7);
-            node5.PopulateNeighborsList(node2, node8, node10);
-            node6.PopulateNeighborsList(node2, node3, node7, node8);
-            node7.PopulateNeighborsList(node4, node6, node9);
-            node8.PopulateNeighborsList(node6, node5, node9);
-            node9.PopulateNeighborsList(node7, node8);
-            node10.PopulateNeighborsList(node5);
-
-            //Populate AI class' list of nodes
-            nodes.Add(nodeStart);
-            nodes.Add(node1);
-            nodes.Add(node2);
-            nodes.Add(node3);
-            nodes.Add(node4);
-            nodes.Add(node5);
-            nodes.Add(node6);
-            nodes.Add(node7);
-            nodes.Add(node8);
-            nodes.Add(node9);
-            nodes.Add(node10);
-
-
-            //Now for the Queue
-            testQueue.Enqueue(new Node(new Point(200, 400)));
-            testQueue.Enqueue(node1);
-            testQueue.Enqueue(node2);
-            testQueue.Enqueue(node3);
-            testQueue.Enqueue(node4);
-            testQueue.Enqueue(node5);
-            testQueue.Enqueue(node6);
-            testQueue.Enqueue(node7);
-            testQueue.Enqueue(node8);
-            testQueue.Enqueue(node9);
-            testQueue.Enqueue(node10);
-            #endregion
-
-            foreach (Node colornode in nodes)
-            {
-                colornode.Color = Color.Red;
-            }
-        }
-
-        // This uses the nodes generated from the map, have fun
-        //public AI(List<Enemy> enemies, List<Node> nodes)
-        //{
-        //    this.nodes = nodes;
-
-        //    this.enemies = enemies;
-        //}
-
+        private static Queue<Node> pathToGive = new Queue<Node>(); //Field for the recursive algorithm to use
 
         public static Queue<Node> Pathfind(Node start, Node target) //Implementation of A* fingers crossed
         {
+            Console.WriteLine("PATHFINDING\n" +
+                "START: " + start.ToString() + 
+                "\nTARGET: " + target.ToString());
             pathToGive = new Queue<Node>(); //Reset the path property
             List<Node> closedSet = new List<Node>();
             List<Node> openSet = new List<Node>(); //List of discovered nodes
             openSet.Add(start);
-            
+           
             start.gScore = 0; //cost of going from start to itself is 0
             start.fScore = target.DistanceFrom(start); //straight-line distance to the target
 
@@ -110,7 +38,7 @@ namespace _2dracer
                 current.fScore = int.MaxValue; //will point to the node in the open set with the lowest fScore
                     foreach(Node toCheck in openSet) //Check for lowest node in the set of all 'discovered' nodes
                     {
-                    System.Diagnostics.Debug.Print("open set check: " + toCheck.ToString());
+                        System.Diagnostics.Debug.Print("open set check: " + toCheck.ToString());
                         if(toCheck.fScore < current.fScore) 
                         {
                         System.Diagnostics.Debug.Print(toCheck.ToString() + " has the lowest fScore");
@@ -124,6 +52,15 @@ namespace _2dracer
 
                     Queue<Node> path = new Queue<Node>(ReconstructPath(start, current).Reverse());
                     
+                    foreach(Node toReset in closedSet) //Reset the properties of every node that's been altered
+                    {
+                        toReset.Reset();
+                    }
+
+                    foreach(Node toReset in openSet)
+                    {
+                        toReset.Reset();
+                    }
                     return path;
                 }
 
@@ -134,7 +71,6 @@ namespace _2dracer
 
                 foreach(Node neighbor in current.Neighbors)
                 {
-
                     Console.WriteLine("current: " + current.ToString() + "neighbor: " + neighbor.ToString());
                     if(!closedSet.Contains(neighbor))//if this neighbor hasn't been checked yet
                     {
@@ -143,7 +79,7 @@ namespace _2dracer
                             openSet.Add(neighbor); //Discover a new node from the current node's neighbors
                         }
 
-                        int tentgScore = current.gScore + neighbor.DistanceFrom(current);
+                        int tentgScore = current.gScore + neighbor.DistanceFrom(current); //Represents the individual path segment distance
 
                         if(!(tentgScore > neighbor.gScore)) //recording the best path
                         {
@@ -161,10 +97,9 @@ namespace _2dracer
 
         private static Queue<Node> ReconstructPath(Node start, Node current) //Recursive algorithm to rebuild a path
         {
-            Console.WriteLine(current.ToString());
             if(current == start)
             {
-                Console.WriteLine("returning1");
+                Console.WriteLine("returning reconstructed path");
                 return pathToGive;
             }
             else
@@ -174,6 +109,8 @@ namespace _2dracer
             }
             
         }  
+
+        
     }
 }
 //Ruben Young
