@@ -119,6 +119,7 @@ namespace _2dracer.Managers
         {
             Sprites = new Dictionary<string, Texture2D>
             {
+                { "TimeJuiceScreen", Load<Texture2D>("transparent") },
                 { "Building1", Load<Texture2D>("Textures/Buildings/Building0") },
                 { "Building2", Load<Texture2D>("Textures/Buildings/Building1") },
                 { "Building3", Load<Texture2D>("Textures/Buildings/Building2") },
