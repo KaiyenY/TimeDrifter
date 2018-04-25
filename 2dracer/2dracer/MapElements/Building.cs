@@ -25,7 +25,7 @@ namespace _2dracer.MapElements
         public Building(Vector2 localPos)
         {
             // Grabs the building model (can be added as parameter if we add more)
-            model = Program.game.Content.Load<Model>("Models/Cube");
+            model = LoadManager.Models["Cube"];
 
 
             effect = (BasicEffect)model.Meshes[0].Effects[0];

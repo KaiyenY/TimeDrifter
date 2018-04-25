@@ -10,8 +10,9 @@ namespace _2dracer.MapElements
     public static class Map
     {
         #region Fields
-        private static StreamReader sr;
         private static Queue<string> tileInfo;
+        private static Random rng = new Random();
+        private static StreamReader sr;
         #endregion
 
         #region Properties
@@ -63,8 +64,7 @@ namespace _2dracer.MapElements
         {
             for (int i = 0; i < Buildings.Count; i++)
             {
-                if (i % 2 == 1) Buildings[i].Draw(LoadManager.Sprites["Building1"]);
-                else Buildings[i].Draw(LoadManager.Sprites["Building2"]);
+                Buildings[i].Draw(LoadManager.Sprites[$"Building{(i % 4) + 1}"]);
             }
         }
 

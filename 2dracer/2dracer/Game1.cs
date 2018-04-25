@@ -131,12 +131,9 @@ namespace _2dracer
                 GameMaster.Draw();
                 spriteBatch.End();
                 
-
-
                 // Apply Depth Buffer for 3D
                 GraphicsDevice.DepthStencilState = state;
                 Map.DrawBuildings();
-                Player.Draw3D(LoadManager.Sprites["CarYellow"], -GameMaster.GameObjects[1].Rotation);
             }
 
             UIManager.Draw();           // UI always draws on top

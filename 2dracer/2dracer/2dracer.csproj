@@ -79,6 +79,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="UI\Knob.cs" />
+    <Compile Include="UI\Slider.cs" />
+    <Compile Include="UI\UIElement.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
