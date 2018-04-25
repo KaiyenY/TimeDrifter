@@ -134,6 +134,7 @@ namespace _2dracer
                 // Apply Depth Buffer for 3D
                 GraphicsDevice.DepthStencilState = state;
                 Map.DrawBuildings();
+
             }
 
             UIManager.Draw();           // UI always draws on top

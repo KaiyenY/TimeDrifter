@@ -20,10 +20,6 @@ namespace _2dracer
         
         public static bool slowMo = false;
         public static Vector2 PlayerPos;
-
-        private static BasicEffect effect;
-        private static Model model;
-        private static Vector3 worldPos;
         #endregion
 
         #region Properties
@@ -42,9 +38,6 @@ namespace _2dracer
             Score = 0;
             GameMaster.Instantiate(turret = new Turret());
             PlayerPos = position;
-
-            model = Program.game.Content.Load<Model>("3D_Car/test");
-            effect = (BasicEffect)model.Meshes[0].Effects[0];
         }
         #endregion
 
@@ -91,12 +84,6 @@ namespace _2dracer
             base.Update();
             PlayerPos = position;
             turret.MoveTurret(position);
-
-            worldPos = Options.Graphics.GraphicsDevice.Viewport.Unproject(
-                new Vector3(Vector2.Subtract(PlayerPos, Game1.camera.Position), 0.97f),
-                effect.Projection,
-                effect.View,
-                Matrix.Identity);
 
             playerVelocity = velocity;
         }

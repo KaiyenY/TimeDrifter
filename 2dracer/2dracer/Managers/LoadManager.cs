@@ -119,15 +119,6 @@ namespace _2dracer.Managers
         {
             Sprites = new Dictionary<string, Texture2D>
             {
-                { "Wheels", Load<Texture2D>("3D_Car/car/0000") },
-                { "CarRed", Load<Texture2D>("3D_Car/skin00/0000") },
-                { "CarGold", Load<Texture2D>("3D_Car/skin01/0000") },
-                { "CarGray", Load<Texture2D>("3D_Car/skin02/0000") },
-                { "CarPurple", Load<Texture2D>("3D_Car/skin03/0000") },
-                { "CarGreen", Load<Texture2D>("3D_Car/skin04/0000") },
-                { "CarOrange", Load<Texture2D>("3D_Car/skin05/0000") },
-                { "CarYellow", Load<Texture2D>("3D_Car/skin06/0000") },
-                { "CarBlack", Load<Texture2D>("3D_Car/skin07/0000") },
                 { "Building1", Load<Texture2D>("Textures/Buildings/Building0") },
                 { "Building2", Load<Texture2D>("Textures/Buildings/Building1") },
                 { "Building3", Load<Texture2D>("Textures/Buildings/Building2") },
