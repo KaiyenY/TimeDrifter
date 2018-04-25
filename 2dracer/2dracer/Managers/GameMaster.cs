@@ -28,7 +28,7 @@ namespace _2dracer.Managers
             Rigids = new List<Rigid>();
 
             // Instantiate GameObjects here please
-            Instantiate(new Player(new Vector2(Options.ScreenWidth / 2, Options.ScreenHeight / 2)));
+            Instantiate(new Player(new Vector2(MapElements.Map.Size.X / 2, MapElements.Map.Size.Y / 2)));
 
             for (int i = 0; i < 5; i++)
             {

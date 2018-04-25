@@ -121,7 +121,7 @@ namespace _2dracer
             };
 
             gameTime = g;
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             
 
             if (GameState != GameState.Menu && GameState != GameState.Options && GameState != GameState.GameOver)
