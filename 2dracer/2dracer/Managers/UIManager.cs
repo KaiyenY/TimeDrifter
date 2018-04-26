@@ -110,10 +110,11 @@ namespace _2dracer.Managers
                         {
                             new Element(new Vector2(50, 50), 1f, "howToTitle", "How To Play"),
 
-                            new Element(new Vector2(50, 250), 0.5f, "i1", "Press W and S for Gas and Break"),
-                            new Element(new Vector2(50, 350), 0.5f, "i2", "Press A and D to steer"),
-                            new Element(new Vector2(50, 450), 0.5f, "i3", "Move mouse to aim gun"),
-                            new Element(new Vector2(50, 550), 0.5f, "i4", "Click to shoot    (infinite bullets)"),
+                            new Element(new Vector2(50, 240), 0.5f, "i1", "Press W and S for Gas and Break"),
+                            new Element(new Vector2(50, 330), 0.5f, "i2", "Press A and D to steer"),
+                            new Element(new Vector2(50, 420), 0.5f, "i2", "Press T to slow down time"),
+                            new Element(new Vector2(50, 510), 0.5f, "i3", "Move mouse to aim gun"),
+                            new Element(new Vector2(50, 600), 0.5f, "i4", "Click to shoot    (infinite bullets)"),
 
                             new Button(new Rectangle(
                                 (Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),

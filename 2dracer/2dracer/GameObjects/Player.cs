@@ -93,7 +93,7 @@ namespace _2dracer
         /// </summary>
         private void Juice()
         {
-            if (Input.KeyTap(Keys.P))
+            if (Input.KeyTap(Keys.T))
                 slowMo = !slowMo;
 
             Score += Game1.gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
