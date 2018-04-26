@@ -36,7 +36,9 @@ namespace _2dracer.Managers
             {
                 int j = 0;
                 int k = 0;
-            /*
+                int minDistance = 2;
+                int maxDistance = 4;
+
                 do
                 {
                     // J is between 0 and map_size_x
@@ -46,12 +48,19 @@ namespace _2dracer.Managers
                     k = rand.Next(0, MapElements.Map.Tiles.GetLength(1));
 
                     // find new random tile if
-                } while (MapElements.Map.Tiles[j][k].Type == MapElements.TileType.Building ||  //  the current is a building
-                        Math.Abs(Player.PlayerPos.X - 768 * j - 768 / 2) < 2000 ||              // the current tile is close to PlayerX
-                        Math.Abs(Player.PlayerPos.Y - 768 * k - 768 / 2) < 2000)                // the current tile is close to PlayerY
-                        
-            */
-                Instantiate(new Enemy(LoadManager.Sprites["Cop"], new Vector2(768*j - 768/2, 768 * k - 768 / 2)));
+                } while (MapElements.Map.Tiles[j, k].Type == MapElements.TileType.Building //  the current is a building
+                        ||  
+                        // To close to playerX (2 blocks)               AND            To close to playerY (2 blocks)
+                        (Math.Abs(Player.PlayerPos.X - 768 * j) < 768* minDistance && Math.Abs(Player.PlayerPos.Y - 768 * k) < 768 * minDistance)           
+                        ||              // the current tile is close to PlayerY
+                        // To far from playerX (4 blocks)               OR          To far from playerY (4 blocks)
+                        (Math.Abs(Player.PlayerPos.X - 768 * j) > 768* maxDistance || Math.Abs(Player.PlayerPos.Y - 768 * k) > 768* maxDistance)
+                        );                
+
+
+                Console.WriteLine(j + " " + k);
+
+                Instantiate(new Enemy(LoadManager.Sprites["Cop"], new Vector2(768*j, 768*k)));
             }
         }
 
