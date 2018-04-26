@@ -30,9 +30,28 @@ namespace _2dracer.Managers
             // Instantiate GameObjects here please
             Instantiate(new Player(new Vector2(MapElements.Map.Size.X / 2, MapElements.Map.Size.Y / 2)));
 
+            Random rand = new Random();
+
             for (int i = 0; i < 5; i++)
             {
-                Instantiate(new Enemy(LoadManager.Sprites["Cop"], new Vector2(200, 200 * i)));
+                int j = 0;
+                int k = 0;
+            /*
+                do
+                {
+                    // J is between 0 and map_size_x
+                    j = rand.Next(0, MapElements.Map.Tiles.GetLength(0));
+
+                    // k is between 0 and map_size_y
+                    k = rand.Next(0, MapElements.Map.Tiles.GetLength(1));
+
+                    // find new random tile if
+                } while (MapElements.Map.Tiles[j][k].Type == MapElements.TileType.Building ||  //  the current is a building
+                        Math.Abs(Player.PlayerPos.X - 768 * j - 768 / 2) < 2000 ||              // the current tile is close to PlayerX
+                        Math.Abs(Player.PlayerPos.Y - 768 * k - 768 / 2) < 2000)                // the current tile is close to PlayerY
+                        
+            */
+                Instantiate(new Enemy(LoadManager.Sprites["Cop"], new Vector2(768*j - 768/2, 768 * k - 768 / 2)));
             }
         }
 
