@@ -27,9 +27,13 @@ namespace _2dracer.Managers
             Movers = new List<Mover>();
             Rigids = new List<Rigid>();
 
-            // Instantiate GameObjects here please
-            Instantiate(new Player(new Vector2((MapElements.Map.Size.X / 2) - 384, MapElements.Map.Size.Y / 2)));
+            SpawnManager.Initialize();
 
+            // Instantiate GameObjects here please
+            SpawnManager.SpawnPlayer();
+
+
+            // Everything below here should be replaced with the spawn manager code
             Random rand = new Random();
 
             for (int i = 0; i < 5; i++)

@@ -155,7 +155,7 @@ namespace _2dracer.MapElements
                     else
                     {
                         // Add building to the list of buildings
-                        Buildings.Add(new Building(new Vector2(x * TileSize, y * TileSize)));
+                        Buildings.Add(new Building(current, new Vector2(x * TileSize, y * TileSize)));
 
                         // Make sure there is no node in this position
                         Nodes[x, y] = null;

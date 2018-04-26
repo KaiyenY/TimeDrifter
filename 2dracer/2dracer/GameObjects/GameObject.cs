@@ -69,7 +69,17 @@ namespace _2dracer
         /// <summary>
         /// Updates logic for this game object every frame
         /// </summary>
-        public virtual void Update() { }
+        public virtual void Update()
+        {
+            if (!Game1.camera.ViewRect.Contains(position))
+            {
+                isEnabled = true;
+            }
+            else
+            {
+                isEnabled = false;
+            }
+        }
 
         /// <summary>
         /// Draws this object's texture to the screen
@@ -77,9 +87,12 @@ namespace _2dracer
         /// </summary>
         public virtual void Draw()
         {
-            origin = new Vector2(sprite.Width, sprite.Height) / 2;
-            Vector2 appliedScale = new Vector2((size.X * scale.X) / sprite.Width, (size.Y * scale.Y) / sprite.Height);
-            Game1.spriteBatch.Draw(sprite, position, null, color, rotation, origin, appliedScale, SpriteEffects.None, layerDepth);
+            if (isEnabled)
+            {
+                origin = new Vector2(sprite.Width, sprite.Height) / 2;
+                Vector2 appliedScale = new Vector2((size.X * scale.X) / sprite.Width, (size.Y * scale.Y) / sprite.Height);
+                Game1.spriteBatch.Draw(sprite, position, null, color, rotation, origin, appliedScale, SpriteEffects.None, layerDepth);
+            }
         }
     }
 }

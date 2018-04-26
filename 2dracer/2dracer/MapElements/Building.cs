@@ -17,13 +17,16 @@ namespace _2dracer.MapElements
         #region Fields
         private BasicEffect effect;
         private Model model;
+        private Tile parent;
         private Vector2 localPos;
         private Vector3 worldPos;
         #endregion
 
         #region Constructor
-        public Building(Vector2 localPos)
+        public Building(Tile parent, Vector2 localPos)
         {
+            this.parent = parent;
+
             // Grabs the building model (can be added as parameter if we add more)
             model = LoadManager.Models["Cube"];
 
@@ -53,14 +56,17 @@ namespace _2dracer.MapElements
         /// </summary>
         public void Draw(Texture2D texture)
         {
-            double fieldOfView = (3.14159 / 4) * Options.Graphics.GraphicsDevice.Viewport.Width / (Map.TileSize * 2.338f);
+            if (parent.IsEnabled)
+            {
+                double fieldOfView = (3.14159 / 4) * Options.Graphics.GraphicsDevice.Viewport.Width / (Map.TileSize * 2.338f);
 
-            effect.Projection = Matrix.CreatePerspectiveFieldOfView((float)fieldOfView, Options.Graphics.GraphicsDevice.Viewport.AspectRatio, 0.1f, 200f);
-            effect.View = Matrix.CreateLookAt(new Vector3(Vector2.Zero, 2.3f), Vector3.Zero, Vector3.Up);
-            effect.World = Matrix.CreateTranslation(worldPos.X, worldPos.Y, 0f);
-            
-            effect.Texture = texture;
-            model.Meshes[0].Draw();
+                effect.Projection = Matrix.CreatePerspectiveFieldOfView((float)fieldOfView, Options.Graphics.GraphicsDevice.Viewport.AspectRatio, 0.1f, 200f);
+                effect.View = Matrix.CreateLookAt(new Vector3(Vector2.Zero, 2.3f), Vector3.Zero, Vector3.Up);
+                effect.World = Matrix.CreateTranslation(worldPos.X, worldPos.Y, 0f);
+
+                effect.Texture = texture;
+                model.Meshes[0].Draw();
+            }
         }
         #endregion
     }

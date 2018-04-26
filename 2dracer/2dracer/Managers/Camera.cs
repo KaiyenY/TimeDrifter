@@ -19,6 +19,8 @@ namespace _2dracer.Managers
 
         public Vector2 Position { get { return position; } }
 
+        public Rectangle ViewRect { get; private set; }
+
         public Matrix ViewMatrix { get; set; }
 
         public void Update()
@@ -26,6 +28,7 @@ namespace _2dracer.Managers
             Vector2 pos = GameMaster.GameObjects[1].Position;
             Vector2 mapSize = Map.Size;
             float tileSize = Map.TileSize;
+            ViewRect = new Rectangle(Position.ToPoint(), new Point(Options.ScreenWidth, Options.ScreenHeight));
 
             // Through complicated stuff, these two checks will make sure the
             // camera doesn't go off the map
