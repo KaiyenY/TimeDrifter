@@ -12,9 +12,9 @@ namespace _2dracer
     {
         #region Fields
         // Temporary elements, will be gauge needle soon
-        private static Element healthText;
-        private static Element timeText;
-        private static Element scoreText;
+        private static TextElement healthText;
+        private static TextElement timeText;
+        private static TextElement scoreText;
         
         private Turret turret;
         
@@ -93,7 +93,7 @@ namespace _2dracer
         /// </summary>
         private void Juice()
         {
-            if (Input.KeyTap(Keys.T))
+            if (Input.KeyTap(Keys.E))
                 slowMo = !slowMo;
 
             Score += Game1.gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
@@ -116,9 +116,9 @@ namespace _2dracer
         /// </summary>
         public static void CreateHUD()
         {
-            UIManager.Add(healthText = new Element(new Vector2(50, 50), 0.25f, "playerHealth", "Health : " + Health));
-            UIManager.Add(timeText = new Element(new Vector2(50, 150), 0.25f, "playerJuice", "Time Juice : " + TimeJuice));
-            UIManager.Add(scoreText = new Element(new Vector2(50, 250), 0.25f, "playerScore", "Score : " + Score));
+            UIManager.Add(healthText = new TextElement(new Point(50, 250), true, 0.25f, "playerHealth", "Health : " + Health));
+            UIManager.Add(timeText = new TextElement(new Point(50, 350), true, 0.25f, "playerJuice", "Time Juice : " + TimeJuice));
+            UIManager.Add(scoreText = new TextElement(new Point(50, 450), true, 0.25f, "playerScore", "Score : " + Score));
         }
         #endregion
     }

@@ -1,9 +1,5 @@
-﻿using System;
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-
+﻿using Microsoft.Xna.Framework;
+using System;
 using _2dracer.Managers;
 
 namespace _2dracer.UI
@@ -11,15 +7,25 @@ namespace _2dracer.UI
     /// <summary>
     /// Creates a button element
     /// </summary>
-    public class Button : Element
+    public class Button : UIElement
     {
         #region Events
-        public event EventHandler<EventArgs> Click;     // Determines what happens when this button is clicked
+        /// <summary>
+        /// Invokes when this button is clicked.
+        /// </summary>
+        public event EventHandler<EventArgs> Click;
         #endregion
 
         #region Constructor
-        public Button(Rectangle rect, Texture2D sprite, string name, string text)
-            : base(rect, sprite, name, text)
+        /// <summary>
+        /// Creates a new button instance.
+        /// </summary>
+        /// <param name="location">Determines where this element is on the screen.</param>
+        /// <param name="enabled">Determines if this element draws / updates.</param>
+        /// <param name="name">Gives a unique name to this element.</param>
+        /// <param name="text">Stores the text within this element.</param>
+        public Button(Point location, bool enabled, string name, string text)
+            : base(location, new Point(Options.ScreenWidth / 4, Options.ScreenHeight / 10), LoadManager.Sprites["Button"], enabled, 0.0f, name, text)
         {
 
         }
@@ -28,25 +34,41 @@ namespace _2dracer.UI
         #region Methods
         public override void Update()
         {
-            if (rect.Contains(Input.MousePos()))
-            {
-                color = Color.LightGray;
+            DetectClick();
+        }
 
+        /// <summary>
+        /// Detects if this element is clicked.
+        /// </summary>
+        private void DetectClick()
+        {
+            if (Hover(Input.MousePos()))
+            {
                 if (Input.MouseHold(MouseButton.Left))
                 {
-                    color = Color.Gray;
+                    color = Color.DarkRed;
                 }
-
+                
                 if (Input.MouseReleased(MouseButton.Left))
                 {
                     Click.Invoke(this, new EventArgs());
-                    AudioManager.PlaySound("Click", 1.0f);
                 }
             }
-            else
+        }
+
+        /// <summary>
+        /// Determines if a position is hovering over this button.
+        /// </summary>
+        private bool Hover(Point pos)
+        {
+            if (rect.Contains(pos))
             {
-                color = Color.White;
+                color = Color.Red;
+                return true;
             }
+
+            color = Color.White;
+            return false;
         }
         #endregion
     }

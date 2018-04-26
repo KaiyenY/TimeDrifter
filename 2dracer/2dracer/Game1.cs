@@ -14,7 +14,7 @@ namespace _2dracer
     {
         Game,
         Menu,
-        HowTo,
+        Instructions,
         Options,
         Pause,
         GameOver
@@ -125,7 +125,7 @@ namespace _2dracer
             GraphicsDevice.Clear(Color.Black);
             
 
-            if (GameState != GameState.Menu && GameState != GameState.Options && GameState != GameState.GameOver && GameState != GameState.HowTo)
+            if (GameState != GameState.Menu && GameState != GameState.Options && GameState != GameState.GameOver && GameState != GameState.Instructions)
             {
                 spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
                 Map.Draw();

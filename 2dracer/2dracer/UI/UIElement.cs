@@ -41,6 +41,11 @@ namespace _2dracer.UI
         protected bool enabled;
 
         /// <summary>
+        /// Determines the rotation of this element.
+        /// </summary>
+        protected float rotation;
+
+        /// <summary>
         /// Determines the size of the text when it draws.
         /// </summary>
         protected float textScale;
@@ -88,21 +93,29 @@ namespace _2dracer.UI
         /// <param name="enabled">Determines if this <see cref="UIElement"/> draws / updates.</param>
         /// <param name="name">The name of this <see cref="UIElement"/>.</param>
         /// <param name="text">The text within this <see cref="UIElement"/>.</param>
-        public UIElement(Point location, Point size, Texture2D sprite, bool enabled, string name, string text)
+        public UIElement(Point location, Point size, Texture2D sprite, bool enabled, float rotation, string name, string text)
         {
             rect = new Rectangle(location, size);
             this.sprite = sprite;
             this.enabled = enabled;
+            this.rotation = rotation;
             this.name = name;
             this.text = text;
 
             color = Color.White;
-            font = LoadManager.Fonts["Connection"];
 
-            textScale = (rect.Height - Options.ScreenHeight / 24) / font.MeasureString(text).Y;
+            if (text != null)
+            {
+                font = LoadManager.Fonts["Connection"];
 
-            textPosition = new Vector2(rect.X + (rect.Width - (font.MeasureString(text).X * textScale)) / 2,
-                rect.Y + (rect.Height - (font.MeasureString(text).Y * textScale)) / 2);
+                if (size != Point.Zero)
+                {
+                    textScale = (rect.Height - Options.ScreenHeight / 24) / font.MeasureString(text).Y;
+
+                    textPosition = new Vector2(rect.X + (rect.Width - (font.MeasureString(text).X * textScale)) / 2,
+                        rect.Y + (rect.Height - (font.MeasureString(text).Y * textScale)) / 2);
+                }
+            }
         }
 
         /// <summary>
@@ -113,8 +126,8 @@ namespace _2dracer.UI
         /// <param name="sprite">The sprite of this <see cref="UIElement"/>.</param>
         /// <param name="enabled">Determines if this <see cref="UIElement"/> draws / updates.</param>
         /// <param name="name">The name of this <see cref="UIElement"/>.</param>
-        public UIElement(Point location, Point size, Texture2D sprite, bool enabled, string name) 
-            : this(location, size, sprite, enabled, name, null) { }
+        public UIElement(Point location, Point size, Texture2D sprite, bool enabled, float rotation, string name) 
+            : this(location, size, sprite, enabled, rotation, name, null) { }
 
         /// <summary>
         /// Creates a new <see cref="UIElement"/> instance.
@@ -124,7 +137,7 @@ namespace _2dracer.UI
         /// <param name="name">The name of this <see cref="UIElement"/>.</param>
         /// <param name="text">The text within this <see cref="UIElement"/>.</param>
         public UIElement(Point location, bool enabled, string name, string text)
-            : this(location, Point.Zero, null, enabled, name, text) { }
+            : this(location, Point.Zero, null, enabled, 0.0f, name, text) { }
         #endregion
 
         #region Methods
@@ -142,8 +155,8 @@ namespace _2dracer.UI
                         rect,
                         new Rectangle(Point.Zero, new Point(sprite.Width, sprite.Height)),
                         color,
-                        0.0f,
-                        new Vector2(sprite.Width, sprite.Height) / 2,
+                        rotation,
+                        Vector2.Zero,
                         SpriteEffects.None,
                         0.9f);
                 }
@@ -154,9 +167,9 @@ namespace _2dracer.UI
                         font, 
                         text, 
                         textPosition, 
-                        Color.Black, 
-                        0.0f, 
-                        font.MeasureString(text) * textScale / 2, 
+                        Color.White, 
+                        rotation,
+                        Vector2.Zero,
                         textScale, 
                         SpriteEffects.None, 
                         1.0f);

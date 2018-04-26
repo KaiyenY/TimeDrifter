@@ -28,7 +28,7 @@ namespace _2dracer.Managers
             Rigids = new List<Rigid>();
 
             // Instantiate GameObjects here please
-            Instantiate(new Player(new Vector2(MapElements.Map.Size.X / 2, MapElements.Map.Size.Y / 2)));
+            Instantiate(new Player(new Vector2((MapElements.Map.Size.X / 2) - 384, MapElements.Map.Size.Y / 2)));
 
             Random rand = new Random();
 

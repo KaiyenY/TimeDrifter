@@ -14,15 +14,21 @@ namespace _2dracer.Managers
     /// </summary>
     public static class UIManager
     {
-        // Properties
-        private static List<Element> Elements { get; set; }
+        #region Fields
         private static GameState prevState;
+        private static GameState prevOptionsState;
+        #endregion
 
-        // Constructor
+        #region Properties
+        private static List<UIElement> Elements { get; set; }
+        #endregion
+
+        #region Constructor
         static UIManager()
         {
             RefreshList();
         }
+        #endregion
 
         #region Methods
         /// <summary>
@@ -44,13 +50,13 @@ namespace _2dracer.Managers
         }
 
         /// <summary>
-        /// Draws every element
+        /// Draws every element.
         /// </summary>
         public static void Draw()
         {
-            Game1.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
+            Game1.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None);
 
-            foreach (Element element in Elements)
+            foreach (UIElement element in Elements)
             {
                 element.Draw();
             }
@@ -69,126 +75,109 @@ namespace _2dracer.Managers
             switch (Game1.GameState)
             {
                 case GameState.Game:
-                    Elements = new List<Element>();
+                    Elements = new List<UIElement>
+                    {
+                        new ImageElement(new Point(0, 0), new Point((Options.ScreenWidth / 6)),
+                            LoadManager.Sprites["HealthGauge"], true, 0.0f, "healthGauge"),
+
+                        new ImageElement(new Point((Options.ScreenWidth * 5 / 6), 0), new Point((Options.ScreenWidth / 6)),
+                            LoadManager.Sprites["TimeGauge"], true, 0.0f, "timeGauge")
+                    };
 
                     Player.CreateHUD();
                     break;
 
                 case GameState.Menu:
-                    Elements = new List<Element>
-                        {
-                            new Element(new Vector2(50, 50), 1f, "title", "Time Drifter Deluxe"),
+                    Elements = new List<UIElement>
+                    {
+                        new TextElement(new Point(50, 50), true, 1.0f, "title", "Time Drifter Deluxe"),
 
-                            new Button(new Rectangle((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8), 
-                            (Options.ScreenHeight / 3), 
-                            (Options.ScreenWidth / 4),
-                            (Options.ScreenHeight / 10)), 
-                            LoadManager.Sprites["Button"], "playButton", "Play"),
+                        new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
+                            (Options.ScreenHeight / 3)),
+                            true, "playButton", "Play"),
 
-                            new Button(new Rectangle((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
-                            (Options.ScreenHeight * 1 / 2),
-                            (Options.ScreenWidth / 4),
-                            (Options.ScreenHeight / 10)),
-                            LoadManager.Sprites["Button"], "howToButton", "How To Play"),
+                        new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
+                            (Options.ScreenHeight / 2)),
+                            true, "instructionsButton", "Instructions"),
 
-                            new Button(new Rectangle((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8), 
-                            (Options.ScreenHeight * 2 / 3), 
-                            (Options.ScreenWidth / 4), 
-                            (Options.ScreenHeight / 10)), 
-                            LoadManager.Sprites["Button"], "optionsButton", "Options"),
+                        new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
+                            (Options.ScreenHeight * 2 / 3)),
+                            true, "optionsButton", "Options"),
 
-                            new Button(new Rectangle((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8), 
-                            (Options.ScreenHeight * 5 / 6), 
-                            (Options.ScreenWidth / 4),
-                            (Options.ScreenHeight / 10)), 
-                            LoadManager.Sprites["Button"], "exitButton", "Exit")
-                        };
+                        new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
+                            (Options.ScreenHeight * 5 / 6)),
+                            true, "exitButton", "Exit")
+                    };
                     break;
 
-                case GameState.HowTo:
-                    Elements = new List<Element>
-                        {
-                            new Element(new Vector2(50, 50), 1f, "howToTitle", "How To Play"),
+                case GameState.Instructions:
+                    Elements = new List<UIElement>
+                    {
+                        new TextElement(new Point(50, 50), true, 1.0f, "title", "Instructions"),
 
-                            new Element(new Vector2(50, 240), 0.5f, "i1", "Press W and S for Gas and Break"),
-                            new Element(new Vector2(50, 330), 0.5f, "i2", "Press A and D to steer"),
-                            new Element(new Vector2(50, 420), 0.5f, "i2", "Press T to slow down time"),
-                            new Element(new Vector2(50, 510), 0.5f, "i3", "Move mouse to aim gun"),
-                            new Element(new Vector2(50, 600), 0.5f, "i4", "Click to shoot    (infinite bullets)"),
+                        new TextElement(new Point(50, 240), true, 0.5f, "i1", "Press W for gas and Space for break."),
+                        new TextElement(new Point(50, 330), true, 0.5f, "i2", "Press A and D to steer."),
+                        new TextElement(new Point(50, 420), true, 0.5f, "i3", "Press E to slow down time."),
+                        new TextElement(new Point(50, 510), true, 0.5f, "i4", "Move the mouse to aim."),
+                        new TextElement(new Point(50, 600), true, 0.5f, "i5", "Click to shoot."),
 
-                            new Button(new Rectangle(
-                                (Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
-                                (Options.ScreenHeight * 5 / 6),
-                                (Options.ScreenWidth / 4),
-                                (Options.ScreenHeight / 10)),
-                                LoadManager.Sprites["Button"], "backButton", "Back")
-                        };
+                        new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
+                            (Options.ScreenHeight * 5 / 6)), true, "menuButton", "Back"),
+                    };
                     break;
 
                 case GameState.Options:
-                    Elements = new List<Element>
-                        {
-                            new Element(new Vector2(50, 50), 1f, "optionsTitle", "Options"),
+                    Elements = new List<UIElement>
+                    {
+                        new TextElement(new Point(50, 50), true, 1.0f, "optionsTitle", "Options"),
 
-                            new Button(new Rectangle(
-                                (Options.ScreenWidth / 4) - (Options.ScreenWidth / 8),
-                                (Options.ScreenHeight / 3),
-                                (Options.ScreenWidth / 4),
-                                (Options.ScreenHeight / 10)),
-                                LoadManager.Sprites["Button"], "fullScreen", "FullScreen"),
+                        new Button(new Point((Options.ScreenWidth / 4) - (Options.ScreenWidth / 8),
+                            Options.ScreenHeight / 3), true, "fullScreen", "Fullscreen"),
 
-                            new Button(new Rectangle(
-                                (Options.ScreenWidth * 3 / 4) - (Options.ScreenWidth / 8),
-                                (Options.ScreenHeight / 3),
-                                (Options.ScreenWidth / 4),
-                                (Options.ScreenHeight / 10)),
-                                LoadManager.Sprites["Button"], "muteButton", "Mute"),
+                        new Button(new Point((Options.ScreenWidth * 3 / 4) - (Options.ScreenWidth / 8),
+                            (Options.ScreenHeight / 3)), true, "muteButton", "Mute"),
 
-                            new Button(new Rectangle(
-                                (Options.ScreenWidth / 2) - (Options.ScreenWidth / 8), 
-                                (Options.ScreenHeight * 5 / 6), 
-                                (Options.ScreenWidth / 4), 
-                                (Options.ScreenHeight / 10)), 
-                                LoadManager.Sprites["Button"], "backButton", "Back")
-                        };
+                        new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
+                            (Options.ScreenHeight * 2 / 3)), true, "backButton", "Back")
+                    };
                     break;
 
                 case GameState.Pause:
-                    Elements = new List<Element>
-                        {
-                            new Element(new Vector2(50, 50), 1f, "pauseTitle", "Pause"),
+                    Elements = new List<UIElement>
+                    {
+                        new TextElement(new Point(50, 50), true, 1.0f, "pauseTitle", "Pause"),
 
-                            new Button(new Rectangle(
-                                (Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
-                                (Options.ScreenHeight / 3), 
-                                (Options.ScreenWidth / 4), 
-                                (Options.ScreenHeight / 10)), 
-                                LoadManager.Sprites["Button"], "resumeButton", "Resume"),
+                        new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
+                            (Options.ScreenHeight / 3)), true, "resumeButton", "Resume"),
 
-                            new Button(new Rectangle(
-                                (Options.ScreenWidth / 2) - (Options.ScreenWidth / 8), 
-                                (Options.ScreenHeight / 2), 
-                                (Options.ScreenWidth / 4), 
-                                (Options.ScreenHeight / 10)), 
-                                LoadManager.Sprites["Button"], "menuButton", "Exit to Menu")
-                        };
+                        new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
+                            (Options.ScreenHeight / 2)), true, "optionsButton", "Options"),
+
+                        new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
+                            (Options.ScreenHeight * 2 / 3)), true, "menuButton", "Exit to Menu")
+                    };
                     break;
 
                 case GameState.GameOver:
-                    Elements = new List<Element>
-                        {
-                            new Element(new Vector2(50, 50), 1f, "deathTitle", "Death"),
-                            new Element(new Vector2(400, 200), 0.25f, "playerScore", "Score: "),
-                            new Element(new Vector2(400, 300), 0.25f, "playerScore", "High Scores:"),
-                            new Button(new Rectangle((Options.ScreenWidth / 2) - 200, 550, 400, 80), LoadManager.Sprites["Button"], "backButton", "Back")
-                        };
+                    Elements = new List<UIElement>
+                    {
+                        new TextElement(new Point(50, 50), true, 1.0f, "title", "Game Over"),
+                        new TextElement(new Point(400, 200), true, 0.25f, "playerScore", "Score : "),
+                        new TextElement(new Point(400, 300), true, 0.25f, "playerScore", "High Scores : "),
+
+                        new Button(new Point((Options.ScreenWidth / 4) - (Options.ScreenWidth / 8),
+                            (Options.ScreenHeight * 5 / 6)), true, "menuButton", "Exit to Menu"),
+
+                        new Button(new Point((Options.ScreenWidth * 3 / 4) - (Options.ScreenWidth / 8),
+                            (Options.ScreenHeight * 5 / 6)), true, "playButton", "Play Again")
+                    };
 
                     StreamReader sr;
                     sr = new StreamReader(@"..\..\..\..\Content\Leaderboard.txt");
 
                     for (int i = 1; i < 6; i++)
                     {
-                        Elements.Add(new Element(new Vector2(400, 300 + 30*i), 0.25f, "playerScore", "#" + i + ": " + sr.ReadLine()));
+                        // Elements.Add(new Element(new Vector2(400, 300 + 30*i), 0.25f, "playerScore", "#" + i + ": " + sr.ReadLine()));
                     }
 
                     // Open Leaderboard txt for reading
@@ -209,7 +198,7 @@ namespace _2dracer.Managers
 
             if (Elements != null)
             {
-                foreach (Element element in Elements)
+                foreach (UIElement element in Elements)
                 {
                     if (element is Button button)
                     {
@@ -251,9 +240,9 @@ namespace _2dracer.Managers
                         AudioManager.ToggleMute();
                         break;
 
-                    case "howToButton":
+                    case "instructionsButton":
                         Elements.Clear();
-                        Game1.GameState = GameState.HowTo;
+                        Game1.GameState = GameState.Instructions;
                         RefreshList();
                         break;
 
@@ -282,9 +271,9 @@ namespace _2dracer.Managers
         }
 
         /// <summary>
-        /// Adds an <see cref="Element"/> instance into the list.
+        /// Adds an <see cref="UIElement"/> instance into the list.
         /// </summary>
-        public static void Add(Element element)
+        public static void Add(UIElement element)
         {
             if (element != null)
             {

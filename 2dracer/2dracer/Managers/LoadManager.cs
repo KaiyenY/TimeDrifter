@@ -130,12 +130,14 @@ namespace _2dracer.Managers
                 { "CornerRoad", Load<Texture2D>("Textures/Tiles/CornerRoad") },
                 { "FIntersection", Load<Texture2D>("Textures/Tiles/FourWayIntersection") },
                 { "Grass", Load<Texture2D>("Textures/Tiles/Grass") },
+                { "HealthGauge", Load<Texture2D>("Textures/UI/HealthGauge") },
                 { "Knob", Load<Texture2D>("Textures/UI/Knob") },
                 { "RedCar", Load<Texture2D>("Textures/RedCar") },
                 { "Roof", Load<Texture2D>("Textures/Tiles/Roof") },
                 { "Slider", Load<Texture2D>("Textures/UI/Slider") },
                 { "Square", Load<Texture2D>("Textures/Square") },
                 { "StraightRoad", Load<Texture2D>("Textures/Tiles/StraightRoad") },
+                { "TimeGauge", Load<Texture2D>("Textures/UI/TimeGauge") },
                 { "TIntersection", Load<Texture2D>("Textures/Tiles/ThreeWayIntersection") },
                 { "Turret", Load<Texture2D>("Textures/Turret") }
             };

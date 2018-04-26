@@ -17,7 +17,7 @@ namespace _2dracer.UI
 
         #region Constructor
         public Slider(Point location, Texture2D sprite, bool enabled, string name)
-            : base(location, new Point(Options.ScreenWidth / 4, Options.ScreenHeight / 10), LoadManager.Sprites["Slider"], enabled, name)
+            : base(location, new Point(Options.ScreenWidth / 4, Options.ScreenHeight / 10), LoadManager.Sprites["Slider"], enabled, 0.0f, name)
         {
 
         }
