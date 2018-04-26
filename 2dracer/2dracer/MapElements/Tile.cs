@@ -51,12 +51,14 @@ namespace _2dracer.MapElements
 
         #region Constructors
         public Tile(TileType type, float rotation, int xIndex, int yIndex)
-            : base(new Vector2(xIndex * 768, yIndex * 768), rotation, new Vector2(768), 0.1f)
+            : base(new Vector2(xIndex * Map.TileSize, yIndex * Map.TileSize), rotation, new Vector2(Map.TileSize), 0.1f)
         {
             Type = type;
             sprite = SetSprite();
 
-            Rect = new Rectangle(position.ToPoint(), new Point(768));
+            origin *= 2;
+
+            Rect = new Rectangle(position.ToPoint(), new Point((int)Map.TileSize));
         }
         #endregion
 

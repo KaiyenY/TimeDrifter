@@ -20,7 +20,7 @@ namespace _2dracer
 
         // Constructor
         public Enemy(Texture2D sprite, Vector2 position) 
-            : base(new GameObject(position, 0, sprite, new Vector2(64, 128), 0.15f), Vector2.Zero, 0)
+            : base(new GameObject(position, 0, sprite, new Vector2(Options.ScreenWidth / 8, Options.ScreenHeight / 9), 0.15f), Vector2.Zero, 0)
         {
             currentDestination = new Node(base.position.ToPoint()); //initialize current destination to where it begins
             prevRotation = rotation;
@@ -29,10 +29,8 @@ namespace _2dracer
         // Methods
         public override void Draw()
         {
-            rotation += (float)Math.PI / 2;
             base.Draw();
             Game1.spriteBatch.DrawString(LoadManager.Fonts["Connection"], "GOING TO " + currentDestination.Location, new Vector2(this.Position.X + 10, this.Position.Y - 10), Color.Red, 0f, Vector2.Zero, 0.25f, SpriteEffects.None, 1.0f);
-            rotation -= (float)Math.PI / 2;
         }
 
         public override void Update()

@@ -53,7 +53,7 @@ namespace _2dracer.MapElements
         /// </summary>
         public void Draw(Texture2D texture)
         {
-            double fieldOfView = (3.14159 / 4) * Options.Graphics.GraphicsDevice.Viewport.Width/1500;
+            double fieldOfView = (3.14159 / 4) * Options.Graphics.GraphicsDevice.Viewport.Width / (Map.TileSize * 2.338f);
 
             effect.Projection = Matrix.CreatePerspectiveFieldOfView((float)fieldOfView, Options.Graphics.GraphicsDevice.Viewport.AspectRatio, 0.1f, 200f);
             effect.View = Matrix.CreateLookAt(new Vector3(Vector2.Zero, 2.3f), Vector3.Zero, Vector3.Up);

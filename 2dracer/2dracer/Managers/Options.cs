@@ -79,6 +79,8 @@ namespace _2dracer.Managers
             Fullscreen = Graphics.IsFullScreen = !Graphics.IsFullScreen;
             Graphics.ApplyChanges();
 
+            MapElements.Map.UpdateTileSize();
+
             UIManager.RefreshList();
         }
         #endregion

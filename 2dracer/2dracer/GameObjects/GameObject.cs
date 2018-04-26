@@ -12,6 +12,7 @@ namespace _2dracer
 
         protected Texture2D sprite;     // static sprite
         protected Color color;          // color tint of the sprite
+        protected Vector2 origin;       // shifts the texture of this object with the given vector
         protected Vector2 size;         // fixed standard size (width and height) of objects of this type
         protected Vector2 scale;        // the scaling factor for this particular object
         protected float layerDepth;     // determines the drawing layer of this object
@@ -23,6 +24,7 @@ namespace _2dracer
         public float Rotation { get { return rotation; } }
         public Texture2D Sprite { get { return sprite; } set { sprite = value; } }
         public Color Color { get { return color; } }
+        public Vector2 Origin { get { return origin; } }
         public Vector2 Size { get { return size; } }
         public Vector2 Scale { get { return scale; } }
         public float LayerDepth { get { return layerDepth; } }
@@ -42,6 +44,8 @@ namespace _2dracer
             this.size = size;
             this.scale = scale;
             this.layerDepth = layerDepth;
+
+            origin = new Vector2(sprite.Width, sprite.Height) / 2;
 
             isEnabled = startEnabled;
         }
@@ -73,8 +77,8 @@ namespace _2dracer
         /// </summary>
         public virtual void Draw()
         {
+            origin = new Vector2(sprite.Width, sprite.Height) / 2;
             Vector2 appliedScale = new Vector2((size.X * scale.X) / sprite.Width, (size.Y * scale.Y) / sprite.Height);
-            Vector2 origin = new Vector2((sprite.Width) / 2, (sprite.Height) / 2);
             Game1.spriteBatch.Draw(sprite, position, null, color, rotation, origin, appliedScale, SpriteEffects.None, layerDepth);
         }
     }

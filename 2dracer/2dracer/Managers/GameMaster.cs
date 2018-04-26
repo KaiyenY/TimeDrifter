@@ -36,8 +36,8 @@ namespace _2dracer.Managers
             {
                 int j = 0;
                 int k = 0;
-                int minDistance = 2;
-                int maxDistance = 4;
+                int minDistance = 3;
+                int maxDistance = 5;
 
                 do
                 {
@@ -48,19 +48,20 @@ namespace _2dracer.Managers
                     k = rand.Next(0, MapElements.Map.Tiles.GetLength(1));
 
                     // find new random tile if
-                } while (MapElements.Map.Tiles[j, k].Type == MapElements.TileType.Building //  the current is a building
+                }
+                while (MapElements.Map.Tiles[j, k].Type == MapElements.TileType.Building //  the current is a building
                         ||  
                         // To close to playerX (2 blocks)               AND            To close to playerY (2 blocks)
-                        (Math.Abs(Player.PlayerPos.X - 768 * j) < 768* minDistance && Math.Abs(Player.PlayerPos.Y - 768 * k) < 768 * minDistance)           
+                        (Math.Abs(Player.PlayerPos.X - MapElements.Map.TileSize * j) < MapElements.Map.TileSize * minDistance && Math.Abs(Player.PlayerPos.Y - MapElements.Map.TileSize * k) < MapElements.Map.TileSize * minDistance)           
                         ||              // the current tile is close to PlayerY
                         // To far from playerX (4 blocks)               OR          To far from playerY (4 blocks)
-                        (Math.Abs(Player.PlayerPos.X - 768 * j) > 768* maxDistance || Math.Abs(Player.PlayerPos.Y - 768 * k) > 768* maxDistance)
+                        (Math.Abs(Player.PlayerPos.X - MapElements.Map.TileSize * j) > MapElements.Map.TileSize * maxDistance || Math.Abs(Player.PlayerPos.Y - MapElements.Map.TileSize * k) > MapElements.Map.TileSize * maxDistance)
                         );                
 
 
                 Console.WriteLine(j + " " + k);
 
-                Instantiate(new Enemy(LoadManager.Sprites["Cop"], new Vector2(768*j, 768*k)));
+                Instantiate(new Enemy(LoadManager.Sprites["Cop"], new Vector2(MapElements.Map.TileSize * j, MapElements.Map.TileSize * k)));
             }
         }
 

@@ -20,6 +20,14 @@ namespace _2dracer.MapElements
         public static Node[,] Nodes { get; private set; }
         public static Tile[,] Tiles { get; private set; }
         public static Vector2 Size { get; private set; }
+        public static float TileSize { get; set; }
+        #endregion
+
+        #region Constructor
+        static Map()
+        {
+            UpdateTileSize();
+        }
         #endregion
 
         #region Methods
@@ -105,7 +113,7 @@ namespace _2dracer.MapElements
             Nodes = new Node[mapSize[0], mapSize[1]];           // Set up nodes list
             Buildings = new List<Building>();                   // Set up buildings list
 
-            Size = new Vector2(768 * Tiles.GetLength(0), 768 * Tiles.GetLength(1));
+            Size = new Vector2(TileSize * Tiles.GetLength(0), TileSize * Tiles.GetLength(1));
 
             CreateTiles();
         }
@@ -147,7 +155,7 @@ namespace _2dracer.MapElements
                     else
                     {
                         // Add building to the list of buildings
-                        Buildings.Add(new Building(new Vector2(x * 768, y * 768)));
+                        Buildings.Add(new Building(new Vector2(x * TileSize, y * TileSize)));
 
                         // Make sure there is no node in this position
                         Nodes[x, y] = null;
@@ -213,6 +221,21 @@ namespace _2dracer.MapElements
                     n.Neighbors.Add(Nodes[n.Index[0], n.Index[1] + 1]);
                 }
             }
+        }
+
+        /// <summary>
+        /// Updates the tile sizes.
+        /// </summary>
+        public static void UpdateTileSize()
+        {
+            TileSize = Options.ScreenWidth * 7 / 10;
+            
+            if (Buildings != null)
+            {
+                Buildings.Clear();
+            }
+
+            LoadMap();
         }
         #endregion
     }

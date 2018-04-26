@@ -31,7 +31,7 @@ namespace _2dracer
 
         #region Constructor
         public Player(Vector2 position) 
-            : base (position, 0, LoadManager.Sprites["RedCar"], new Vector2(128, 64), 400, 100, 250, 750)
+            : base (position, 0, LoadManager.Sprites["RedCar"], new Vector2(Options.ScreenWidth / 8, Options.ScreenHeight / 9), 400, 100, 250, 1000)
         {
             Health = 100;
             TimeJuice = 0;
