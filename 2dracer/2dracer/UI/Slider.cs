@@ -10,14 +10,16 @@ namespace _2dracer.UI
     public class Slider : UIElement
     {
         #region Fields
+        private float minX;
+        private float maxX;
         #endregion
 
         #region Properties
         #endregion
 
         #region Constructor
-        public Slider(Point location, Texture2D sprite, bool enabled, string name)
-            : base(location, new Point(Options.ScreenWidth / 4, Options.ScreenHeight / 10), LoadManager.Sprites["Slider"], enabled, 0.0f, name)
+        public Slider(Point location, bool enabled, string name)
+            : base(location, new Point(Options.ScreenWidth / 2, Options.ScreenHeight / 10), LoadManager.Sprites["Slider"], enabled, 0.0f, name)
         {
 
         }

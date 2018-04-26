@@ -90,7 +90,8 @@ namespace _2dracer.Managers
                 case GameState.Menu:
                     Elements = new List<UIElement>
                     {
-                        new TextElement(new Point(50, 50), true, 1.0f, "title", "Time Drifter Deluxe"),
+                        new TextElement(new Point((Options.ScreenWidth / 2), (Options.ScreenHeight / 12)), 
+                            true, 1.0f, "title", "Time Drifter Deluxe"),
 
                         new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
                             (Options.ScreenHeight / 3)),
@@ -98,11 +99,11 @@ namespace _2dracer.Managers
 
                         new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
                             (Options.ScreenHeight / 2)),
-                            true, "instructionsButton", "Instructions"),
+                            true, "optionsButton", "Options"),
 
                         new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
                             (Options.ScreenHeight * 2 / 3)),
-                            true, "optionsButton", "Options"),
+                            true, "instructionsButton", "Instructions"),
 
                         new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
                             (Options.ScreenHeight * 5 / 6)),
@@ -113,13 +114,19 @@ namespace _2dracer.Managers
                 case GameState.Instructions:
                     Elements = new List<UIElement>
                     {
-                        new TextElement(new Point(50, 50), true, 1.0f, "title", "Instructions"),
+                        new TextElement(new Point((Options.ScreenWidth / 2), (Options.ScreenHeight / 56)), 
+                            true, 1.0f, "title", "Instructions"),
 
-                        new TextElement(new Point(50, 240), true, 0.5f, "i1", "Press W for gas and Space for break."),
-                        new TextElement(new Point(50, 330), true, 0.5f, "i2", "Press A and D to steer."),
-                        new TextElement(new Point(50, 420), true, 0.5f, "i3", "Press E to slow down time."),
-                        new TextElement(new Point(50, 510), true, 0.5f, "i4", "Move the mouse to aim."),
-                        new TextElement(new Point(50, 600), true, 0.5f, "i5", "Click to shoot."),
+                        new TextElement(new Point((Options.ScreenWidth / 2), (Options.ScreenHeight / 7)), 
+                            true, 0.5f, "i1", "Press W for gas and Space for break."),
+                        new TextElement(new Point((Options.ScreenWidth / 2), (Options.ScreenHeight * 2 / 7)), 
+                            true, 0.5f, "i2", "Press A and D to steer."),
+                        new TextElement(new Point((Options.ScreenWidth / 2), (Options.ScreenHeight * 3 / 7)), 
+                            true, 0.5f, "i3", "Press E to slow down time."),
+                        new TextElement(new Point((Options.ScreenWidth / 2), (Options.ScreenHeight * 4 / 7)), 
+                            true, 0.5f, "i4", "Move the mouse to aim."),
+                        new TextElement(new Point((Options.ScreenWidth / 2), (Options.ScreenHeight * 5 / 7)), 
+                            true, 0.5f, "i5", "Click to shoot."),
 
                         new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
                             (Options.ScreenHeight * 5 / 6)), true, "menuButton", "Back"),
@@ -129,23 +136,38 @@ namespace _2dracer.Managers
                 case GameState.Options:
                     Elements = new List<UIElement>
                     {
-                        new TextElement(new Point(50, 50), true, 1.0f, "optionsTitle", "Options"),
+                        new TextElement(new Point((Options.ScreenWidth / 2), (Options.ScreenHeight / 12)), 
+                        true, 1.0f, "optionsTitle", "Options"),
 
-                        new Button(new Point((Options.ScreenWidth / 4) - (Options.ScreenWidth / 8),
-                            Options.ScreenHeight / 3), true, "fullScreen", "Fullscreen"),
+                        new TextElement(new Point((Options.ScreenWidth * 5 / 24), (Options.ScreenHeight / 3)),
+                            true, 0.5f, "masterVolume", "Master Volume"),
+                        new Slider(new Point((Options.ScreenWidth * 15 / 24) - (Options.ScreenWidth / 4),
+                            (Options.ScreenHeight / 3)), true, "masterVolume"),
 
-                        new Button(new Point((Options.ScreenWidth * 3 / 4) - (Options.ScreenWidth / 8),
-                            (Options.ScreenHeight / 3)), true, "muteButton", "Mute"),
+                        new TextElement(new Point((Options.ScreenWidth * 5 / 24), (Options.ScreenHeight / 2)),
+                            true, 0.5f, "musicVolume", "Music Volume"),
+                        new Slider(new Point((Options.ScreenWidth * 15 / 24) - (Options.ScreenWidth / 4),
+                            (Options.ScreenHeight / 2)), true, "musicVolume"),
 
+                        new TextElement(new Point((Options.ScreenWidth * 5 / 24), (Options.ScreenHeight * 2 / 3)),
+                            true, 0.5f, "soundVolume", "Sound Volume"),
+                        new Slider(new Point((Options.ScreenWidth * 15 / 24) - (Options.ScreenWidth / 4),
+                            (Options.ScreenHeight * 2 / 3)), true, "soundVolume"),
+
+                        new Button(new Point((Options.ScreenWidth / 6) - (Options.ScreenWidth / 8),
+                            Options.ScreenHeight * 5 / 6), true, "fullScreen", "Fullscreen"),
                         new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
-                            (Options.ScreenHeight * 2 / 3)), true, "backButton", "Back")
+                            (Options.ScreenHeight * 5 / 6)), true, "muteButton", "Mute"),
+                        new Button(new Point((Options.ScreenWidth * 5 / 6) - (Options.ScreenWidth / 8),
+                            (Options.ScreenHeight * 5 / 6)), true, "backButton", "Back")
                     };
                     break;
 
                 case GameState.Pause:
                     Elements = new List<UIElement>
                     {
-                        new TextElement(new Point(50, 50), true, 1.0f, "pauseTitle", "Pause"),
+                        new TextElement(new Point((Options.ScreenWidth / 2), (Options.ScreenHeight / 12)),
+                            true, 1.0f, "pauseTitle", "Pause"),
 
                         new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
                             (Options.ScreenHeight / 3)), true, "resumeButton", "Resume"),
@@ -161,8 +183,11 @@ namespace _2dracer.Managers
                 case GameState.GameOver:
                     Elements = new List<UIElement>
                     {
-                        new TextElement(new Point(50, 50), true, 1.0f, "title", "Game Over"),
+                        new TextElement(new Point((Options.ScreenWidth / 2), (Options.ScreenHeight / 12)),
+                            true, 1.0f, "title", "Game Over"),
+
                         new TextElement(new Point(400, 200), true, 0.25f, "playerScore", "Score : "),
+
                         new TextElement(new Point(400, 300), true, 0.25f, "playerScore", "High Scores : "),
 
                         new Button(new Point((Options.ScreenWidth / 4) - (Options.ScreenWidth / 8),

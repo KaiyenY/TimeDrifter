@@ -19,7 +19,9 @@ namespace _2dracer.UI
         {
             textScale = size;
 
-            textPosition = location.ToVector2();
+            // textPosition = Vector2.Subtract(location.ToVector2(), font.MeasureString(text) * textScale / 2);
+            textPosition = new Vector2(location.X - font.MeasureString(text).X * textScale / 2,
+                location.Y);
         }
         #endregion
     }
