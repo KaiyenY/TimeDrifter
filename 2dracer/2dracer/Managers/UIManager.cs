@@ -85,17 +85,42 @@ namespace _2dracer.Managers
                             (Options.ScreenHeight / 10)), 
                             LoadManager.Sprites["Button"], "playButton", "Play"),
 
+                            new Button(new Rectangle((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
+                            (Options.ScreenHeight * 1 / 2),
+                            (Options.ScreenWidth / 4),
+                            (Options.ScreenHeight / 10)),
+                            LoadManager.Sprites["Button"], "howToButton", "How To Play"),
+
                             new Button(new Rectangle((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8), 
-                            (Options.ScreenHeight / 2), 
+                            (Options.ScreenHeight * 2 / 3), 
                             (Options.ScreenWidth / 4), 
                             (Options.ScreenHeight / 10)), 
                             LoadManager.Sprites["Button"], "optionsButton", "Options"),
 
                             new Button(new Rectangle((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8), 
-                            (Options.ScreenHeight * 2 / 3), 
+                            (Options.ScreenHeight * 5 / 6), 
                             (Options.ScreenWidth / 4),
                             (Options.ScreenHeight / 10)), 
                             LoadManager.Sprites["Button"], "exitButton", "Exit")
+                        };
+                    break;
+
+                case GameState.HowTo:
+                    Elements = new List<Element>
+                        {
+                            new Element(new Vector2(50, 50), 1f, "howToTitle", "How To Play"),
+
+                            new Element(new Vector2(50, 250), 0.5f, "i1", "Press W and S for Gas and Break"),
+                            new Element(new Vector2(50, 350), 0.5f, "i2", "Press A and D to steer"),
+                            new Element(new Vector2(50, 450), 0.5f, "i3", "Move mouse to aim gun"),
+                            new Element(new Vector2(50, 550), 0.5f, "i4", "Click to shoot    (infinite bullets)"),
+
+                            new Button(new Rectangle(
+                                (Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
+                                (Options.ScreenHeight * 5 / 6),
+                                (Options.ScreenWidth / 4),
+                                (Options.ScreenHeight / 10)),
+                                LoadManager.Sprites["Button"], "backButton", "Back")
                         };
                     break;
 
@@ -223,6 +248,12 @@ namespace _2dracer.Managers
 
                     case "muteButton":
                         AudioManager.ToggleMute();
+                        break;
+
+                    case "howToButton":
+                        Elements.Clear();
+                        Game1.GameState = GameState.HowTo;
+                        RefreshList();
                         break;
 
                     case "optionsButton":

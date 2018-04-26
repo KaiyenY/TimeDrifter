@@ -92,6 +92,10 @@ namespace _2dracer.Managers
                     PauseMusic();
                     break;
 
+                case GameState.HowTo:
+                    PauseMusic();
+                    break;
+
                 case GameState.Pause:
                     PauseMusic();
                     break;
