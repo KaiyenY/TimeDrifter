@@ -83,8 +83,8 @@ namespace _2dracer
 
             if (Player.slowMo)
             {
-                position += velocity * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds / 2;
-                rotation += angularVelocity * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds / 2;
+                position += velocity * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds / 3;
+                rotation += angularVelocity * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds / 3;
             }
 
             else
