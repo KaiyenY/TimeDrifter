@@ -19,7 +19,7 @@ namespace _2dracer
 
         // Constructor
         public Turret() : 
-            base(new Vector2(0,0), 0, LoadManager.Sprites["Turret"], new Vector2(Options.ScreenWidth / 20.48f, Options.ScreenHeight / 23.04f), 0.5f)
+            base(new Vector2(0,0), 0, LoadManager.Sprites["Turret"], new Vector2(Options.ScreenWidth / 24, Options.ScreenHeight / 27), 0.5f)
         {
             timer = 0;
             bullets = new List<Bullet>(50);
@@ -73,7 +73,7 @@ namespace _2dracer
 
                 bullets.Add(new Bullet(position, rotation));
 
-                AudioManager.PlaySound("Gunshot", 1f, 0.25f);
+                AudioManager.PlaySound("Gunshot", 0.25f);
             }
         }
 

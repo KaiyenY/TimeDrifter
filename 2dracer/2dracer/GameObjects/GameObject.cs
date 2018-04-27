@@ -6,7 +6,7 @@ namespace _2dracer
 {
     public class GameObject
     {
-        // fields
+        #region Fields
         protected Vector2 position;     // position of center in world space
         protected float rotation;       // rotation in degrees from +x axis (remember y is flipped)
 
@@ -18,8 +18,9 @@ namespace _2dracer
         protected float layerDepth;     // determines the drawing layer of this object
 
         protected bool isEnabled;       // if this object should be updated and drawn
+        #endregion
 
-        // properties
+        #region Properties
         public Vector2 Position { get { return position; } }
         public float Rotation { get { return rotation; } }
         public Texture2D Sprite { get { return sprite; } set { sprite = value; } }
@@ -29,8 +30,9 @@ namespace _2dracer
         public Vector2 Scale { get { return scale; } }
         public float LayerDepth { get { return layerDepth; } }
         public bool IsEnabled { get { return isEnabled; } }
+        #endregion
 
-        // constructors
+        #region Constructors
         public GameObject(GameObject g)
                    : this(g.Position, g.Rotation, g.Sprite, g.Color, g.Size, g.Scale, g.LayerDepth, g.IsEnabled) { }
         
@@ -64,8 +66,9 @@ namespace _2dracer
 
         public GameObject(Vector2 size)
                    : this(Vector2.Zero, 0f, size, 0f) { }
+        #endregion
 
-        // methods
+        #region Methods
         /// <summary>
         /// Updates logic for this game object every frame
         /// </summary>
@@ -94,6 +97,7 @@ namespace _2dracer
                 Game1.spriteBatch.Draw(sprite, position, null, color, rotation, origin, appliedScale, SpriteEffects.None, layerDepth);
             }
         }
+        #endregion
     }
 }
 

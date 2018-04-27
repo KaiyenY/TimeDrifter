@@ -31,7 +31,7 @@ namespace _2dracer
 
         #region Constructor
         public Player(Vector2 position) 
-            : base (position, 0, LoadManager.Sprites["RedCar"], new Vector2(Options.ScreenWidth / 8, Options.ScreenHeight / 9), 400, 100, 250, 1000)
+            : base (position, 0, LoadManager.Sprites["RedCar"], new Vector2(Options.ScreenWidth / 12, Options.ScreenHeight / 13.5f), 400, 100, 250, 1000)
         {
             Health = 100;
             TimeJuice = 0;
@@ -99,10 +99,10 @@ namespace _2dracer
             Score += Game1.gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
 
             if (!slowMo && TimeJuice < 10)
-                TimeJuice += Game1.gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
+                TimeJuice += Game1.gameTime.ElapsedGameTime.TotalMilliseconds / 2000;
 
             if (slowMo)
-                TimeJuice -= Game1.gameTime.ElapsedGameTime.TotalMilliseconds / 500;
+                TimeJuice -= Game1.gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
 
             if (TimeJuice <= 0)
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using _2dracer.Managers;
 
 using _2dracer.UI;
@@ -39,13 +40,25 @@ namespace _2dracer.Managers
             for (int i = 0; i < Elements.Count; i++)
             {
                 Elements[i].Update();
+
+                if (Game1.GameState == GameState.Game)
+                {
+                    if (Player.slowMo && Elements[i].Name == "timeEffect")
+                    {
+                        Elements[i].Enabled = true;
+                    }
+                    else if (!Player.slowMo && Elements[i].Name == "timeEffect")
+                    {
+                        Elements[i].Enabled = false;
+                    }
+                }
             }
 
             if (prevState != Game1.GameState)
             {
                 RefreshList();
             }
-
+            
             prevState = Game1.GameState;
         }
 
@@ -81,7 +94,12 @@ namespace _2dracer.Managers
                             LoadManager.Sprites["HealthGauge"], true, 0.0f, "healthGauge"),
 
                         new ImageElement(new Point((Options.ScreenWidth * 5 / 6), 0), new Point((Options.ScreenWidth / 6)),
-                            LoadManager.Sprites["TimeGauge"], true, 0.0f, "timeGauge")
+                            LoadManager.Sprites["TimeGauge"], true, 0.0f, "timeGauge"),
+
+                        // Add score odometer
+
+                        new ImageElement(Point.Zero, new Point(Options.ScreenWidth, Options.ScreenHeight), LoadManager.Sprites["TimeEffect"],
+                            false, 0.0f, "timeEffect")
                     };
 
                     Player.CreateHUD();
@@ -272,6 +290,7 @@ namespace _2dracer.Managers
                         break;
 
                     case "optionsButton":
+                        prevOptionsState = Game1.GameState;
                         Elements.Clear();
                         Game1.GameState = GameState.Options;
                         RefreshList();
@@ -279,8 +298,17 @@ namespace _2dracer.Managers
 
                     case "backButton":
                         Elements.Clear();
-                        GameMaster.ClearAll();
-                        Game1.GameState = GameState.Menu;
+
+                        if (prevOptionsState == GameState.Pause)
+                        {
+                            Game1.GameState = GameState.Pause;
+                        }
+                        else if (prevOptionsState == GameState.Menu)
+                        {
+                            GameMaster.ClearAll();
+                            Game1.GameState = GameState.Menu;
+                        }
+
                         RefreshList();
                         break;
 

@@ -42,7 +42,7 @@ namespace _2dracer.Managers
             {
                 position.Y = pos.Y - (Options.ScreenHeight / 2) + Player.playerVelocity.Y / 5;
             }
-
+            
             if (position.X < (Options.ScreenWidth / 2) - (tileSize / 2) - (Options.ScreenWidth / 2) + Player.playerVelocity.X / 5)
                 position.X = (Options.ScreenWidth / 2) - (tileSize / 2) - (Options.ScreenWidth / 2) + Player.playerVelocity.X / 5;
 

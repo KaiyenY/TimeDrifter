@@ -70,7 +70,7 @@ namespace _2dracer.MapElements
         {
             Vector2 playerPos = Vector2.Add(
                 GameMaster.GameObjects[1].Position,
-                new Vector2(sprite.Width));
+                new Vector2(Map.TileSize / 2));
 
             if (!ContainsPlayer && Rect.Contains(playerPos))
             {

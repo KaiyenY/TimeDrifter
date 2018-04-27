@@ -107,8 +107,12 @@ namespace _2dracer.Managers
         {
             Sounds = new Dictionary<string, SoundEffect>
             {
+                { "Ambience01", Load<SoundEffect>("Audio/Sound Effects/Ambience01") },
+                { "Ambience02", Load<SoundEffect>("Audio/Sound Effects/Ambience02") },
+                { "Click", Load<SoundEffect>("Audio/Sound Effects/ButtonClick") },
+                { "Explosion", Load<SoundEffect>("Audio/Sound Effects/Explosion") },
                 { "Gunshot", Load<SoundEffect>("Audio/Sound Effects/GunFire") },
-                { "Click", Load<SoundEffect>("Audio/Sound Effects/ButtonClick") }
+                { "SlowMotion", Load<SoundEffect>("Audio/Sound Effects/SlowMotion") }
             };
         }
 
@@ -119,7 +123,6 @@ namespace _2dracer.Managers
         {
             Sprites = new Dictionary<string, Texture2D>
             {
-                { "TimeJuiceScreen", Load<Texture2D>("transparent") },
                 { "Building1", Load<Texture2D>("Textures/Buildings/Building0") },
                 { "Building2", Load<Texture2D>("Textures/Buildings/Building1") },
                 { "Building3", Load<Texture2D>("Textures/Buildings/Building2") },
@@ -137,6 +140,7 @@ namespace _2dracer.Managers
                 { "Slider", Load<Texture2D>("Textures/UI/Slider") },
                 { "Square", Load<Texture2D>("Textures/Square") },
                 { "StraightRoad", Load<Texture2D>("Textures/Tiles/StraightRoad") },
+                { "TimeEffect", Load<Texture2D>("Textures/UI/TimeEffect") },
                 { "TimeGauge", Load<Texture2D>("Textures/UI/TimeGauge") },
                 { "TIntersection", Load<Texture2D>("Textures/Tiles/ThreeWayIntersection") },
                 { "Turret", Load<Texture2D>("Textures/Turret") }

@@ -22,16 +22,31 @@ namespace _2dracer.Managers
         /// Holds a reference to the music in <see cref="LoadManager"/>.
         /// </summary>
         public static Dictionary<string, Song> Music;
-        
+
         /// <summary>
-        /// Determines what track is currently playing.
+        /// Gives the sound effect for being in slow motion.
         /// </summary>
-        public static string CurrentTrack;
+        private static SoundEffectInstance SlowMotion;
+
+        /// <summary>
+        /// Determines if the game is currently muted.
+        /// </summary>
+        public static bool Muted;
 
         /// <summary>
         /// Controls the overall volume of the game.
         /// </summary>
         public static float MasterVolume;
+
+        /// <summary>
+        /// Determines the volume of the sound in the game.
+        /// </summary>
+        public static float SoundVolume;
+
+        /// <summary>
+        /// Determines what track is currently playing.
+        /// </summary>
+        public static string CurrentTrack;
         #endregion
 
         #region Properties
@@ -39,6 +54,11 @@ namespace _2dracer.Managers
         /// The current state of the <see cref="MediaPlayer"/>.
         /// </summary>
         public static MediaState State { get { return MediaPlayer.State; } }
+
+        /// <summary>
+        /// Determines the volume of the music in the game.
+        /// </summary>
+        public static float MusicVolume { get { return MediaPlayer.Volume; } set { MediaPlayer.Volume = value; } }
         #endregion
 
         #region Constructor
@@ -46,7 +66,13 @@ namespace _2dracer.Managers
         {
             Sounds = LoadManager.Sounds;
             Music = LoadManager.Music;
-            MasterVolume = 0f;
+
+            SlowMotion = Sounds["SlowMotion"].CreateInstance();
+
+            MasterVolume = 0.5f;
+            SoundVolume = 1.0f;
+
+            Muted = MediaPlayer.IsMuted = false;
         }
         #endregion
 
@@ -69,8 +95,25 @@ namespace _2dracer.Managers
                     {
                         ResumeMusic();
                     }
-                    break;
 
+                    if (Player.slowMo)
+                    {
+                        SlowMotion.Volume = 1.0f * SoundVolume * MasterVolume;
+                        SlowMotion.Play();
+                    }
+                    else if (!Player.slowMo && SlowMotion.State == SoundState.Playing)
+                    {
+                        if (SlowMotion.Volume < 0.1f)
+                        {
+                            SlowMotion.Stop();
+                        }
+                        else if (SlowMotion.Volume > 0.1f)
+                        {
+                            SlowMotion.Volume -= 0.05f;
+                        }
+                    }
+                    break;
+                    
                 case GameState.GameOver:
                     // Some sad game over music?
                     break;
@@ -105,45 +148,23 @@ namespace _2dracer.Managers
             }
         }
 
+        /// <summary>
+        /// Toggles whether sounds and music are muted or not.
+        /// </summary>
         public static void ToggleMute()
         {
-            if (MasterVolume == 0f)
-            {
-                MasterVolume = 1f;
-            }
-            else
-            {
-                MasterVolume = 0f;
-
-                // Resumes then stops the music
-                if (State == MediaState.Paused)
-                {
-                    ResumeMusic();
-                    StopMusic();
-                }
-
-                // Stops music
-                if (State == MediaState.Playing)
-                {
-                    StopMusic();
-                }
-
-                CurrentTrack = null;
-            }
+            Muted = MediaPlayer.IsMuted = !Muted;
         }
 
         /// <summary>
         /// Plays a sound effect
         /// </summary>
         /// <param name="soundEffect">The name of the sound to play</param>
-        /// <param name="volume">How loud the sound will play</param>
-        /// <param name="pitch">The pitch (high / low) of the sound</param>
-        /// <param name="pan">Determines volume per audio channel (left / right)</param>
-        public static void PlaySound(string soundEffect, float volume = 1f, float pitch = 0f, float pan = 0f)
+        public static void PlaySound(string soundEffect, float volume = 1.0f, float pitch = 0.0f, float pan = 0.0f)
         {
             if (Sounds.ContainsKey(soundEffect))
             {
-                Sounds[soundEffect].Play(volume * MasterVolume, pitch, pan);
+                Sounds[soundEffect].Play(volume, pitch, pan);
             }
             else
             {
@@ -160,7 +181,7 @@ namespace _2dracer.Managers
         {
             if (Music.ContainsKey(trackName))
             {
-                MediaPlayer.Volume = volume * MasterVolume;
+                MusicVolume = volume * MasterVolume;
                 MediaPlayer.Play(Music[trackName]);
                 CurrentTrack = trackName;
             }

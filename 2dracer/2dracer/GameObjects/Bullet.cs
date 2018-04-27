@@ -19,7 +19,7 @@ namespace _2dracer
 
         // Constructor
         public Bullet(Vector2 position, float angle)
-            : base(new GameObject(position, angle, LoadManager.Sprites["Bullet"], new Vector2(20), 0.25f), Vector2.Zero, 0)
+            : base(new GameObject(position, angle, LoadManager.Sprites["Bullet"], new Vector2(Options.ScreenWidth / 64), 0.25f), Vector2.Zero, 0)
         {
             Delete = false;
 

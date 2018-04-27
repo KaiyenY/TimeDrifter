@@ -75,7 +75,7 @@ namespace _2dracer.UI
         /// <summary>
         /// Determines if this element is updating / drawing.
         /// </summary>
-        public bool Enabled { get { return enabled; } }
+        public bool Enabled { get { return enabled; } set { enabled = value; } }
 
         /// <summary>
         /// Gives a unique name to this element.

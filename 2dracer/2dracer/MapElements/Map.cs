@@ -228,7 +228,7 @@ namespace _2dracer.MapElements
         /// </summary>
         public static void UpdateTileSize()
         {
-            TileSize = Options.ScreenWidth * 7 / 10;
+            TileSize = Options.ScreenWidth * 4 / 10;
             
             if (Buildings != null)
             {

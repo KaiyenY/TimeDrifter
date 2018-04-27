@@ -132,16 +132,9 @@ namespace _2dracer
                 GameMaster.Draw();
                 spriteBatch.End();
 
-
-                //transparent texture on screen
-                spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, null);
-                if(Player.slowMo) spriteBatch.Draw(LoadManager.Sprites["TimeJuiceScreen"], new Rectangle(0, 0, Options.Graphics.GraphicsDevice.Viewport.Width, Options.Graphics.GraphicsDevice.Viewport.Height), Color.White);
-                spriteBatch.End();
-
                 // Apply Depth Buffer for 3D
                 GraphicsDevice.DepthStencilState = state;
                 Map.DrawBuildings();
-
             }
 
             UIManager.Draw();           // UI always draws on top
