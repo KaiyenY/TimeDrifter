@@ -280,7 +280,7 @@ namespace _2dracer.Managers
                         break;
 
                     case "muteButton":
-                        AudioManager.ToggleMute();
+                        Audio.ToggleMute();
                         break;
 
                     case "instructionsButton":

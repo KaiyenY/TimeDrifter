@@ -20,7 +20,6 @@ namespace _2dracer
         GameOver
     }
 
-
     public class Game1 : Game
     {
         #region Fields
@@ -43,8 +42,7 @@ namespace _2dracer
 
             gameTime = new GameTime();
         }
-
-
+        
         #region Methods
         protected override void Initialize()
         {
@@ -75,7 +73,7 @@ namespace _2dracer
             Input.Update();
 
             // Handles all of the music c:
-            AudioManager.Update();
+            Audio.Update();
 
             // Handles drawing the UI
             UIManager.Update();

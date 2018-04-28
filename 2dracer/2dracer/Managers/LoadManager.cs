@@ -111,6 +111,7 @@ namespace _2dracer.Managers
                 { "Ambience02", Load<SoundEffect>("Audio/Sound Effects/Ambience02") },
                 { "Click", Load<SoundEffect>("Audio/Sound Effects/ButtonClick") },
                 { "Explosion", Load<SoundEffect>("Audio/Sound Effects/Explosion") },
+                { "GameOver", Load<SoundEffect>("Audio/Sound Effects/GameOver") },
                 { "Gunshot", Load<SoundEffect>("Audio/Sound Effects/GunFire") },
                 { "SlowMotion", Load<SoundEffect>("Audio/Sound Effects/SlowMotion") }
             };
