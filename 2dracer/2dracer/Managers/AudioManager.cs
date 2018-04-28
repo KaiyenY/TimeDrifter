@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
@@ -10,7 +8,7 @@ namespace _2dracer.Managers
     /// <summary>
     /// Contains all sounds and 
     /// </summary>
-    public static class AudioManager
+    public static class Audio
     {
         #region Fields
         /// <summary>
@@ -27,6 +25,11 @@ namespace _2dracer.Managers
         /// Gives the sound effect for being in slow motion.
         /// </summary>
         private static SoundEffectInstance SlowMotion;
+
+        /// <summary>
+        /// Stops the GameOver soundeffect from playing every update loop.
+        /// </summary>
+        private static bool GameOver;
 
         /// <summary>
         /// Determines if the game is currently muted.
@@ -62,12 +65,13 @@ namespace _2dracer.Managers
         #endregion
 
         #region Constructor
-        static AudioManager()
+        static Audio()
         {
             Sounds = LoadManager.Sounds;
             Music = LoadManager.Music;
 
             SlowMotion = Sounds["SlowMotion"].CreateInstance();
+            GameOver = true;
 
             MasterVolume = 0.5f;
             SoundVolume = 1.0f;
@@ -85,6 +89,11 @@ namespace _2dracer.Managers
             switch (Game1.GameState)
             {
                 case GameState.Game:
+                    if (!GameOver)
+                    {
+                        GameOver = true;
+                    }
+
                     if (CurrentTrack != "ExtremeAction")
                     {
                         StopMusic();
@@ -115,10 +124,24 @@ namespace _2dracer.Managers
                     break;
                     
                 case GameState.GameOver:
-                    // Some sad game over music?
+                    if (State == MediaState.Playing)
+                    {
+                        StopMusic();
+                    }
+
+                    if (GameOver)
+                    {
+                        PlaySound("GameOver");
+                        GameOver = false;
+                    }
                     break;
 
                 case GameState.Menu:
+                    if (!GameOver)
+                    {
+                        GameOver = true;
+                    }
+
                     if (CurrentTrack != "HappyRock")
                     {
                         StopMusic();
@@ -132,11 +155,13 @@ namespace _2dracer.Managers
                     break;
 
                 case GameState.Options:
-                    PauseMusic();
+                    if (State != MediaState.Playing)
+                    {
+                        PauseMusic();
+                    }
                     break;
 
                 case GameState.Instructions:
-                    PauseMusic();
                     break;
 
                 case GameState.Pause:
@@ -164,7 +189,10 @@ namespace _2dracer.Managers
         {
             if (Sounds.ContainsKey(soundEffect))
             {
-                Sounds[soundEffect].Play(volume, pitch, pan);
+                if (!Muted)
+                {
+                    Sounds[soundEffect].Play(volume, pitch, pan);
+                }
             }
             else
             {

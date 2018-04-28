@@ -73,7 +73,7 @@ namespace _2dracer
 
                 bullets.Add(new Bullet(position, rotation));
 
-                AudioManager.PlaySound("Gunshot", 0.25f);
+                Audio.PlaySound("Gunshot", 0.25f);
             }
         }
 
