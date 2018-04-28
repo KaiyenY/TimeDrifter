@@ -16,7 +16,6 @@ namespace _2dracer
         protected Node currentDestination; //The node within the path that the car will currently go towards
         protected Node mostRecent; //This node holds the center node of the tile the car just stepped on. Used for A* calculations
         private float prevRotation;
-        private bool enableDurp;
 
         // Constructor
         public Enemy(Texture2D sprite, Vector2 position) 
@@ -102,25 +101,17 @@ namespace _2dracer
 
                 velocity.X += (float)Math.Cos(rotation) * 3;
                 velocity.Y += (float)Math.Sin(rotation) * 3;
-
-                if (Input.KeyTap(Keys.I))
+                
+                if (prevRotation != rotation)
                 {
-                    enableDurp = !enableDurp;
-                }
+                    float rotDiff = prevRotation - rotation;
 
-                if (!enableDurp)
-                {
-                    if (prevRotation != rotation)
-                    {
-                        float rotDiff = prevRotation - rotation;
-
-                        velocity = new Vector2(
-                            (float)(velocity.X * Math.Cos(-rotDiff) - velocity.Y * Math.Sin(-rotDiff)),
-                            (float)(velocity.X * Math.Sin(-rotDiff) + velocity.Y * Math.Cos(-rotDiff)));
+                    velocity = new Vector2(
+                        (float)(velocity.X * Math.Cos(-rotDiff) - velocity.Y * Math.Sin(-rotDiff)),
+                        (float)(velocity.X * Math.Sin(-rotDiff) + velocity.Y * Math.Cos(-rotDiff)));
 
 
-                        prevRotation = rotation;
-                    }
+                    prevRotation = rotation;
                 }
             }
         }

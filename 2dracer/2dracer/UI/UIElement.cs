@@ -148,7 +148,20 @@ namespace _2dracer.UI
         {
             if (enabled)
             {
-                if (sprite != null)
+                if (sprite != null && this is Knob)
+                {
+                    Game1.spriteBatch.Draw(
+                        sprite,
+                        rect,
+                        new Rectangle(Point.Zero, new Point(sprite.Width, sprite.Height)),
+                        color,
+                        rotation,
+                        Vector2.Zero,
+                        SpriteEffects.None,
+                        0.91f);
+                }
+
+                if (sprite != null && !(this is Knob))
                 {
                     Game1.spriteBatch.Draw(
                         sprite,

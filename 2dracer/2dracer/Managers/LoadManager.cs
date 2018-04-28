@@ -135,6 +135,7 @@ namespace _2dracer.Managers
                 { "Grass", Load<Texture2D>("Textures/Tiles/Grass") },
                 { "HealthGauge", Load<Texture2D>("Textures/UI/HealthGauge") },
                 { "Knob", Load<Texture2D>("Textures/UI/Knob") },
+                { "MenuBackground", Load<Texture2D>("Textures/MenuBackground") },
                 { "RedCar", Load<Texture2D>("Textures/RedCar") },
                 { "Roof", Load<Texture2D>("Textures/Tiles/Roof") },
                 { "Slider", Load<Texture2D>("Textures/UI/Slider") },

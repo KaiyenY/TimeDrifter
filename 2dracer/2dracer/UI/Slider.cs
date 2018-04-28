@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using _2dracer.Managers;
 
 namespace _2dracer.UI
@@ -10,8 +9,10 @@ namespace _2dracer.UI
     public class Slider : UIElement
     {
         #region Fields
-        private float minX;
-        private float maxX;
+        /// <summary>
+        /// An element that slides along this one.
+        /// </summary>
+        private Knob knob;
         #endregion
 
         #region Properties
@@ -21,7 +22,7 @@ namespace _2dracer.UI
         public Slider(Point location, bool enabled, string name)
             : base(location, new Point(Options.ScreenWidth / 2, Options.ScreenHeight / 10), LoadManager.Sprites["Slider"], enabled, 0.0f, name)
         {
-
+            UIManager.Add(knob = new Knob(new Point(location.X + 10, location.Y), enabled, location.X + 500f, location.X, name + "Knob"));
         }
         #endregion
 
