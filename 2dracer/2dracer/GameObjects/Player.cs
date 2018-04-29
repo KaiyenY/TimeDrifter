@@ -11,9 +11,6 @@ namespace _2dracer
     public class Player : Car
     {
         #region Fields
-        // Temporary elements, will be gauge needle soon
-        private static TextElement healthText;
-        private static TextElement timeText;
         private static TextElement scoreText;
         
         private Turret turret;
@@ -78,16 +75,20 @@ namespace _2dracer
                 Brake();
             }
 
+            if (Input.KeyHold(Keys.R))
+            {
+                Health -= 1;
+            }
+
+            if (Health <= 0)
+            {
+                Health = 0;
+                Game1.GameState = GameState.GameOver;
+            }
+
             AdjustVelocity();               // Adjusts player velocity
 
             Juice();
-
-            if (timeText != null && healthText != null)
-            {
-                timeText.Text = $"Time Juice : {TimeJuice:N0}";
-                healthText.Text = $"Health : {Health:N0}";
-                scoreText.Text = $"Score : {Score:N0}";
-            }
 
             base.Update();
 
@@ -120,8 +121,6 @@ namespace _2dracer
             NodeIndex[1] = thisY;
         }
 
-       
-
         /// <summary>
         /// Controls the timejuice mechanic
         /// </summary>
@@ -150,8 +149,6 @@ namespace _2dracer
         /// </summary>
         public static void CreateHUD()
         {
-            UIManager.Add(healthText = new TextElement(new Point(50, 250), true, 0.25f, "playerHealth", "Health : " + Health));
-            UIManager.Add(timeText = new TextElement(new Point(50, 350), true, 0.25f, "playerJuice", "Time Juice : " + TimeJuice));
             UIManager.Add(scoreText = new TextElement(new Point(50, 450), true, 0.25f, "playerScore", "Score : " + Score));
         }
         #endregion

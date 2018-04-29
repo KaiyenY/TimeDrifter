@@ -87,11 +87,6 @@ namespace _2dracer
                         GameState = GameState.Pause;
                     }
 
-                    if (Input.KeyTap(Keys.M))
-                    {
-                        GameState = GameState.GameOver;
-                    }
-
                     camera.Update();
                     GameMaster.Update();
                     Map.Update();
