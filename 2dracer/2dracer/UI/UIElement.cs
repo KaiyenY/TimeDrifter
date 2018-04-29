@@ -31,6 +31,11 @@ namespace _2dracer.UI
         protected Texture2D sprite;
 
         /// <summary>
+        /// Defines the rotation point for this element.
+        /// </summary>
+        protected Vector2 origin;
+
+        /// <summary>
         /// Determines the position of the text within this element.
         /// </summary>
         protected Vector2 textPosition;
@@ -104,6 +109,8 @@ namespace _2dracer.UI
 
             color = Color.White;
 
+            origin = Vector2.Zero;
+
             if (text != null)
             {
                 font = LoadManager.Fonts["Connection"];
@@ -156,7 +163,7 @@ namespace _2dracer.UI
                         new Rectangle(Point.Zero, new Point(sprite.Width, sprite.Height)),
                         color,
                         rotation,
-                        Vector2.Zero,
+                        origin,
                         SpriteEffects.None,
                         0.91f);
                 }
@@ -169,7 +176,7 @@ namespace _2dracer.UI
                         new Rectangle(Point.Zero, new Point(sprite.Width, sprite.Height)),
                         color,
                         rotation,
-                        Vector2.Zero,
+                        origin,
                         SpriteEffects.None,
                         0.9f);
                 }

@@ -94,6 +94,12 @@ namespace _2dracer.Managers
                             LoadManager.Sprites["HealthGauge"], true, 0.0f, "healthGauge"),
                         new ImageElement(new Point((Options.ScreenWidth * 5 / 6), 0), new Point((Options.ScreenWidth / 6)),
                             LoadManager.Sprites["TimeGauge"], true, 0.0f, "timeGauge"),
+                        new ImageElement(new Point((Options.ScreenWidth / 12), Options.ScreenHeight * 9 / 64),
+                            new Point(Options.ScreenWidth / 14, Options.ScreenHeight / 64), LoadManager.Sprites["Needle"],
+                            true, (float)Math.PI * 7 / 4, "healthNeedle"),
+                        new ImageElement(new Point((Options.ScreenWidth * 11 / 12), Options.ScreenHeight * 9 / 64),
+                            new Point(Options.ScreenWidth / 14, Options.ScreenHeight / 64), LoadManager.Sprites["Needle"],
+                            true, (float)Math.PI / 4, "timeNeedle"),
 
                         // Add score odometer
 
@@ -180,16 +186,16 @@ namespace _2dracer.Managers
                 case GameState.Pause:
                     Elements = new List<UIElement>
                     {
-                        new TextElement(new Point((Options.ScreenWidth / 2), (Options.ScreenHeight / 12)),
+                        new TextElement(new Point((Options.ScreenWidth / 4), (Options.ScreenHeight / 12)),
                             true, 1.0f, "pauseTitle", "Pause"),
 
-                        new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
+                        new Button(new Point((Options.ScreenWidth / 4) - (Options.ScreenWidth / 8),
                             (Options.ScreenHeight / 3)), true, "resumeButton", "Resume"),
 
-                        new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
+                        new Button(new Point((Options.ScreenWidth / 4) - (Options.ScreenWidth / 8),
                             (Options.ScreenHeight / 2)), true, "optionsButton", "Options"),
 
-                        new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
+                        new Button(new Point((Options.ScreenWidth / 4) - (Options.ScreenWidth / 8),
                             (Options.ScreenHeight * 2 / 3)), true, "menuButton", "Exit to Menu")
                     };
                     break;
