@@ -123,34 +123,6 @@ namespace _2dracer
             playerVelocity = velocity;
         }
 
-        public static void Draw3D(Texture2D texture, float rotation)
-        {
-            double fieldOfView = (3.14159 / 4) * Options.Graphics.GraphicsDevice.Viewport.Width / 1500;
-
-            effect.Projection = Matrix.CreatePerspectiveFieldOfView((float)fieldOfView, Options.Graphics.GraphicsDevice.Viewport.AspectRatio, 0.1f, 200f);
-            effect.View = Matrix.CreateLookAt(new Vector3(Vector2.Zero, 3.3f), Vector3.Zero, Vector3.Up);
-
-
-            //scale * rotation * position
-            effect.World =
-                Matrix.CreateScale(0.1f, 0.1f, 0.09f) *
-                Matrix.CreateRotationX(3.14159f/2) * 
-                Matrix.CreateRotationZ(-3.14159f / 2 + rotation) *                  // Change this one to equal rotation of 2D car
-                Matrix.CreateTranslation(worldPos.X, worldPos.Y, 0f);
-
-            effect.Texture = LoadManager.Sprites["Wheels"];
-            model.Meshes[0].Draw();
-
-
-            BasicEffect effect2 = (BasicEffect)model.Meshes[1].Effects[0];
-            effect2.Projection = effect.Projection;
-            effect2.View = effect.View;
-            effect2.World = effect.World;
-
-            effect2.Texture = texture;
-            model.Meshes[1].Draw();
-        }
-
         /// <summary>
         /// Controls the timejuice mechanic
         /// </summary>
