@@ -20,13 +20,6 @@ namespace _2dracer.MapElements
     /// </summary>
     public class Tile : GameObject
     {
-        #region Events
-        /// <summary>
-        /// Is invoked when the player enters this tile.
-        /// </summary>
-        public event EventHandler<EventArgs> Enter;
-        #endregion
-
         #region Properties
         /// <summary>
         /// The node that resides within this <see cref="Tile"/>.
@@ -74,9 +67,7 @@ namespace _2dracer.MapElements
 
             if (!ContainsPlayer && Rect.Contains(playerPos))
             {
-                if (Enter != null)
-                Enter.Invoke(this, new EventArgs());
-
+                
                 ContainsPlayer = true;
                 color = Color.Red;
             }

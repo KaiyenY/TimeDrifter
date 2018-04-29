@@ -22,9 +22,9 @@ namespace _2dracer
             : base(new GameObject(position, 0, sprite, new Vector2(Options.ScreenWidth / 12, Options.ScreenHeight / 13.5f), 0.15f), Vector2.Zero, 0)
         {
             prevRotation = rotation;
-            if (MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768] != null)
+            if (MapElements.Map.Nodes[(int)this.Position.X / 768 + 1, (int)this.Position.Y / 768 + 1] != null)
             {
-                currentNode = MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768];
+                currentNode = MapElements.Map.Nodes[(int)this.Position.X / 768 + 1, (int)this.Position.Y / 768 + 1];
             }
         }
 
@@ -50,7 +50,7 @@ namespace _2dracer
         {
             UpdatePositionTowardsNextNode();
 
-            if(MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768] != null)
+            if(MapElements.Map.Nodes[(int)this.Position.X / 768 + 1, (int)this.Position.Y / 768 + 1] != null)
             { 
                 currentNode = MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768];
             }
@@ -64,8 +64,16 @@ namespace _2dracer
         /// </summary>
         public void FindRoute(Node playerNode)
         {
-            //Use the AI class' A* logic
-            this.Route = AI.Pathfind(currentNode, playerNode);
+            if(currentNode != null && playerNode != null)
+            {
+                this.Route = AI.Pathfind(currentNode, playerNode);
+            }
+            else
+            {
+                Console.WriteLine("Tried to calculate AI, but a component was null!");
+            }
+
+            
         }
 
         private void UpdatePositionTowardsNextNode() //Moves the car a little along its current route
