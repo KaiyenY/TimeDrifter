@@ -145,7 +145,7 @@ namespace _2dracer.MapElements
                         {
                             Index = new int[2] { x, y }
                         };
-
+                        Tiles[x, y].Node = currentNode;
                         // The tile info is wrong, just rid of the info for now
                         for (int i = 0; i < int.Parse(info[4]); i++)
                         {

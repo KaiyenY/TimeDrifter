@@ -14,25 +14,35 @@ namespace _2dracer
         // Fields
         protected Queue<Node> Route { get; set; } //The path the enemy will take
         protected Node currentDestination; //The node within the path that the car will currently go towards
-        protected Node mostRecent; //This node holds the center node of the tile the car just stepped on. Used for A* calculations
+        protected Node currentNode; //This node holds the center node of the tile the car just stepped on. Used for A* calculations
         private float prevRotation;
 
-        // Constructor
+        #region Constructors
         public Enemy(Texture2D sprite, Vector2 position) 
             : base(new GameObject(position, 0, sprite, new Vector2(Options.ScreenWidth / 12, Options.ScreenHeight / 13.5f), 0.15f), Vector2.Zero, 0)
         {
             prevRotation = rotation;
-            currentDestination = Player.playerNode;
             if (MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768] != null)
             {
-                mostRecent = MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768];
+                currentNode = MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768];
             }
         }
+
+        //Constructor that takes a Node
+        public Enemy(Texture2D sprite, Vector2 position, Node startingNode)
+            : base(new GameObject(position, 0, sprite, new Vector2(Options.ScreenWidth / 12, Options.ScreenHeight / 13.5f), 0.15f), Vector2.Zero, 0)
+        {
+            prevRotation = rotation;
+            currentNode = startingNode; //set the initial ai path
+            Player.Enter += this.FindRoute; //subscribe the recalculate method for this cop to the player's enter event
+        }
+        #endregion
 
         // Methods
         public override void Draw()
         {
             base.Draw();
+            if(currentDestination != null)
             Game1.spriteBatch.DrawString(LoadManager.Fonts["Connection"], "GOING TO " + currentDestination.Location, new Vector2(this.Position.X + 10, this.Position.Y - 10), Color.Red, 0f, Vector2.Zero, 0.25f, SpriteEffects.None, 1.0f);
         }
 
@@ -42,13 +52,9 @@ namespace _2dracer
 
             if(MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768] != null)
             { 
-                mostRecent = MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768];
+                currentNode = MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768];
             }
-            
-            if(Game1.gameTime.TotalGameTime.Seconds % 10 == 0)
-            {
-                FindRoute();
-            }
+
 
             base.Update();
         }
@@ -56,18 +62,15 @@ namespace _2dracer
         /// <summary>
         /// Finds route to the Node the Player just stepped on. 
         /// </summary>
-        private void FindRoute()
+        public void FindRoute(Node playerNode)
         {
-
             //Use the AI class' A* logic
-            this.Route = AI.Pathfind(mostRecent, Player.playerNode);
+            this.Route = AI.Pathfind(currentNode, playerNode);
         }
 
-
-        //TODO: This method needs to be cleaned up ASAP
         private void UpdatePositionTowardsNextNode() //Moves the car a little along its current route
         {
-            if(Route != null && Route.Count > 0) //Don't do anything if there's no Route assigned
+            if(Route != null && Route.Count > 0 && currentDestination != null) //Don't do anything if there's no Route assigned
             {
                 // set range to 100
                 // cop should not touch the point before going to the next
@@ -78,7 +81,8 @@ namespace _2dracer
                 }
 
                 Vector2 toNode = new Vector2(currentDestination.Location.X - this.Position.X, currentDestination.Location.Y - this.Position.Y); //Vector to the target 
-                
+
+                #region rotation stuff i dont wanna touch
 
                 // rot is the rotation that the player SHOULD be moving in
                 // it is not the rotation that the player IS moving in
@@ -129,10 +133,7 @@ namespace _2dracer
                     prevRotation = rotation;
                 }
             }
-            else
-            {
-
-            }
+            #endregion
         }
 
         private bool WithinRange(int offset, Node center) //Creates an acceptable area to check when to get the next target
@@ -147,6 +148,13 @@ namespace _2dracer
             {
                 return false;
             }
+        }
+
+        public void PrintDebug()
+        {
+            Console.WriteLine("mostRecent: " + currentNode);
+            if(currentDestination != null)
+            Console.WriteLine("currentDestination: " + currentDestination);
         }
     }
 }

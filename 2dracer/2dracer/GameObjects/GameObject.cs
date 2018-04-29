@@ -97,6 +97,8 @@ namespace _2dracer
                 Game1.spriteBatch.Draw(sprite, position, null, color, rotation, origin, appliedScale, SpriteEffects.None, layerDepth);
             }
         }
+
+        
         #endregion
     }
 }

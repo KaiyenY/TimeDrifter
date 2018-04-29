@@ -20,9 +20,7 @@ namespace _2dracer
 
         public static Queue<Node> Pathfind(Node start, Node target) //Implementation of A* fingers crossed
         {
-            Console.WriteLine("PATHFINDING\n" +
-                "START: " + start.ToString() + 
-                "\nTARGET: " + target.ToString());
+            
             pathToGive = new Queue<Node>(); //Reset the path property
             List<Node> closedSet = new List<Node>();
             List<Node> openSet = new List<Node>(); //List of discovered nodes
@@ -38,10 +36,8 @@ namespace _2dracer
                 current.fScore = int.MaxValue; //will point to the node in the open set with the lowest fScore
                     foreach(Node toCheck in openSet) //Check for lowest node in the set of all 'discovered' nodes
                     {
-                        System.Diagnostics.Debug.Print("open set check: " + toCheck.ToString());
                         if(toCheck.fScore < current.fScore) 
                         {
-                        System.Diagnostics.Debug.Print(toCheck.ToString() + " has the lowest fScore");
                         current = toCheck;
                         }
                     }
@@ -61,17 +57,16 @@ namespace _2dracer
                     {
                         toReset.Reset();
                     }
+
                     return path;
                 }
 
                 //Move current to the closed set
                 openSet.Remove(current);
                 closedSet.Add(current);
-                Console.WriteLine("Added " + current.ToString() + " to the closed set");
 
                 foreach(Node neighbor in current.Neighbors)
                 {
-                    Console.WriteLine("current: " + current.ToString() + "neighbor: " + neighbor.ToString());
                     if(!closedSet.Contains(neighbor))//if this neighbor hasn't been checked yet
                     {
                         if(!openSet.Contains(neighbor))
@@ -83,11 +78,9 @@ namespace _2dracer
 
                         if(!(tentgScore > neighbor.gScore)) //recording the best path
                         {
-                            System.Diagnostics.Debug.Print("Recording the path of " + neighbor.ToString());
                             neighbor.Parent = current;
                             neighbor.gScore = tentgScore;
                             neighbor.fScore = neighbor.gScore + target.DistanceFrom(neighbor);
-                            neighbor.Color = Color.Black;
                         }
                     }
                 }
@@ -95,16 +88,19 @@ namespace _2dracer
             return null;
         }
 
-        private static Queue<Node> ReconstructPath(Node start, Node current) //Recursive algorithm to rebuild a path
+        /// <summary>
+        /// Recursively rebuilds the path to give to the enemy that needs it
+        /// </summary>
+        private static Queue<Node> ReconstructPath(Node start, Node current)
         {
-            if(current == start)
+            if(current == start) //has been passed the start, end the algorithm
             {
-                Console.WriteLine("returning reconstructed path");
                 return pathToGive;
             }
-            else
+            else //Recursive case: add current to the queue and then see whether to add current's parent
             {
                 pathToGive.Enqueue(current);
+                Console.WriteLine("ADDING " + current.ToString() + " to the path");
                 return ReconstructPath(start, current.Parent);
             }
             

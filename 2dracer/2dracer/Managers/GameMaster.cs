@@ -64,9 +64,22 @@ namespace _2dracer.Managers
 
 
                 Console.WriteLine(j + " " + k);
-
-                Instantiate(new Enemy(LoadManager.Sprites["Cop"], new Vector2(MapElements.Map.TileSize * j, MapElements.Map.TileSize * k)));
             }
+
+            
+
+            foreach(MapElements.Tile t in MapElements.Map.Tiles)
+            {
+                if(t.Type != MapElements.TileType.Building)
+                {
+                    //temporarily changed this to only spawn one cop so i can test AI ~~ Ruben
+                    Enemy e = new Enemy(LoadManager.Sprites["Cop"], t.Position, t.Node);
+                    Instantiate(e);
+                    e.PrintDebug();
+                    return; //only spawn 1
+                }
+            }
+            
         }
 
 
@@ -124,6 +137,8 @@ namespace _2dracer.Managers
                 Rigids.Clear();
             }
         }
+
+        
         #endregion
 
         //TODO: Create a method/event that is triggered each time the player steps into a new tile (to calculate pathfinding based on that)
