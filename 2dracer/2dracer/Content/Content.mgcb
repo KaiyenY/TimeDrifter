@@ -595,3 +595,15 @@
 /processorParam:TextureFormat=Color
 /build:3D_Car/0000.BMP.001.bmp
 
+#begin Textures/timeslow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/timeslow.png
+

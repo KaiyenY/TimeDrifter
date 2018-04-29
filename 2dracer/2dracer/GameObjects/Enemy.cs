@@ -26,7 +26,6 @@ namespace _2dracer
             currentDestination = Player.playerNode;
             if (MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768] != null)
             {
-                //Console.WriteLine("NODE MOSTRECENT: " + MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768].ToString());
                 mostRecent = MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768];
             }
         }
@@ -45,15 +44,12 @@ namespace _2dracer
             UpdatePositionTowardsNextNode();
 
             if(MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768] != null)
-            {
-                //Console.WriteLine("NODE MOSTRECENT: " + MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768].ToString());
+            { 
                 mostRecent = MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768];
             }
             
             if(Game1.gameTime.TotalGameTime.Seconds % 10 == 0)
             {
-                
-                Console.WriteLine("PATHFINDING");
                 FindRoute();
             }
 
@@ -65,11 +61,6 @@ namespace _2dracer
         /// </summary>
         private void FindRoute()
         {
-            Console.WriteLine("NEIGHBORS");
-            foreach(Node n in mostRecent.Neighbors)
-            {
-                Console.WriteLine(n.ToString());
-            }
 
             //Use the AI class' A* logic
             this.Route = AI.Pathfind(mostRecent, Player.playerNode);
@@ -79,7 +70,7 @@ namespace _2dracer
         //TODO: This method needs to be cleaned up ASAP
         private void UpdatePositionTowardsNextNode() //Moves the car a little along its current route
         {
-            if(Route != null) //Don't do anything if there's no Route assigned
+            if(Route != null && Route.Count > 0) //Don't do anything if there's no Route assigned
             {
                 // set range to 100
                 // cop should not touch the point before going to the next
@@ -148,6 +139,10 @@ namespace _2dracer
                         prevRotation = rotation;
                     }
                 }
+            }
+            else
+            {
+
             }
         }
 
