@@ -57,6 +57,7 @@
     <Compile Include="Managers\GameMaster.cs" />
     <Compile Include="Managers\Input.cs" />
     <Compile Include="Managers\LoadManager.cs" />
+    <Compile Include="Managers\Options.cs" />
     <Compile Include="Managers\UIManager.cs" />
     <Compile Include="MapElements\Map.cs" />
     <Compile Include="MapElements\Node.cs" />

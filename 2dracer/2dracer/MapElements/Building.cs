@@ -9,32 +9,59 @@ using _2dracer.Managers;
 
 namespace _2dracer.MapElements
 {
+    /// <summary>
+    /// Holds everything necessary to render buildings/
+    /// </summary>
     public class Building
     {
+        #region Fields
+        private BasicEffect effect;
         private Model model;
-        public Vector2 Position;
+        private Vector2 localPos;
+        private Vector3 worldPos;
+        #endregion
 
-        public Building(Vector2 p)
+        #region Constructor
+        public Building(Vector2 localPos)
         {
-            model = Program.game.Content.Load<Model>("Models/untitled");
-            Position = p;
+            // Grabs the building model (can be added as parameter if we add more)
+            model = Program.game.Content.Load<Model>("Models/Cube");
+
+
+            effect = (BasicEffect)model.Meshes[0].Effects[0];
+
+            // Makes sure we always have the local position of this model
+            this.localPos = localPos;
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Updates the position of this building in world space.
+        /// </summary>
+        public void Update()
+        {
+            worldPos = Options.Graphics.GraphicsDevice.Viewport.Unproject(
+                new Vector3(Vector2.Subtract(localPos, Game1.camera.Position), 0.97f),
+                effect.Projection,
+                effect.View,
+                Matrix.Identity);
         }
 
-        public void Draw(Texture2D img)
+        /// <summary>
+        /// Draws this building onto the screen.
+        /// </summary>
+        public void Draw(Texture2D texture)
         {
-            BasicEffect effect = (BasicEffect)model.Meshes[0].Effects[0];
-            effect.Texture = img;
-            
-            float aspectRatio = Game1.graphics.PreferredBackBufferWidth / (float)Game1.graphics.PreferredBackBufferHeight;
-            float fieldOfView = MathHelper.PiOver4;
+            double fieldOfView = (3.14159 / 4) * Options.Graphics.GraphicsDevice.Viewport.Width/1500;
 
-            int z = 5;
-
-            effect.Projection = Matrix.CreatePerspectiveFieldOfView(fieldOfView, aspectRatio, 0.1f, 200);
-            effect.View = Matrix.CreateTranslation(-1 * Game1.camera.Position.X / (58 * z), Game1.camera.Position.Y / (58 * z), (float)-10 / z);
-            effect.World = Matrix.CreateTranslation(Position.X, Position.Y, 0);
+            effect.Projection = Matrix.CreatePerspectiveFieldOfView((float)fieldOfView, Options.Graphics.GraphicsDevice.Viewport.AspectRatio, 0.1f, 200f);
+            effect.View = Matrix.CreateLookAt(new Vector3(Vector2.Zero, 2.3f), Vector3.Zero, Vector3.Up);
+            effect.World = Matrix.CreateTranslation(worldPos.X, worldPos.Y, 0f);
             
+            effect.Texture = texture;
             model.Meshes[0].Draw();
         }
+        #endregion
     }
 }

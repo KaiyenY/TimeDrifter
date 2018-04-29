@@ -28,7 +28,7 @@ namespace _2dracer.Managers
             Rigids = new List<Rigid>();
 
             // Instantiate GameObjects here please
-            Instantiate(new Player(new Vector2(Game1.screenWidth / 2, Game1.screenHeight / 2)));
+            Instantiate(new Player(new Vector2(Options.ScreenWidth / 2, Options.ScreenHeight / 2)));
 
             Instantiate(new Enemy(LoadManager.Sprites["Cop"], new Vector2(768, 768)));
               
@@ -82,9 +82,12 @@ namespace _2dracer.Managers
         /// </summary>
         public static void ClearAll()
         {
-            GameObjects.Clear();
-            Movers.Clear();
-            Rigids.Clear();
+            if (GameObjects != null)
+            {
+                GameObjects.Clear();
+                Movers.Clear();
+                Rigids.Clear();
+            }
         }
         #endregion
 

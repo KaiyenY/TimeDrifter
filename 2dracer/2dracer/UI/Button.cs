@@ -40,6 +40,7 @@ namespace _2dracer.UI
                 if (Input.MouseReleased(MouseButton.Left))
                 {
                     Click.Invoke(this, new EventArgs());
+                    AudioManager.PlaySound("Click", 1.0f);
                 }
             }
             else

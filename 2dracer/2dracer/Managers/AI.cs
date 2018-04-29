@@ -13,7 +13,7 @@ namespace _2dracer
     public static class AI
     {
         // Fields
-
+        
         public static List<Node> nodes = new List<Node>(); //List of nodes to test A* algorithm
 
         private static Queue<Node> pathToGive = new Queue<Node>(); //Field for the recursive algorithm to use

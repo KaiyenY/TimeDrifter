@@ -1,5 +1,7 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 
 namespace _2dracer.Managers
@@ -21,6 +23,16 @@ namespace _2dracer.Managers
         /// Stores all models in the game.
         /// </summary>
         public static Dictionary<string, Model> Models;
+
+        /// <summary>
+        /// Stores all music in the game.
+        /// </summary>
+        public static Dictionary<string, Song> Music;
+
+        /// <summary>
+        /// Stores all the sounds in the game.
+        /// </summary>
+        public static Dictionary<string, SoundEffect> Sounds;
 
         /// <summary>
         /// Stores all sprites in the game.
@@ -48,6 +60,9 @@ namespace _2dracer.Managers
         {
             LoadManager.content = content;
             LoadFonts();
+            LoadModels();
+            LoadMusic();
+            LoadSounds();
             LoadSprites();
         }
 
@@ -63,12 +78,56 @@ namespace _2dracer.Managers
         }
 
         /// <summary>
+        /// Loads all models that will be used in the game.
+        /// </summary>
+        private static void LoadModels()
+        {
+            Models = new Dictionary<string, Model>
+            {
+                { "Cube", Load<Model>("Models/Cube") }      // Default cubic building
+            };
+        }
+
+        /// <summary>
+        /// Loads all music that will be used in the game.
+        /// </summary>
+        private static void LoadMusic()
+        {
+            Music = new Dictionary<string, Song>
+            {
+                { "ExtremeAction", Load<Song>("Audio/Tracks/ExtremeAction") },
+                { "HappyRock", Load<Song>("Audio/Tracks/HappyRock") }
+            };
+        }
+
+        /// <summary>
+        /// Loads all sounds that will be used in the game.
+        /// </summary>
+        private static void LoadSounds()
+        {
+            Sounds = new Dictionary<string, SoundEffect>
+            {
+                { "Gunshot", Load<SoundEffect>("Audio/Sound Effects/GunFire") },
+                { "Click", Load<SoundEffect>("Audio/Sound Effects/ButtonClick") }
+            };
+        }
+
+        /// <summary>
         /// Loads all of the sprites that will be used in the game.
         /// </summary>
         private static void LoadSprites()
         {
             Sprites = new Dictionary<string, Texture2D>
             {
+                { "Wheels", Load<Texture2D>("3D_Car/car/0000") },
+                { "CarRed", Load<Texture2D>("3D_Car/skin00/0000") },
+                { "CarGold", Load<Texture2D>("3D_Car/skin01/0000") },
+                { "CarGray", Load<Texture2D>("3D_Car/skin02/0000") },
+                { "CarPurple", Load<Texture2D>("3D_Car/skin03/0000") },
+                { "CarGreen", Load<Texture2D>("3D_Car/skin04/0000") },
+                { "CarOrange", Load<Texture2D>("3D_Car/skin05/0000") },
+                { "CarYellow", Load<Texture2D>("3D_Car/skin06/0000") },
+                { "CarBlack", Load<Texture2D>("3D_Car/skin07/0000") },
                 { "Building1", Load<Texture2D>("Textures/Buildings/Building0") },
                 { "Building2", Load<Texture2D>("Textures/Buildings/Building1") },
                 { "Bullet", Load<Texture2D>("Textures/Bullet") },

@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using _2dracer.Managers;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using Microsoft.Xna.Framework;
 
 using _2dracer.UI;
 
@@ -28,7 +21,7 @@ namespace _2dracer.Managers
         // Constructor
         static UIManager()
         {
-            ChangeList();
+            RefreshList();
         }
 
         #region Methods
@@ -44,7 +37,7 @@ namespace _2dracer.Managers
 
             if (prevState != Game1.GameState)
             {
-                ChangeList();
+                RefreshList();
             }
 
             prevState = Game1.GameState;
@@ -68,8 +61,11 @@ namespace _2dracer.Managers
         /// <summary>
         /// Changes which UI <see cref="Element"/> instances load in which <see cref="GameState"/>.
         /// </summary>
-        private static void ChangeList()
+        public static void RefreshList()
         {
+            if (Elements != null)
+            Elements.Clear();
+
             switch (Game1.GameState)
             {
                 case GameState.Game:
@@ -82,9 +78,24 @@ namespace _2dracer.Managers
                     Elements = new List<Element>
                         {
                             new Element(new Vector2(50, 50), 1f, "title", "Time Drifter Deluxe"),
-                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 250, 400, 80), LoadManager.Sprites["Button"], "playButton", "Play"),
-                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 350, 400, 80), LoadManager.Sprites["Button"], "optionsButton", "Options"),
-                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 450, 400, 80), LoadManager.Sprites["Button"], "exitButton", "Exit")
+
+                            new Button(new Rectangle((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8), 
+                            (Options.ScreenHeight / 3), 
+                            (Options.ScreenWidth / 4),
+                            (Options.ScreenHeight / 10)), 
+                            LoadManager.Sprites["Button"], "playButton", "Play"),
+
+                            new Button(new Rectangle((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8), 
+                            (Options.ScreenHeight / 2), 
+                            (Options.ScreenWidth / 4), 
+                            (Options.ScreenHeight / 10)), 
+                            LoadManager.Sprites["Button"], "optionsButton", "Options"),
+
+                            new Button(new Rectangle((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8), 
+                            (Options.ScreenHeight * 2 / 3), 
+                            (Options.ScreenWidth / 4),
+                            (Options.ScreenHeight / 10)), 
+                            LoadManager.Sprites["Button"], "exitButton", "Exit")
                         };
                     break;
 
@@ -92,8 +103,27 @@ namespace _2dracer.Managers
                     Elements = new List<Element>
                         {
                             new Element(new Vector2(50, 50), 1f, "optionsTitle", "Options"),
-                            new Button(new Rectangle((Game1.screenWidth / 4) - 125, 250, 400, 80), LoadManager.Sprites["Button"], "fullScreen", "FullScreen"),
-                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 550, 400, 80), LoadManager.Sprites["Button"], "backButton", "Back")
+
+                            new Button(new Rectangle(
+                                (Options.ScreenWidth / 4) - (Options.ScreenWidth / 8),
+                                (Options.ScreenHeight / 3),
+                                (Options.ScreenWidth / 4),
+                                (Options.ScreenHeight / 10)),
+                                LoadManager.Sprites["Button"], "fullScreen", "FullScreen"),
+
+                            new Button(new Rectangle(
+                                (Options.ScreenWidth * 3 / 4) - (Options.ScreenWidth / 8),
+                                (Options.ScreenHeight / 3),
+                                (Options.ScreenWidth / 4),
+                                (Options.ScreenHeight / 10)),
+                                LoadManager.Sprites["Button"], "muteButton", "Mute"),
+
+                            new Button(new Rectangle(
+                                (Options.ScreenWidth / 2) - (Options.ScreenWidth / 8), 
+                                (Options.ScreenHeight * 5 / 6), 
+                                (Options.ScreenWidth / 4), 
+                                (Options.ScreenHeight / 10)), 
+                                LoadManager.Sprites["Button"], "backButton", "Back")
                         };
                     break;
 
@@ -101,8 +131,20 @@ namespace _2dracer.Managers
                     Elements = new List<Element>
                         {
                             new Element(new Vector2(50, 50), 1f, "pauseTitle", "Pause"),
-                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 250, 400, 80), LoadManager.Sprites["Button"], "resumeButton", "Resume"),
-                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 350, 400, 80), LoadManager.Sprites["Button"], "menuButton", "Exit to Menu")
+
+                            new Button(new Rectangle(
+                                (Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
+                                (Options.ScreenHeight / 3), 
+                                (Options.ScreenWidth / 4), 
+                                (Options.ScreenHeight / 10)), 
+                                LoadManager.Sprites["Button"], "resumeButton", "Resume"),
+
+                            new Button(new Rectangle(
+                                (Options.ScreenWidth / 2) - (Options.ScreenWidth / 8), 
+                                (Options.ScreenHeight / 2), 
+                                (Options.ScreenWidth / 4), 
+                                (Options.ScreenHeight / 10)), 
+                                LoadManager.Sprites["Button"], "menuButton", "Exit to Menu")
                         };
                     break;
 
@@ -112,7 +154,7 @@ namespace _2dracer.Managers
                             new Element(new Vector2(50, 50), 1f, "deathTitle", "Death"),
                             new Element(new Vector2(400, 200), 0.25f, "playerScore", "Score: "),
                             new Element(new Vector2(400, 300), 0.25f, "playerScore", "High Scores:"),
-                            new Button(new Rectangle((Game1.screenWidth / 2) - 125, 550, 400, 80), LoadManager.Sprites["Button"], "backButton", "Back")
+                            new Button(new Rectangle((Options.ScreenWidth / 2) - 200, 550, 400, 80), LoadManager.Sprites["Button"], "backButton", "Back")
                         };
 
                     StreamReader sr;
@@ -164,32 +206,36 @@ namespace _2dracer.Managers
                         Elements.Clear();
                         GameMaster.Start();
                         Game1.GameState = GameState.Game;
-                        ChangeList();
+                        RefreshList();
                         break;
 
                     case "resumeButton":
                         Elements.Clear();
                         Game1.GameState = GameState.Game;
-                        ChangeList();
+                        RefreshList();
                         break;
 
                     case "menuButton":
                         Elements.Clear();
                         Game1.GameState = GameState.Menu;
-                        ChangeList();
+                        RefreshList();
+                        break;
+
+                    case "muteButton":
+                        AudioManager.ToggleMute();
                         break;
 
                     case "optionsButton":
                         Elements.Clear();
                         Game1.GameState = GameState.Options;
-                        ChangeList();
+                        RefreshList();
                         break;
 
                     case "backButton":
                         Elements.Clear();
                         GameMaster.ClearAll();
                         Game1.GameState = GameState.Menu;
-                        ChangeList();
+                        RefreshList();
                         break;
 
                     case "exitButton":
@@ -197,7 +243,7 @@ namespace _2dracer.Managers
                         break;
 
                     case "fullScreen":
-                        Game1.graphics.ToggleFullScreen();
+                        Options.ToggleFullscreen();
                         break;
                 }
             }

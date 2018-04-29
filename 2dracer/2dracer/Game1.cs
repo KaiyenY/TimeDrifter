@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using _2dracer.MapElements;
 using _2dracer.Managers;
 
@@ -25,12 +26,6 @@ namespace _2dracer
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
 
-        #region Options
-        public static bool fullscreen = false;
-        public static int screenHeight = 720;
-        public static int screenWidth = 1280;
-        #endregion
-
         //GameState Enum
         public static GameState GameState;
         
@@ -43,10 +38,7 @@ namespace _2dracer
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            // Window properties
-            graphics.IsFullScreen = fullscreen;                     // Fullscreen or not
-            graphics.PreferredBackBufferHeight = screenHeight;      // Window height
-            graphics.PreferredBackBufferWidth = screenWidth;        // Window width
+            Options.InitializeSettings(graphics, Window);
 
             gameTime = new GameTime();
         }
@@ -69,6 +61,7 @@ namespace _2dracer
 
             // Handles all of the loading
             LoadManager.LoadContent(Content);
+            Map.LoadMap();
         }
 
         protected override void UnloadContent() { }
@@ -77,10 +70,16 @@ namespace _2dracer
         {
             gameTime = g;
 
-            Input.Update();     // Should be the FIRST thing that updates
+            // Updates all input states (should update first)
+            Input.Update();
 
+            // Handles all of the music c:
+            AudioManager.Update();
+
+            // Handles drawing the UI
             UIManager.Update();
             
+
             switch (GameState)
             {
                 case GameState.Game:
@@ -96,7 +95,17 @@ namespace _2dracer
 
                     camera.Update();
                     GameMaster.Update();
-                    
+                    Map.Update();
+
+
+                    int x = (int)(Player.PlayerPos.X / 768);
+                    int y = (int)(Player.PlayerPos.Y / 768);
+
+                    if (x >= 0 && y >= 0)
+                        if (x < Map.Tiles.GetLength(0))
+                            if(y < Map.Tiles.GetLength(1))
+                                if (Map.Tiles[x, y].Node != null)
+                                    System.Console.WriteLine(Map.Tiles[x, y].Node.ToString());
                     break;
             }
 
@@ -105,18 +114,29 @@ namespace _2dracer
 
         protected override void Draw(GameTime g)
         {
+            // Depth Buffer for Buildings
+            var state = new DepthStencilState
+            {
+                DepthBufferEnable = true
+            };
+
             gameTime = g;
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            
 
             if (GameState != GameState.Menu && GameState != GameState.Options && GameState != GameState.GameOver)
             {
                 spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
-
-                Map.DrawGround();
+                Map.Draw();
                 GameMaster.Draw();
                 spriteBatch.End();
+                
 
+
+                // Apply Depth Buffer for 3D
+                GraphicsDevice.DepthStencilState = state;
                 Map.DrawBuildings();
+                Player.Draw3D(LoadManager.Sprites["CarYellow"], -GameMaster.GameObjects[1].Rotation);
             }
 
             UIManager.Draw();           // UI always draws on top
