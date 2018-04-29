@@ -106,6 +106,13 @@ namespace _2dracer
                 return false;
             }
         }
+
+        public void Reset() //resets the values of this node to make it ripe for searching again
+        {
+            this.fScore = int.MaxValue;
+            this.gScore = int.MaxValue;
+            this.Parent = null;
+        }
         #endregion
     }
 }

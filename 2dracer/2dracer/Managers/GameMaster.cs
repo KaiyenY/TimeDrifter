@@ -20,7 +20,7 @@ namespace _2dracer.Managers
         public static List<Rigid> Rigids { get; private set; }
         #endregion
 
-        #region Methodss
+        #region Methods
         public static void Start()
         {
             GameObjects = new List<GameObject>();
@@ -69,6 +69,7 @@ namespace _2dracer.Managers
             }
         }
 
+
         /// <summary>
         /// Updates all game objects
         /// </summary>
@@ -78,6 +79,7 @@ namespace _2dracer.Managers
             {
                 g.Update();
             }
+            
         }
         
         /// <summary>
