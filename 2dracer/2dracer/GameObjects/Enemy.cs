@@ -60,7 +60,7 @@ namespace _2dracer
         {
 
             //Use the AI class' A* logic
-            this.Route = AI.Pathfind(mostRecent, Player.playerNode);
+            // this.Route = AI.Pathfind(mostRecent, Player.playerNode);
         }
 
 
