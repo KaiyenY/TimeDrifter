@@ -92,11 +92,11 @@ namespace _2dracer
 
             base.Update();
 
-            int thisX = ((int)this.Position.X / 768);
-            int thisY = ((int)this.Position.Y / 768);
+            int thisX = ((int)this.Position.X / 768) + 1;
+            int thisY = ((int)this.Position.Y / 768) + 1;
 
             if(thisX != NodeIndex[0] || thisY != NodeIndex[1]) //If the current position does not represent the field position
-                if(thisX < MapElements.Map.Nodes.GetLength(0) && thisX < MapElements.Map.Nodes.GetLength(1)) //If doesn't go out of bounds
+                if(thisX < MapElements.Map.Nodes.GetLength(0) && thisY < MapElements.Map.Nodes.GetLength(1)) //If doesn't go out of bounds
                     if(MapElements.Map.Nodes[thisX, thisY] != null)
                     {
                         Enter.Invoke(MapElements.Map.Nodes[thisX, thisY]); //Call the event that recalculates AI
