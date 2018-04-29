@@ -16,11 +16,10 @@ namespace _2dracer
         protected Node currentDestination; //The node within the path that the car will currently go towards
         protected Node mostRecent; //This node holds the center node of the tile the car just stepped on. Used for A* calculations
         private float prevRotation;
-        private bool enableDurp;
 
         // Constructor
         public Enemy(Texture2D sprite, Vector2 position) 
-            : base(new GameObject(position, 0, sprite, new Vector2(64, 128), 0.15f), Vector2.Zero, 0)
+            : base(new GameObject(position, 0, sprite, new Vector2(Options.ScreenWidth / 12, Options.ScreenHeight / 13.5f), 0.15f), Vector2.Zero, 0)
         {
             prevRotation = rotation;
             currentDestination = Player.playerNode;
@@ -33,10 +32,8 @@ namespace _2dracer
         // Methods
         public override void Draw()
         {
-            rotation += (float)Math.PI / 2;
             base.Draw();
             Game1.spriteBatch.DrawString(LoadManager.Fonts["Connection"], "GOING TO " + currentDestination.Location, new Vector2(this.Position.X + 10, this.Position.Y - 10), Color.Red, 0f, Vector2.Zero, 0.25f, SpriteEffects.None, 1.0f);
-            rotation -= (float)Math.PI / 2;
         }
 
         public override void Update()
@@ -119,25 +116,17 @@ namespace _2dracer
 
                 velocity.X += (float)Math.Cos(rotation) * 3;
                 velocity.Y += (float)Math.Sin(rotation) * 3;
-
-                if (Input.KeyTap(Keys.I))
+                
+                if (prevRotation != rotation)
                 {
-                    enableDurp = !enableDurp;
-                }
+                    float rotDiff = prevRotation - rotation;
 
-                if (!enableDurp)
-                {
-                    if (prevRotation != rotation)
-                    {
-                        float rotDiff = prevRotation - rotation;
-
-                        velocity = new Vector2(
-                            (float)(velocity.X * Math.Cos(-rotDiff) - velocity.Y * Math.Sin(-rotDiff)),
-                            (float)(velocity.X * Math.Sin(-rotDiff) + velocity.Y * Math.Cos(-rotDiff)));
+                    velocity = new Vector2(
+                        (float)(velocity.X * Math.Cos(-rotDiff) - velocity.Y * Math.Sin(-rotDiff)),
+                        (float)(velocity.X * Math.Sin(-rotDiff) + velocity.Y * Math.Cos(-rotDiff)));
 
 
-                        prevRotation = rotation;
-                    }
+                    prevRotation = rotation;
                 }
             }
             else

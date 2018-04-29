@@ -14,11 +14,11 @@ namespace _2dracer
     {
         Game,
         Menu,
+        Instructions,
         Options,
         Pause,
         GameOver
     }
-
 
     public class Game1 : Game
     {
@@ -42,8 +42,7 @@ namespace _2dracer
 
             gameTime = new GameTime();
         }
-
-
+        
         #region Methods
         protected override void Initialize()
         {
@@ -74,7 +73,7 @@ namespace _2dracer
             Input.Update();
 
             // Handles all of the music c:
-            AudioManager.Update();
+            Audio.Update();
 
             // Handles drawing the UI
             UIManager.Update();
@@ -121,22 +120,19 @@ namespace _2dracer
             };
 
             gameTime = g;
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             
 
-            if (GameState != GameState.Menu && GameState != GameState.Options && GameState != GameState.GameOver)
+            if (GameState != GameState.Menu && GameState != GameState.Options && GameState != GameState.GameOver && GameState != GameState.Instructions)
             {
                 spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.ViewMatrix);
                 Map.Draw();
                 GameMaster.Draw();
                 spriteBatch.End();
-                
-
 
                 // Apply Depth Buffer for 3D
                 GraphicsDevice.DepthStencilState = state;
                 Map.DrawBuildings();
-                Player.Draw3D(LoadManager.Sprites["CarYellow"], -GameMaster.GameObjects[1].Rotation);
             }
 
             UIManager.Draw();           // UI always draws on top

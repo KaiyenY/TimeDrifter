@@ -27,11 +27,46 @@ namespace _2dracer.Managers
             Movers = new List<Mover>();
             Rigids = new List<Rigid>();
 
-            // Instantiate GameObjects here please
-            Instantiate(new Player(new Vector2(Options.ScreenWidth / 2, Options.ScreenHeight / 2)));
+            SpawnManager.Initialize();
 
-            Instantiate(new Enemy(LoadManager.Sprites["Cop"], new Vector2(768, 768)));
-              
+            // Instantiate GameObjects here please
+            SpawnManager.SpawnPlayer();
+
+
+            // Everything below here should be replaced with the spawn manager code
+            Random rand = new Random();
+
+            for (int i = 0; i < 5; i++)
+            {
+                int j = 0;
+                int k = 0;
+                int minDistance = 3;
+                int maxDistance = 5;
+
+                do
+                {
+                    // J is between 0 and map_size_x
+                    j = rand.Next(0, MapElements.Map.Tiles.GetLength(0));
+
+                    // k is between 0 and map_size_y
+                    k = rand.Next(0, MapElements.Map.Tiles.GetLength(1));
+
+                    // find new random tile if
+                }
+                while (MapElements.Map.Tiles[j, k].Type == MapElements.TileType.Building //  the current is a building
+                        ||  
+                        // To close to playerX (2 blocks)               AND            To close to playerY (2 blocks)
+                        (Math.Abs(Player.PlayerPos.X - MapElements.Map.TileSize * j) < MapElements.Map.TileSize * minDistance && Math.Abs(Player.PlayerPos.Y - MapElements.Map.TileSize * k) < MapElements.Map.TileSize * minDistance)           
+                        ||              // the current tile is close to PlayerY
+                        // To far from playerX (4 blocks)               OR          To far from playerY (4 blocks)
+                        (Math.Abs(Player.PlayerPos.X - MapElements.Map.TileSize * j) > MapElements.Map.TileSize * maxDistance || Math.Abs(Player.PlayerPos.Y - MapElements.Map.TileSize * k) > MapElements.Map.TileSize * maxDistance)
+                        );                
+
+
+                Console.WriteLine(j + " " + k);
+
+                Instantiate(new Enemy(LoadManager.Sprites["Cop"], new Vector2(MapElements.Map.TileSize * j, MapElements.Map.TileSize * k)));
+            }
         }
 
 

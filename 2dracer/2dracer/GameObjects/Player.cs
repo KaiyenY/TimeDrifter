@@ -12,9 +12,9 @@ namespace _2dracer
     {
         #region Fields
         // Temporary elements, will be gauge needle soon
-        private static Element healthText;
-        private static Element timeText;
-        private static Element scoreText;
+        private static TextElement healthText;
+        private static TextElement timeText;
+        private static TextElement scoreText;
         
         private Turret turret;
         
@@ -36,7 +36,7 @@ namespace _2dracer
 
         #region Constructor
         public Player(Vector2 position) 
-            : base (position, 0, LoadManager.Sprites["RedCar"], new Vector2(128, 64), 400, 100, 250, 750)
+            : base (position, 0, LoadManager.Sprites["RedCar"], new Vector2(Options.ScreenWidth / 12, Options.ScreenHeight / 13.5f), 400, 100, 250, 1000)
         {
             Health = 100;
             TimeJuice = 0;
@@ -125,6 +125,29 @@ namespace _2dracer
         public static void Draw3D(Texture2D texture, float rotation)
         {
             double fieldOfView = (3.14159 / 4) * Options.Graphics.GraphicsDevice.Viewport.Width / 1500;
+
+            effect.Projection = Matrix.CreatePerspectiveFieldOfView((float)fieldOfView, Options.Graphics.GraphicsDevice.Viewport.AspectRatio, 0.1f, 200f);
+            effect.View = Matrix.CreateLookAt(new Vector3(Vector2.Zero, 3.3f), Vector3.Zero, Vector3.Up);
+
+
+            //scale * rotation * position
+            effect.World =
+                Matrix.CreateScale(0.1f, 0.1f, 0.09f) *
+                Matrix.CreateRotationX(3.14159f/2) * 
+                Matrix.CreateRotationZ(-3.14159f / 2 + rotation) *                  // Change this one to equal rotation of 2D car
+                Matrix.CreateTranslation(worldPos.X, worldPos.Y, 0f);
+
+            effect.Texture = LoadManager.Sprites["Wheels"];
+            model.Meshes[0].Draw();
+
+
+            BasicEffect effect2 = (BasicEffect)model.Meshes[1].Effects[0];
+            effect2.Projection = effect.Projection;
+            effect2.View = effect.View;
+            effect2.World = effect.World;
+
+            effect2.Texture = texture;
+            model.Meshes[1].Draw();
         }
 
         /// <summary>
@@ -132,16 +155,16 @@ namespace _2dracer
         /// </summary>
         private void Juice()
         {
-            if (Input.KeyTap(Keys.P))
+            if (Input.KeyTap(Keys.E))
                 slowMo = !slowMo;
 
             Score += Game1.gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
 
             if (!slowMo && TimeJuice < 10)
-                TimeJuice += Game1.gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
+                TimeJuice += Game1.gameTime.ElapsedGameTime.TotalMilliseconds / 2000;
 
             if (slowMo)
-                TimeJuice -= Game1.gameTime.ElapsedGameTime.TotalMilliseconds / 500;
+                TimeJuice -= Game1.gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
 
             if (TimeJuice <= 0)
             {
@@ -155,9 +178,9 @@ namespace _2dracer
         /// </summary>
         public static void CreateHUD()
         {
-            UIManager.Add(healthText = new Element(new Vector2(50, 50), 0.25f, "playerHealth", "Health : " + Health));
-            UIManager.Add(timeText = new Element(new Vector2(50, 150), 0.25f, "playerJuice", "Time Juice : " + TimeJuice));
-            UIManager.Add(scoreText = new Element(new Vector2(50, 250), 0.25f, "playerScore", "Score : " + Score));
+            UIManager.Add(healthText = new TextElement(new Point(50, 250), true, 0.25f, "playerHealth", "Health : " + Health));
+            UIManager.Add(timeText = new TextElement(new Point(50, 350), true, 0.25f, "playerJuice", "Time Juice : " + TimeJuice));
+            UIManager.Add(scoreText = new TextElement(new Point(50, 450), true, 0.25f, "playerScore", "Score : " + Score));
         }
         #endregion
     }

@@ -58,6 +58,7 @@
     <Compile Include="Managers\Input.cs" />
     <Compile Include="Managers\LoadManager.cs" />
     <Compile Include="Managers\Options.cs" />
+    <Compile Include="Managers\SpawnManager.cs" />
     <Compile Include="Managers\UIManager.cs" />
     <Compile Include="MapElements\Map.cs" />
     <Compile Include="MapElements\Node.cs" />
@@ -67,7 +68,6 @@
     <Compile Include="MapElements\Building.cs" />
     <Compile Include="GameObjects\Tank.cs" />
     <Compile Include="UI\Button.cs" />
-    <Compile Include="UI\Element.cs" />
     <Compile Include="GameObjects\Mover.cs" />
     <Compile Include="MapElements\Tile.cs" />
     <Compile Include="Program.cs" />
@@ -79,6 +79,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="UI\ImageElement.cs" />
+    <Compile Include="UI\Knob.cs" />
+    <Compile Include="UI\Slider.cs" />
+    <Compile Include="UI\TextElement.cs" />
+    <Compile Include="UI\UIElement.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

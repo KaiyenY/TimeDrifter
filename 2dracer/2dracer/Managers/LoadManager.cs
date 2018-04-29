@@ -107,8 +107,13 @@ namespace _2dracer.Managers
         {
             Sounds = new Dictionary<string, SoundEffect>
             {
+                { "Ambience01", Load<SoundEffect>("Audio/Sound Effects/Ambience01") },
+                { "Ambience02", Load<SoundEffect>("Audio/Sound Effects/Ambience02") },
+                { "Click", Load<SoundEffect>("Audio/Sound Effects/ButtonClick") },
+                { "Explosion", Load<SoundEffect>("Audio/Sound Effects/Explosion") },
+                { "GameOver", Load<SoundEffect>("Audio/Sound Effects/GameOver") },
                 { "Gunshot", Load<SoundEffect>("Audio/Sound Effects/GunFire") },
-                { "Click", Load<SoundEffect>("Audio/Sound Effects/ButtonClick") }
+                { "SlowMotion", Load<SoundEffect>("Audio/Sound Effects/SlowMotion") }
             };
         }
 
@@ -119,27 +124,26 @@ namespace _2dracer.Managers
         {
             Sprites = new Dictionary<string, Texture2D>
             {
-                { "Wheels", Load<Texture2D>("3D_Car/car/0000") },
-                { "CarRed", Load<Texture2D>("3D_Car/skin00/0000") },
-                { "CarGold", Load<Texture2D>("3D_Car/skin01/0000") },
-                { "CarGray", Load<Texture2D>("3D_Car/skin02/0000") },
-                { "CarPurple", Load<Texture2D>("3D_Car/skin03/0000") },
-                { "CarGreen", Load<Texture2D>("3D_Car/skin04/0000") },
-                { "CarOrange", Load<Texture2D>("3D_Car/skin05/0000") },
-                { "CarYellow", Load<Texture2D>("3D_Car/skin06/0000") },
-                { "CarBlack", Load<Texture2D>("3D_Car/skin07/0000") },
                 { "Building1", Load<Texture2D>("Textures/Buildings/Building0") },
                 { "Building2", Load<Texture2D>("Textures/Buildings/Building1") },
+                { "Building3", Load<Texture2D>("Textures/Buildings/Building2") },
+                { "Building4", Load<Texture2D>("Textures/Buildings/Building3") },
                 { "Bullet", Load<Texture2D>("Textures/Bullet") },
                 { "Button", Load<Texture2D>("Textures/UI/Button") },
                 { "Cop", Load<Texture2D>("Textures/Cop") },
                 { "CornerRoad", Load<Texture2D>("Textures/Tiles/CornerRoad") },
                 { "FIntersection", Load<Texture2D>("Textures/Tiles/FourWayIntersection") },
                 { "Grass", Load<Texture2D>("Textures/Tiles/Grass") },
+                { "HealthGauge", Load<Texture2D>("Textures/UI/HealthGauge") },
+                { "Knob", Load<Texture2D>("Textures/UI/Knob") },
+                { "MenuBackground", Load<Texture2D>("Textures/MenuBackground") },
                 { "RedCar", Load<Texture2D>("Textures/RedCar") },
                 { "Roof", Load<Texture2D>("Textures/Tiles/Roof") },
+                { "Slider", Load<Texture2D>("Textures/UI/Slider") },
                 { "Square", Load<Texture2D>("Textures/Square") },
                 { "StraightRoad", Load<Texture2D>("Textures/Tiles/StraightRoad") },
+                { "TimeEffect", Load<Texture2D>("Textures/UI/TimeEffect") },
+                { "TimeGauge", Load<Texture2D>("Textures/UI/TimeGauge") },
                 { "TIntersection", Load<Texture2D>("Textures/Tiles/ThreeWayIntersection") },
                 { "Turret", Load<Texture2D>("Textures/Turret") }
             };

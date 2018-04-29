@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using _2dracer.Managers;
@@ -18,7 +19,7 @@ namespace _2dracer
 
         // Constructor
         public Turret() : 
-            base(new Vector2(0,0), 0, LoadManager.Sprites["Turret"], new Vector2(25, 50), 0.5f)
+            base(new Vector2(0,0), 0, LoadManager.Sprites["Turret"], new Vector2(Options.ScreenWidth / 24, Options.ScreenHeight / 27), 0.5f)
         {
             timer = 0;
             bullets = new List<Bullet>(50);
@@ -46,9 +47,9 @@ namespace _2dracer
 
         public override void Draw()
         {
-            rotation += (float)Math.PI / 2;
-            base.Draw();
-            rotation -= (float)Math.PI / 2;
+            origin = new Vector2(sprite.Width / 2, sprite.Height) / 2;
+            Vector2 appliedScale = new Vector2((size.X * scale.X) / sprite.Width, (size.Y * scale.Y) / sprite.Height);
+            Game1.spriteBatch.Draw(sprite, position, null, color, rotation, origin, appliedScale, SpriteEffects.None, layerDepth);
 
             foreach (Bullet bullet in bullets)
             {
@@ -72,7 +73,7 @@ namespace _2dracer
 
                 bullets.Add(new Bullet(position, rotation));
 
-                AudioManager.PlaySound("Gunshot", 1f, 0.25f);
+                Audio.PlaySound("Gunshot", 0.25f);
             }
         }
 
@@ -101,6 +102,8 @@ namespace _2dracer
         {
             this.position = position;
         }
+
+        
     }
 }
 

@@ -19,18 +19,20 @@ namespace _2dracer
 
         // Constructor
         public Bullet(Vector2 position, float angle)
-            : base(new GameObject(position, angle, LoadManager.Sprites["Bullet"], new Vector2(20), 0.25f), Vector2.Zero, 0)
+            : base(new GameObject(position, angle, LoadManager.Sprites["Bullet"], new Vector2(Options.ScreenWidth / 64), 0.25f), Vector2.Zero, 0)
         {
             Delete = false;
+
+            Update(); Update();
         }
 
         public override void Update()
         {
             // Only move bullets on screen, else, mark them for deletion
-            if (position.X > -384 || 
-                position.X < -384 + MapElements.Map.Size.X ||
-                position.Y > -384 ||
-                position.Y < -384 + MapElements.Map.Size.Y)
+            if (position.X > -MapElements.Map.TileSize / 2 || 
+                position.X < -MapElements.Map.TileSize / 2 + MapElements.Map.Size.X ||
+                position.Y > -MapElements.Map.TileSize / 2 ||
+                position.Y < -MapElements.Map.TileSize / 2 + MapElements.Map.Size.Y)
             {
                 Player player = (Player)GameMaster.GameObjects[1];
 
@@ -49,9 +51,7 @@ namespace _2dracer
 
         public override void Draw()
         {
-            rotation += (float)Math.PI / 2;
             base.Draw();
-            rotation -= (float)Math.PI / 2;
         }
 
         /// <summary>
