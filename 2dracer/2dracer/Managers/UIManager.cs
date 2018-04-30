@@ -212,11 +212,8 @@ namespace _2dracer.Managers
 
                         new TextElement(new Point(400, 300), true, 0.25f, "playerScore", "High Scores : "),
 
-                        new Button(new Point((Options.ScreenWidth / 4) - (Options.ScreenWidth / 8),
-                            (Options.ScreenHeight * 5 / 6)), true, "menuButton", "Exit to Menu"),
-
-                        new Button(new Point((Options.ScreenWidth * 3 / 4) - (Options.ScreenWidth / 8),
-                            (Options.ScreenHeight * 5 / 6)), true, "playButton", "Play Again")
+                        new Button(new Point((Options.ScreenWidth / 2) - (Options.ScreenWidth / 8),
+                            (Options.ScreenHeight * 2 / 6)), true, "menuButton", "Exit to Menu"),
                     };
 
                     StreamReader sr;

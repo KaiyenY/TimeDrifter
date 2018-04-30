@@ -35,7 +35,7 @@ namespace _2dracer
 
         #region Constructor
         public Player(Vector2 position) 
-            : base (position, 0, LoadManager.Sprites["RedCar"], new Vector2(Options.ScreenWidth / 12, Options.ScreenHeight / 13.5f), 400, 100, 250, 750)
+            : base (position, 0, LoadManager.Sprites["RedCar"], new Vector2(Options.ScreenWidth / 12, Options.ScreenHeight / 13.5f), 400, 100, 250, 850)
         {
             Health = 100;
             TimeJuice = 0;
@@ -75,7 +75,7 @@ namespace _2dracer
                 Brake();
             }
 
-            if (Input.KeyHold(Keys.R))
+            if (Input.KeyHold(Keys.P))
             {
                 Health -= 1;
             }
@@ -161,7 +161,7 @@ namespace _2dracer
         /// </summary>
         public static void CreateHUD()
         {
-            UIManager.Add(scoreText = new TextElement(new Point(50, 450), true, 0.25f, "playerScore", "Score : " + Score));
+           // UIManager.Add(scoreText = new TextElement(new Point(50, 450), true, 0.25f, "playerScore", "Score : " + Score));
         }
         #endregion
     }
