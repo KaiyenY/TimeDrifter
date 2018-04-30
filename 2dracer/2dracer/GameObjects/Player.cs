@@ -75,7 +75,7 @@ namespace _2dracer
                 Brake();
             }
 
-            if (Input.KeyHold(Keys.R))
+            if (Input.KeyHold(Keys.P))
             {
                 Health -= 1;
             }
