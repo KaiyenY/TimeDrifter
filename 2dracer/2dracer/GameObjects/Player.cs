@@ -168,7 +168,7 @@ namespace _2dracer
         /// </summary>
         public static void CreateHUD()
         {
-            UIManager.Add(scoreText = new TextElement(new Point(50, 450), true, 0.25f, "playerScore", "Score : " + Score));
+           // UIManager.Add(scoreText = new TextElement(new Point(50, 450), true, 0.25f, "playerScore", "Score : " + Score));
         }
         #endregion
     }
