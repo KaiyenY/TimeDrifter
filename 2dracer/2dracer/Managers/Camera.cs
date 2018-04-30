@@ -63,6 +63,9 @@ namespace _2dracer.Managers
             {
                 int speed = 10;
 
+                if (Math.Abs(pos.X - position.X) > 3000 || Math.Abs(pos.Y - position.Y) > 3000)
+                    speed *= 2;
+
                 if (pos.X > position.X + (Options.ScreenWidth / 2))
                     position.X += speed;
 
