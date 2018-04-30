@@ -128,6 +128,10 @@ namespace _2dracer
                     {
                         position -= velocity * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds;
                     }
+
+                    if (Math.Abs(velocity.X) > 200 || Math.Abs(velocity.Y) > 200)
+                        Health -= 10;
+
                     velocity = Vector2.Zero;
                     break;
                 }
