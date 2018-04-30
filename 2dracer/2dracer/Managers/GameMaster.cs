@@ -70,13 +70,13 @@ namespace _2dracer.Managers
 
             foreach(MapElements.Tile t in MapElements.Map.Tiles)
             {
-                if(t.Type != MapElements.TileType.Building)
+                int randomNUmber = rand.Next(1, 50);
+                if(t.Type != MapElements.TileType.Building && randomNUmber == 25)
                 {
                     //temporarily changed this to only spawn one cop so i can test AI ~~ Ruben
                     Enemy e = new Enemy(LoadManager.Sprites["Cop"], t.Position, t.Node);
                     Instantiate(e);
                     e.PrintDebug();
-                    return; //only spawn 1
                 }
             }
             

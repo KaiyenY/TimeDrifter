@@ -103,14 +103,7 @@ namespace _2dracer
                         Console.WriteLine("Player's Node: " + MapElements.Map.Nodes[thisX, thisY].ToString());
                     }
 
-            if (MapElements.Map.Nodes[thisX, thisY] == null)
-            {
-                Console.WriteLine("Nodes[" + thisX + "," + thisY + "] is null!");
-            }
-            else
-            {
-                Console.WriteLine("The Node at [" + thisX + ", " + thisY + "] is " + MapElements.Map.Nodes[thisX, thisY].ToString());
-            }
+         
 
             turret.MoveTurret(position);
 
