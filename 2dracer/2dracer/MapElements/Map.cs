@@ -56,13 +56,13 @@ namespace _2dracer.MapElements
             {
                 tile.Draw();
             }
-            foreach (Node node in Nodes)
+            /*foreach (Node node in Nodes)
             {
                 if (node != null)
                 {
                     Game1.spriteBatch.Draw(LoadManager.Sprites["Square"], new Rectangle(node.Location, new Point(25, 25)), null, Color.Red, 0f, Vector2.Zero, SpriteEffects.None, 0.2f);
                 }
-            }
+            }*/
         }
 
         /// <summary>

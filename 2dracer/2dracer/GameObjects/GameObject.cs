@@ -94,7 +94,7 @@ namespace _2dracer
             {
                 origin = new Vector2(sprite.Width, sprite.Height) / 2;
                 Vector2 appliedScale = new Vector2((size.X * scale.X) / sprite.Width, (size.Y * scale.Y) / sprite.Height);
-                Game1.spriteBatch.Draw(sprite, position, null, color, rotation, origin, appliedScale, SpriteEffects.None, layerDepth);
+                Game1.spriteBatch.Draw(sprite, position, null, Color.White, rotation, origin, appliedScale, SpriteEffects.None, layerDepth);
             }
         }
 
