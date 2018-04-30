@@ -35,6 +35,7 @@ namespace _2dracer
             prevRotation = rotation;
             currentNode = startingNode; //set the initial ai path
             Player.Enter += this.FindRoute; //subscribe the recalculate method for this cop to the player's enter event
+            Route = SetPatrolRoute();
         }
         #endregion
 
@@ -54,8 +55,6 @@ namespace _2dracer
             { 
                 currentNode = MapElements.Map.Nodes[(int)this.Position.X / 768, (int)this.Position.Y / 768];
             }
-
-
             base.Update();
         }
 
@@ -66,6 +65,7 @@ namespace _2dracer
         {
             if(currentNode != null && playerNode != null)
             {
+                Console.WriteLine("PATHFINDING!");
                 this.Route = AI.Pathfind(currentNode, playerNode);
             }
             else
@@ -82,9 +82,8 @@ namespace _2dracer
             {
                 // set range to 100
                 // cop should not touch the point before going to the next
-                if (WithinRange(10, currentDestination) && Route.Count != 0)
+                if (WithinRange(10, this.Route.Peek()))
                 {
-                    if(this.Route.Peek() != null)
                     currentDestination = this.Route.Dequeue(); //If reached current target node, fetch next one from the Queue
                 }
 
@@ -140,8 +139,9 @@ namespace _2dracer
 
                     prevRotation = rotation;
                 }
+                #endregion
             }
-            #endregion
+            
         }
 
         private bool WithinRange(int offset, Node center) //Creates an acceptable area to check when to get the next target
@@ -156,6 +156,92 @@ namespace _2dracer
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// dirty helper method to get the cop to go in the longest possible direction 
+        /// </summary>
+        private Queue<Node> SetPatrolRoute()
+        {
+            int thisX = (int)this.Position.X / 768 + 1;
+            int thisY = (int)this.Position.Y / 768 + 1;
+            int[] directionCounts = { 0, 0, 0, 0 }; //array to hold clear counts in all directions {+X, -X, +Y, -Y}
+
+            MapElements.Tile[,] tiles = MapElements.Map.Tiles; //points to the array of tiles
+
+            #region set direction values
+            int loopCounter = thisX;
+            while(tiles[loopCounter, thisY].Type != MapElements.TileType.Building && loopCounter < tiles.GetLength(0)) //loop through +x
+            {
+                directionCounts[0]++; //increment the counter 
+                loopCounter++;
+            }
+            loopCounter = thisX;
+            while (tiles[loopCounter, thisY].Type != MapElements.TileType.Building && loopCounter > 0) //loop through -x
+            {
+                directionCounts[1]++; //increment the counter 
+                loopCounter--;
+            }
+            loopCounter = thisY;
+            while (tiles[thisX, loopCounter].Type != MapElements.TileType.Building && loopCounter < tiles.GetLength(1)) //loop through +y
+            {
+                directionCounts[2]++; //increment the counter 
+                loopCounter++;
+            }
+            loopCounter = thisY;
+            while (tiles[thisX, loopCounter].Type != MapElements.TileType.Building && loopCounter > 0) //loop through -y
+            {
+                directionCounts[3]++; //increment the counter 
+                loopCounter--;
+            }
+            #endregion
+
+            #region hold values for the longest possible route
+            int maxLength = 0; //to compare against
+            int bestIndex = -1; //to hold the index to use
+            for (int i = 0; i < directionCounts.Length; i++)
+            {
+                if(directionCounts[i] > maxLength) //hold best direction
+                {
+                    maxLength = directionCounts[i];
+                    bestIndex = i;
+                }
+            }
+            #endregion
+
+            Queue<Node> route = new Queue<Node>();
+            switch(bestIndex)
+            {
+                case 0:
+                    for (int i = 0; i < directionCounts[bestIndex]; i++) //add nodes along this direction to the route
+                    {
+                        if(tiles[i, thisY].Node != null)
+                        route.Enqueue(tiles[i, thisY].Node);
+                    }
+                    break;
+                case 1:
+                    for (int i = thisX; i > thisX-directionCounts[bestIndex]; i--) //add nodes along this direction to the route
+                    {
+                        if (tiles[i, thisY].Node != null)
+                            route.Enqueue(tiles[i, thisY].Node);
+                    }
+                    break;
+                case 2:
+                    for (int i = thisY; i < directionCounts[bestIndex]; i++) //add nodes along this direction to the route
+                    {
+                        if (tiles[thisX, i].Node != null)
+                            route.Enqueue(tiles[thisX, i].Node);
+                    }
+                    break;
+                case 3:
+                    for (int i = thisY; i > thisY - directionCounts[bestIndex]; i--) //add nodes along this direction to the route
+                    {
+                        if (tiles[thisX, i].Node != null)
+                            route.Enqueue(tiles[thisX, i].Node);
+                    }
+                    break;
+            }
+            return route;
         }
 
         public void PrintDebug()
