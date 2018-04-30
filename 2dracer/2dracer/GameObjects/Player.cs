@@ -114,6 +114,25 @@ namespace _2dracer
 
             turret.MoveTurret(position);
 
+            // THIS IS JUST SO CARS HAVE AWFUL COLLISIONS
+            Rectangle rect = new Rectangle((position - size / 2).ToPoint(), size.ToPoint());
+            foreach (MapElements.Tile t in MapElements.Map.Tiles)
+            {
+                if (t.Type == MapElements.TileType.Building && t.Rect.Intersects(rect))
+                {
+                    if (slowMo)
+                    {
+                        position -= velocity * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds / 3;
+                    }
+                    else
+                    {
+                        position -= velocity * (float)Game1.gameTime.ElapsedGameTime.TotalSeconds;
+                    }
+                    velocity = Vector2.Zero;
+                    break;
+                }
+            }
+
             playerVelocity = velocity;
 
             //Update the permanent location of the player's node within the array

@@ -51,7 +51,7 @@ namespace _2dracer.MapElements
 
             origin *= 2;
 
-            Rect = new Rectangle(position.ToPoint(), new Point((int)Map.TileSize));
+            Rect = new Rectangle((position - new Vector2(Map.TileSize / 2, Map.TileSize / 2)).ToPoint(), new Point((int)Map.TileSize));
         }
         #endregion
 
